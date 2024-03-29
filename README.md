@@ -1,7 +1,7 @@
-# snorer
+# snorer: *S*upernova-*N*eutrino-b*O*osted da*R*k matt*ER*
 
 
-`snorer` is a package for evaluating the signatures of **S**upernova-**N**eutrino-b**O**osted da**R**k matt**ER** from our Milky Way based on *Phys. Rev. Lett.* **130**, 111002 (2023) and *Phys. Rev. D* **108**, 083013 (2023).
+`snorer` is a package for evaluating the signatures of supernova-neutrino-boosted dark matter from our Milky Way based on *Phys. Rev. Lett.* **130**, 111002 (2023) and *Phys. Rev. D* **108**, 083013 (2023).
 
 ## Installation
 
