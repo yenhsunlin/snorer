@@ -13,7 +13,7 @@
 
 __name__         = 'snorer'
 __version__      = '0.0.0'
-__description__  = 'Supernova-neutrino-boosted dark matter from our Milky Way'
+__description__  = 'This package evaluates the time-of-flight signatures of boosted dark matter due to supernova neutrinos from our Milky Way'
 __author__       = 'Yen-Hsun Lin'
 __email__        = 'yenhsun@phys.ncku.edu.tw'
 __url__          = 'https://github.com/yenhsunlin/snorer'
