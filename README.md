@@ -27,7 +27,7 @@ and everything should be processed on-the-fly.
 
 where `vegas` is a the backend engine for evaluating multidimensional integrals based on adaptive Monte Carlo vegas algorithm, see its homepage: [https://pypi.org/project/vegas/](https://pypi.org/project/vegas/).
 
-Other packages, e.g. `gvar`, maybe required by these dependencies during the installation.
+Other packages maybe required by these dependencies during the installation, see `requirements.txt` for details.
 The versions of these dependencies are not strict, but are recommended to update to the latest ones to avoid incompatibility.
 
 
