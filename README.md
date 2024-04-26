@@ -1,7 +1,7 @@
 [![Python](https://img.shields.io/badge/python-3.8-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-GPL_3.0-blue.svg)](https://choosealicense.com/licenses/gpl-3.0/)
-[![ArXiv](https://img.shields.io/badge/arXiv-2206.06864-yellowgreen.svg)]((https://arxiv.org/abs/2206.06864)) 
-[![ArXiv](https://img.shields.io/badge/arXiv-2307.03522-yellowgreen.svg)]((https://arxiv.org/abs/2307.03522)) 
+[![ArXiv](https://img.shields.io/badge/arXiv-2206.06864-yellowgreen.svg)](https://arxiv.org/abs/2206.06864) 
+[![ArXiv](https://img.shields.io/badge/arXiv-2307.03522-yellowgreen.svg)](https://arxiv.org/abs/2307.03522) 
 
 # snorer: *S*upernova-*N*eutrino-b*O*osted da*R*k matt*ER*
 
