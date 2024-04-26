@@ -16,6 +16,14 @@ from scipy.optimize import root_scalar as _root_scalar
 from .constant import Constants
 
 
+
+##########################################################################
+#                                                                        #
+#   General Classes and Functions for Numerics                           #
+#                                                                        #
+##########################################################################
+
+
 constant = Constants()
 
 
