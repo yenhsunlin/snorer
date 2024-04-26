@@ -25,6 +25,21 @@ from .sysmsg import FlagError
 ##########################################################################
 
 
+"""
+This script contains following classes and functions
+
+Classes
+------
+1. Geometry
+
+Functions
+------
+None
+
+The docstrings should be sufficient for their self-explanations
+"""
+
+
 constant = Constants()
 
 
