@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 
 
-from numpy import pi,exp,arccos,cos,sin,sqrt,isclose
+from numpy import pi,exp,arccos,cos,sin,isclose
 import vegas
 from .halo import dmNumberDensity
 from .kinematics import Kinematics,get_thetaRange,get_tof
