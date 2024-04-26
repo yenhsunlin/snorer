@@ -18,101 +18,118 @@ class Constants:
         pass
     
     @property
-    def md2MeVperCubicCM(self):
-        return 3.796e-05        # Msun/kpc^3 to MeV/cm^3
+    def md2MeVperCubicCM(self): # Msun/kpc^3 to MeV/cm^3
+        return 3.796e-05        
     
     @property
-    def md2MeVperQuadCM(self):
-        return 1.171e+17        # Msun/kpc^3 to MeV/cm^2
+    def md2MeVperQuadCM(self):  # Msun/kpc^3 to MeV/cm^2
+        return 1.171e+17        
     
     @property
-    def year2Seconds(self):
-        return 31556926         # year to seconds
+    def year2Seconds(self):     # year to seconds
+        return 31556926         
     
     @property
-    def erg2MeV(self):
-        return 6.241e+05        # erg to MeV
+    def erg2MeV(self):          # erg to MeV
+        return 6.241e+05        
     
     @property
-    def kpc2cm(self):
-        return 3.085e+21        # kpc to cm
+    def kpc2cm(self):           # kpc to cm
+        return 3.085e+21        
     
     @property
-    def me(self):
-        return 5.110e-01        # electron mass, MeV
+    def me(self):               # electron mass, MeV
+        return 5.110e-01        
     
     @property
-    def mn(self):
-        return 9.395e+02        # neutron mass, MeV
+    def mn(self):               # neutron mass, MeV
+        return 9.395e+02        
     
     @property
-    def mp(self):
-        return 9.382e+02        # proton mass, MeV
+    def mp(self):               # proton mass, MeV
+        return 9.382e+02        
     
     @property
-    def Msun(self):
-        return 1.115e+60        # Solar mass, MeV
+    def Msun(self):             # Solar mass, MeV
+        return 1.115e+60        
     
     @property
-    def Msun_kg(self):
-        return 1.981e+30        # Solar mass, kg
+    def Msun_kg(self):          # Solar mass, kg
+        return 1.981e+30        
     
     @property
-    def Mmw(self):
-        return 5.290e+10        # MW stellar mass, Msun
+    def Mmw(self):              # MW stellar mass, Msun
+        return 5.290e+10        
     
     @property
-    def Mhalo(self):
-        return 1.290e+12        # MW halo mass, Msun
+    def M_SgrA(self):           # Sgr A* mass, Msun
+        return 4.29e+06         
     
     @property
-    def Rhalo(self):
-        return 2.300e+02        # MW halo radius, kpc
+    def Mhalo(self):            # MW halo mass, Msun
+        return 1.290e+12        
+    
+    @property
+    def Rhalo(self):            # MW halo radius, kpc
+        return 2.300e+02        
 
     @property
-    def sigma0(self):
-        return 1.000e-35        # sigma_0, cm^2
+    def sigma0(self):           # sigma_0, cm^2
+        return 1.000e-35        
 
     @property
-    def c(self):
-        return 29979245800      # light speed, cm/s
+    def c(self):                # light speed, cm/s
+        return 29979245800      
     
     @property
-    def H0(self):
-        return 7.300e+01        # Hubble constant, km/s/Mpc
+    def H0(self):               # Hubble constant, km/s/Mpc
+        return 7.300e+01        
     
     @property
-    def rho_c(self):
-        return 1.500e-07        # critical density, Msun/pc^3
+    def rho_c(self):            # critical density, Msun/pc^3
+        return 1.500e-07        
     
     @property
-    def Lv(self):
-        return 3.000e+52/6      # Supernova neutrino luminosity (single specie), erg/s
+    def Lv(self):               # Supernova neutrino luminosity (single specie), erg/s
+        return 3.000e+52/6      
     
     @property
-    def Omega_0m(self):
-        return 3.150e-01        # Cosmological matter fraction
+    def Omega_0m(self):         # Cosmological matter fraction
+        return 3.150e-01        
     
     @property
-    def Omega_0L(self):
-        return 6.850e-01        # Cosmological dark energy fraction
+    def Omega_0L(self):         # Cosmological dark energy fraction
+        return 6.850e-01        
     
     @property
-    def Omega_0r(self):
-        return 2.300e-03        # Cosmological radiation fraction
-    @property
-    def Omega_0(self):
-        return 1.000            # Cosmological total energy
+    def Omega_0r(self):         # Cosmological radiation fraction
+        return 2.300e-03        
     
     @property
-    def D_H0(self):
-        return 4.280e+03        # Mpc
+    def Omega_0(self):          # Cosmological total energy
+        return 1.000            
     
     @property
-    def G(self):
-        return 4.301e-03        # Newton gravitational constant, pc Msun^-1 (km/s)^2
+    def D_H0(self):             # Mpc
+        return 4.280e+03        
+    
+    @property
+    def G(self):                # Newton gravitational constant, pc Msun^-1 (km/s)^2
+        return 4.301e-03        
+    
+    @property
+    def SgrA_coord(self):       # Sgr A*'s RA, DEC and distance
+        return ['17h45m40.0383s','-29d00m28.069s',8.13]
+    
+    @property
+    def LMC_coord(self):       # LMC's RA, DEC and distance
+        return ['05h23m34.5264s', '-69d45m22.053s',49.97]
+    
+    @property
+    def SN1987a_coord(self):   # SN1987a's RA, DEC and distance
+        return ['05h35m27.8733s', '-69d16m10.478s',51.7]
 
     @property
-    def MagicalNumber(self):
-        return 2.572e-64        # Magician does Magic!
+    def MagicalNumber(self):    # Magician does Magic!
+        return 2.572e-64        
     
