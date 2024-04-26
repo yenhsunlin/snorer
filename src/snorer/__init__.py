@@ -11,6 +11,12 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+
+"""
+This is the proxy script
+"""
+
+
 __name__         = 'snorer'
 __version__      = '0.0.0'
 __description__  = 'This package evaluates the time-of-flight signatures of boosted dark matter due to supernova neutrinos from our Milky Way, SN1987a in LMC or from SN in arbitrary distant galaxy'
@@ -20,7 +26,7 @@ __url__          = 'https://github.com/yenhsunlin/snorer'
 __license__      = 'GNU GPL-3.0'
 
 
-#from .snorerMain import 
+from .snorerMain import snNuSpectrum,dsigma_xv,emissivity,diff_flux,flux,event
 from .halo import haloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
 from .geometry import Geometry
 from .kinematics import Kinematics,get_thetaRange,get_tof
