@@ -14,11 +14,11 @@
 
 from numpy import pi,exp,arccos,cos,sin,sqrt,isclose
 import vegas
-from .halo import haloSpike,dmNumberDensity
+from .halo import dmNumberDensity
 from .kinematics import Kinematics,get_thetaRange,get_tof
 from .geometry import Geometry
-from .sysmsg import FlagError
 from .constant import Constants
+from .sysmsg import FlagError
 
 
 
