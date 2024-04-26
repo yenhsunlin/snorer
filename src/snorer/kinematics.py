@@ -24,6 +24,22 @@ from .constant import Constants
 ##########################################################################
 
 
+"""
+This script contains following classes and functions
+
+Classes
+------
+1. Kinematics
+
+Functions
+------
+1. get_thetaRange
+2. get_tof
+
+The docstrings should be sufficient for their self-explanations
+"""
+
+
 constant = Constants()
 
 
