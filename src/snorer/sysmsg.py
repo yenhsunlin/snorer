@@ -12,6 +12,12 @@
 # GNU General Public License for more details.
 
 
+"""
+This script is designed for showing specified system messages and
+not for users.
+"""
+
+
 class FlagError(Exception):
     
     def __init__(self, message):
