@@ -31,3 +31,5 @@ pip-wheel-metadata/
 
 # Test
 #tests/
+test.*
+.virtual_documents/
