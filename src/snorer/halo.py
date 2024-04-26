@@ -18,6 +18,14 @@ from .constant import Constants
 from .sysmsg import FlagError
 
 
+
+##########################################################################
+#                                                                        #
+#   General Classes and Functions for Numerics                           #
+#                                                                        #
+##########################################################################
+
+
 constant = Constants()
 
 
