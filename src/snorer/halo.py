@@ -26,6 +26,26 @@ from .sysmsg import FlagError
 ##########################################################################
 
 
+"""
+This script contains following classes and functions
+
+Classes
+------
+1. haloSpike
+
+Functions
+------
+1. rhox
+2. M_sigma
+3. radiusInfluence
+4. radiusSchwarzschild
+5. dmNumberDensity
+6. dmNumberDensity_general
+
+The docstrings should be sufficient for their self-explanations
+"""
+
+
 constant = Constants()
 
 
@@ -313,8 +333,11 @@ def rhox(r,rhos,rs,n) -> float:
     rhox: DM density at r, MeV/cm^3
 
 
-    Description
+    /*---------------------------*/
+    
+    Additional Description
     ------
+
     This function evaluates the DM density described by the profile
 
           rhox(r) = rhos/(r/rs)/(1+r/rs)^n
@@ -343,8 +366,11 @@ def M_sigma(mBH):
     sigma: stellar velocity dispersion, km/s
 
 
-    Description
+    /*---------------------------*/
+    
+    Additional Description
     ------
+
     This function evaluates the stellar dispersion sigma_s in SMBH adjacent
 
           log10(mBH/Msun) = 8.29 + 5.12*log10(sigma_s/200 km/s)
@@ -367,8 +393,11 @@ def radiusInfluence(mBH):
     rh: influence radisu, kpc
 
 
-    Description
+    /*---------------------------*/
+    
+    Additional Description
     ------
+
     This function evaluates the influence radius of a SMBH
 
           rh = G*mBH/sigma_s^2
