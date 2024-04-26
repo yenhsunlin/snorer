@@ -21,7 +21,7 @@ __license__      = 'GNU GPL-3.0'
 
 
 #from .snorerMain import 
-from .halo import haloSpike,dmNumberDensity,dmNumberDensity_general
+from .halo import haloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
 from .geometry import Geometry
 from .kinematics import Kinematics,get_thetaRange,get_tof
 from .constant import Constants
