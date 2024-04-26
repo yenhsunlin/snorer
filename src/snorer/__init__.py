@@ -18,3 +18,10 @@ __author__       = 'Yen-Hsun Lin'
 __email__        = 'yenhsun@phys.ncku.edu.tw'
 __url__          = 'https://github.com/yenhsunlin/snorer'
 __license__      = 'GNU GPL-3.0'
+
+
+#from .snorerMain import 
+from .halo import haloSpike,dmNumberDensity,dmNumberDensity_general
+from .geometry import Geometry
+from .kinematics import Kinematics,get_thetaRange,get_tof
+from .constant import Constants
