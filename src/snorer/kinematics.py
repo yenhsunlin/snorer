@@ -114,24 +114,22 @@ class Neutrino:
         If returns False, it means the combination (Tx,mx,psi)
         violates energy conservation and is unphysical
         """
-        return self._sanity_check()
+        return self.__class__.sanity_check(self.Tx,self.mx,self.psi)
     
     @property
     def Ev(self):
-        return self._get_Ev()
+        return self.__class__.get_Ev(self.Tx,self.mx,self.psi)
 
     @property
     def dEv(self):
-        return self._get_dEv()
+        return self.__class__.get_dEv(self.Tx,self.mx,self.psi)
     
-    def _sanity_check(self) -> bool:
+    @classmethod
+    def sanity_check(cls,Tx,mx,psi) -> bool:
         """
         Check if the combination (Tx,mx,psi) not violating
         energy conservation
         """
-        Tx = self.Tx
-        mx = self.mx
-        psi = self.psi
         tan_psi2 = tan(psi)**2
         if isclose(0,tan_psi2,atol=1e-100):
             return False
@@ -140,24 +138,20 @@ class Neutrino:
         else:
             return False
     
-    def _get_Ev(self) -> float:
+    @classmethod
+    def get_Ev(cls,Tx,mx,psi) -> float:
         """
         Get the required neutrino energy to boost DM up with kinetic
         energy Tx at angle psi
         """
-        Tx = self.Tx
-        mx = self.mx
-        psi = self.psi
         px = sqrt(Tx*(Tx + 2*mx))
         return - mx*Tx/(Tx - px*cos(psi))
     
-    def _get_dEv(self) -> float:
+    @classmethod
+    def get_dEv(cls,Tx,mx,psi) -> float:
         """
         Get the dEv/dTx
         """
-        Tx = self.Tx
-        mx = self.mx
-        psi = self.psi
         px = sqrt(Tx*(Tx + 2*mx))
         x = cos(psi)
         return mx**2*Tx*x/(Tx - px*x)**2
