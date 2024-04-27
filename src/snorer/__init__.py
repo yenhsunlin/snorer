@@ -25,7 +25,7 @@ __email__        = 'yenhsun@phys.ncku.edu.tw'
 __url__          = 'https://github.com/yenhsunlin/snorer'
 __license__      = 'GNU GPL-3.0'
 __all__          = ['snNuSpectrum','dsigma_xv','emissivity','diff_flux','flux','event',
-                    'haloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','dmNumberDensity','dmNumberDensity_general',
+                    'HaloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','dmNumberDensity','dmNumberDensity_general',
                     'Geometry',
                     'Neutrino','get_vx','get_maxPsi','get_thetaRange','get_tof','fx_lab',
                     'Constants','constant',
@@ -35,7 +35,7 @@ __all__          = ['snNuSpectrum','dsigma_xv','emissivity','diff_flux','flux','
 #---------- Useful utilities for user ----------#
 
 from .snorerMain import snNuSpectrum,dsigma_xv,emissivity,diff_flux,flux,event
-from .halo import haloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
+from .halo import HaloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
 from .geometry import Geometry
 from .kinematics import Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof,fx_lab
 from .constants import Constants,constant
