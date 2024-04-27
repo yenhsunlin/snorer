@@ -43,12 +43,25 @@ __all__          = ['snNuSpectrum',
                     'get_maxPsi',
                     'get_thetaRange',
                     'get_tof',
-                    'constant',]
+                    'fx_lab',
+                    'Constants',
+                    'constant',
+                    'sanity_check',
+                    'get_Ev',
+                    'get_dEv',]
+
+
+#---------- Useful utilities for user ----------#
 
 from .snorerMain import snNuSpectrum,dsigma_xv,emissivity,diff_flux,flux,event
 from .halo import haloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
 from .geometry import Geometry
-from .kinematics import Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof
-from .constant import Constants as _Constants
+from .kinematics import Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof,fx_lab
+from .constants import Constants,constant
 
-contant = _Constants()
+
+#---------- Useful instances for user ----------#
+
+sanity_check = Neutrino.sanity_check
+get_Ev = Neutrino.get_Ev
+get_dEv = Neutrino.get_dEv
