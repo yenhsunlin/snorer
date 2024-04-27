@@ -24,8 +24,8 @@ __all__ = ['haloSpike',
 #---------- Import required utilities ----------#
 
 from numpy import pi
-from fractions import Fraction as _Fraction
-from .constant import Constants
+from fractions import Fraction
+from .constants import Constants,constant
 from .sysmsg import FlagError
 
 
@@ -55,9 +55,6 @@ Functions
 
 The docstrings should be sufficient for their self-explanations
 """
-
-
-constant = Constants()
 
 
 class haloSpike(Constants):  
@@ -175,9 +172,9 @@ class haloSpike(Constants):
     # Convert input alpha from str type to fraction type
     def _alpha_handling(self,alpha):
         if alpha == '3/2':
-            set_alpha = _Fraction(3,2)
+            set_alpha = Fraction(3,2)
         elif alpha == '7/3':
-            set_alpha = _Fraction(7,3)
+            set_alpha = Fraction(7,3)
         else:
             raise FlagError('Spike index \'alpha\' is not recognized in the allowed list [\'3/2\', \'7/3\'].')
         return set_alpha  
@@ -223,9 +220,9 @@ class haloSpike(Constants):
         alpha = float(self.alpha)
         N = self._normN()
         rhos = rhos*self.kpc2cm**3
-        if self.alpha == _Fraction(3,2):
+        if self.alpha == Fraction(3,2):
             return (N/rhos/rs)**(3/4)*rh**(5/8)
-        elif self.alpha == _Fraction(7,3):
+        elif self.alpha == Fraction(7,3):
             return (N/rhos/rs)**alpha
     
     def _rhoPrime(self,r,rhos,rs) -> float:
@@ -250,7 +247,7 @@ class haloSpike(Constants):
         ri = 4*Rs
         N = self._normN()
         Rsp = self._radiusSpike(rhos,rs)
-        if self.alpha == _Fraction(3,2):
+        if self.alpha == Fraction(3,2):
             rhoN = N/rh**alpha
             rhoNp = rhoN*(rh/Rsp)**(7/3)
             if ri <= r < rh:
@@ -258,7 +255,7 @@ class haloSpike(Constants):
             else:
                 rhoP = rhoNp*(Rsp/r)**(7/3)
             return rhoP/self.kpc2cm**3
-        elif self.alpha == _Fraction(7,3):
+        elif self.alpha == Fraction(7,3):
             rhoN = N/Rsp**(7/3)
             rhoP = rhoN*(1 - 4*Rs/r)**3*(Rsp/r)**alpha
             return rhoP/self.kpc2cm**3
