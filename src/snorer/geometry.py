@@ -11,6 +11,10 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+__all__ = ['Geometry',]
+
+
+#---------- Import required utilities ----------#
 
 from numpy import sqrt,isclose,cos,sin
 from .constant import Constants
