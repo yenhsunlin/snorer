@@ -12,6 +12,17 @@
 # GNU General Public License for more details.
 
 
+__all__ = ['haloSpike',
+           'rhox',
+           'M_sigma',
+           'radiusInfluence',
+           'radiusSchwarzschild',
+           'dmNumberDensity',
+           'dmNumberDensity_general',]
+
+
+#---------- Import required utilities ----------#
+
 from numpy import pi
 from fractions import Fraction as _Fraction
 from .constant import Constants
