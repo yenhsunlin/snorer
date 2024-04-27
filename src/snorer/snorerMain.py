@@ -205,7 +205,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     vx = Kinematics.get_vx(Tx,mx)        # Get BDM velocity
     
     # Initializing BDM Geometry class
-    bdmGeometry = Geometry(t,theta,vx,Rstar,Re,beta,phi)
+    bdmGeometry = Geometry(t,theta,phi,vx,Rstar,Re,beta)
     d = bdmGeometry.d
     D = bdmGeometry.D 
     rprime = bdmGeometry.rprime
