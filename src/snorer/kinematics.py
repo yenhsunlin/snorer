@@ -14,6 +14,7 @@
 __all__ = ['Neutrino',
            'get_vx',
            'get_maxPsi',
+           'fx_lab',
            'get_thetaRange',
            'get_tof',]
 
@@ -22,7 +23,7 @@ __all__ = ['Neutrino',
 
 from numpy import sin,cos,tan,arccos,sqrt,isclose,pi
 from scipy.optimize import root_scalar
-from .constant import Constants
+from .constants import constant
 
 
 ##########################################################################
@@ -43,14 +44,12 @@ Functions
 ------
 1. get_vx
 2. get_maxPsi
-3. get_thetaRange
-4. get_tof
+3. fx_lab
+4. get_thetaRange
+5. get_tof
 
 The docstrings should be sufficient for their self-explanations
 """
-
-
-constant = Constants()
 
 
 class Neutrino:
