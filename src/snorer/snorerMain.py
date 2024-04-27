@@ -170,20 +170,22 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     
       c*dnv/dEv*sigma_xv = c*(df/dEv/c)*sigma_xv = df/dEv*sigma_xv.
     
-    Thus we remove c in the computation to avoid the round-off error
+    Thus we remove c in the computation to avoid round-off error
     during multiplication and division. This does not undermine the
     physics picture behind it!
     """
-    dnv = snNuSpectrum(Ev,D)
-    dsigma = dsigma_xv(Ev,mx,psi,sigxv0)
-    nx = dmNumberDensity(r,mx,is_spike,rh,sigv,tBH,profile,alpha,gamma)
-    jx = dnv*dsigma*dEv*nx
+    dfv = snNuSpectrum(Ev,D,is_density=False)      # SNv flux
+    dsigma = dsigma_xv(Ev,mx,psi,sigxv0)           # DM-v diff. cross section
+    nx = dmNumberDensity(r,mx,is_spike,rh,sigv,
+                         tBH,profile,alpha,gamma)  # DM number density
+    jx = dfv*dsigma*dEv*nx
     return jx
 
 
 def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
               sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
-              is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1):
+              is_spike=True,rh=None,sigv=None,tBH=1e10,
+              profile='MW',alpha='3/2',gamma=1):
     """
     The differential SNv BDM flux at Earth
     
@@ -240,7 +242,8 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
 
 def flux(t,Tx,mx,Rstar,beta,
          sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
-         is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,
+         is_spike=True,rh=None,sigv=None,tBH=1e10,
+         profile='MW',alpha='3/2',gamma=1,
          nitn=10,neval=30000) -> float:
     """
     The SNv BDM flux at Earth after integrated over zenith angle theta and
@@ -277,9 +280,12 @@ def flux(t,Tx,mx,Rstar,beta,
         return 0
 
 
-def event(mx,Rstar,beta,TxRange=[5,30],tRange=[10,35*constant.year2Seconds],
+def event(mx,Rstar,beta,
+          TxRange=[5,30],
+          tRange=[10,35*constant.year2Seconds],
           sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
-          is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,
+          is_spike=True,rh=None,sigv=None,tBH=1e10,
+          profile='MW',alpha='3/2',gamma=1,
           nitn=10,neval=30000) -> float:
     """
     The SNv BDM evnet at Earth after integrated over exposure time t, BDM
