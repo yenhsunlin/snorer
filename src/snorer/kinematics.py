@@ -11,10 +11,18 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-from np import sin,cos,tan,arccos,sqrt,isclose,pi
-from scipy.optimize import root_scalar as _root_scalar
-from .constant import Constants
+__all__ = ['Neutrino',
+           'get_vx',
+           'get_maxPsi',
+           'get_thetaRange',
+           'get_tof',]
 
+
+#---------- Import required utilities ----------#
+
+from np import sin,cos,tan,arccos,sqrt,isclose,pi
+from scipy.optimize import root_scalar
+from .constant import Constants
 
 
 ##########################################################################
@@ -29,12 +37,14 @@ This script contains following classes and functions
 
 Classes
 ------
-1. Kinematics
+1. Neutrino
 
 Functions
 ------
-1. get_thetaRange
-2. get_tof
+1. get_vx
+2. get_maxPsi
+3. get_thetaRange
+4. get_tof
 
 The docstrings should be sufficient for their self-explanations
 """
@@ -43,9 +53,9 @@ The docstrings should be sufficient for their self-explanations
 constant = Constants()
 
 
-class Kinematics:
+class Neutrino:
     """
-    This class constructs the BDM kinematics after it gets boosted by SNv
+    This class constructs the required neturino energy to have BDM compound (Tx,mx,psi) 
 
     /*-----------------------------------------------------------------------------*/
 
@@ -66,7 +76,7 @@ class Kinematics:
     *                  *
     ********************
 
-    When a Kinematics instance is initialized, the following attributes will be assigned,
+    When a Neutrino instance is established, the following attributes will be assigned,
 
            Ev: The required SNv energy to produce the given (Tx,mx,psi), MeV
           dEv: Jacobian dEv/dTx
@@ -75,25 +85,22 @@ class Kinematics:
     Lets check if we want to upscatter mx = 1 keV DM to have kinetic energy Tx = 15 MeV with
     lab frame scattering angle psi = 0.05 rad
     
-    >>> bdmKinetic = Kinematics(Tx=15,mx=1e-3,psi=0.05)
+    >>> snv = Neutrino(Tx=15,mx=1e-3,psi=0.05)
     
     Then,
     
-    >>> bdmKinetic.Ev
+    >>> snv.Ev
     -0.8451953159963379
-    >>> bdmKinetic.dEv
+    >>> snv.dEv
     0.04756415761959332
-    >>> bdmKinetic.is_sanity
+    >>> snv.is_sanity
     False
 
     The last attribute is_sanity yields False as the required SNv energy is negative, which
     is clearly insane. This class assists the user to check whether such BDM kinematics can
     be accomplished or not.
-
-    The docstring in each class method should be suffcient for self-explanation.
-    Mathematical details are documented in the Appendix of 
     
-    See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for theoretical foundation
+    See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for details.
     """
     
     def __init__(self,Tx,mx,psi):
@@ -107,21 +114,17 @@ class Kinematics:
         If returns False, it means the combination (Tx,mx,psi)
         violates energy conservation and is unphysical
         """
-        return self.sanity_check()
-    
-    # @property
-    # def vx(self):
-    #     return self.__class__.get_vx(self.Tx,self.mx)
+        return self._sanity_check()
     
     @property
     def Ev(self):
-        return self.get_Ev()
+        return self._get_Ev()
 
     @property
     def dEv(self):
-        return self.get_dEv()
+        return self._get_dEv()
     
-    def sanity_check(self) -> bool:
+    def _sanity_check(self) -> bool:
         """
         Check if the combination (Tx,mx,psi) not violating
         energy conservation
@@ -137,7 +140,7 @@ class Kinematics:
         else:
             return False
     
-    def get_Ev(self) -> float:
+    def _get_Ev(self) -> float:
         """
         Get the required neutrino energy to boost DM up with kinetic
         energy Tx at angle psi
@@ -148,7 +151,7 @@ class Kinematics:
         px = sqrt(Tx*(Tx + 2*mx))
         return - mx*Tx/(Tx - px*cos(psi))
     
-    def get_dEv(self) -> float:
+    def _get_dEv(self) -> float:
         """
         Get the dEv/dTx
         """
@@ -159,60 +162,70 @@ class Kinematics:
         x = cos(psi)
         return mx**2*Tx*x/(Tx - px*x)**2
 
-    @staticmethod
-    def get_vx(Tx,mx) -> float:
-        """
-        Get the velocity of particle with mass mx and kinetic energy Tx
-        
-        Input
-        ------
-        Tx: Kinetic energy of the particle, MeV
-        mx: Mass of the particle, MeV
-        
-        Output
-        ------
-        vx: Particle velocity in the unit of light speed
-        """
-        return sqrt(Tx*(Tx + 2*mx))/(Tx + mx)
-    
-    @staticmethod
-    def dmdOmega_lab(Ev,mx,psi) -> float:
-        """
-        Calculate the angular distribution for cross section
-        in lab frame with scattering angle psi. This is for
-        model-independent case where the total cross section
-        is independent of energy. If a particular model is
-        introduced, one may obtain the angular distribution
-        via the scattering amplitude instead of this.
-        """
-        if 0 <= psi <= pi/2 and Ev > 0:
-            # evaluate Lorentz factor in CM frame
-            s = mx**2+2*Ev*mx
-            Ecm = 0.5*(s + mx**2)/sqrt(s)
-            gamma = Ecm/mx
-            # evaluate the angular distribution
-            sec = 1/cos(psi)
-            dndOmega = gamma**2*sec**3/pi/(1+gamma**2*tan(psi)**2)**2
-        else:
-            dndOmega = 0
-        return dndOmega
 
-    @staticmethod
-    def get_maxPsi(Tx,mx) -> float:
-        """
-        Get the maximumly allowed scattering angle psi
-        
-        Input
-        ------
-        Tx: BDM kinetic energy, MeV
-        mx: DM mass, MeV
-        
-        Output
-        ------
-        psi_max: rad
-        """
-        maxCosValue = sqrt(Tx/(Tx + 2*mx))
-        return arccos(maxCosValue)
+def get_vx(Tx,mx) -> float:
+    """
+    Get the BDM velocity
+    
+    Input
+    ------
+    Tx: Kinetic energy of the particle, MeV
+    mx: Mass of the particle, MeV
+    
+    Output
+    ------
+    vx: BDM velocity, dimensionless
+    """
+    return sqrt(Tx*(Tx + 2*mx))/(Tx + mx)
+    
+
+def fx_lab(Ev,mx,psi) -> float:
+    """
+    Calculate the angular distribution for cross section
+    in lab frame with scattering angle psi. This is for
+    model-independent case where the total cross section
+    is independent of energy. If a particular model is
+    introduced, one may obtain the angular distribution
+    via the scattering amplitude instead of this.
+
+    Input
+    ------
+    Tx: BDM kinetic energy, MeV
+    mx: DM mass, MeV
+    psi: Lab frame scattering angle, rad
+    
+    Output
+    ------
+    prob. dist.: differential distribution at psi
+    """
+    if 0 <= psi <= pi/2 and Ev > 0:
+        # evaluate Lorentz factor in CM frame
+        s = mx**2 + 2*Ev*mx
+        Ecm = 0.5*(s + mx**2)/sqrt(s)
+        gamma = Ecm/mx
+        # evaluate the angular distribution
+        sec = 1/cos(psi)
+        fx = gamma**2*sec**3/pi/(1 + gamma**2*tan(psi)**2)**2
+    else:
+        fx = 0
+    return fx
+
+
+def get_maxPsi(Tx,mx) -> float:
+    """
+    Get the maximumly allowed scattering angle psi
+    
+    Input
+    ------
+    Tx: BDM kinetic energy, MeV
+    mx: DM mass, MeV
+    
+    Output
+    ------
+    psi_max: rad
+    """
+    maxCosValue = sqrt(Tx/(Tx + 2*mx))
+    return arccos(maxCosValue)
 
 
 def get_thetaRange(t,Tx,mx,Rstar) -> tuple:
@@ -221,7 +234,7 @@ def get_thetaRange(t,Tx,mx,Rstar) -> tuple:
     
     Input
     ------
-    t: the BDM ToF, if t > t_van, the result is not trustable
+    t: the BDM ToF, if t > t_van, the result is unphysical
     Tx: DM kinetic energy, MeV
     mx: DM mass, MeV
     Rstar: Distance between Earth and SN, in kpc
@@ -230,25 +243,25 @@ def get_thetaRange(t,Tx,mx,Rstar) -> tuple:
     ------
     tup: (theta_min,thata_max), rad
     """
-    vx = Kinematics.get_vx(Tx,mx)
+    vx = get_vx(Tx,mx)
     t0 = Rstar*constant.kpc2cm/constant.c
     # find a_min
-    psiM = Kinematics.get_maxPsi(Tx,mx)
+    psiM = get_maxPsi(Tx,mx)
     
     # We will use Newton-Raphson method to find the root that corresponds to theta_max
-    # This method requires the target function _f and its derivative _fp
-    def _f(theta):
+    def f(theta):
+        """The target function to be solve"""
         return sin(theta) + sin(psiM - theta)/vx - (t/t0 + 1)*sin(psiM)
-    
-    def _fp(theta):
+    def fp(theta):
+        """The derivative of the target function, f_prime"""
         return cos(theta) - cos(psiM - theta)/vx
     
     # find solutions to theta bound using Newton-Raphson method
-    sol_theta_min = _root_scalar(_f,method='newton',x0=0,fprime=_fp).root
-    sol_theta_max = _root_scalar(_f,method='newton',x0=pi/2,fprime=_fp).root
+    sol_theta_min = root_scalar(f,method='newton',x0=0,fprime=fp).root
+    sol_theta_max = root_scalar(f,method='newton',x0=pi/2,fprime=fp).root
     # If thetaMin < 0, it's not physical. Set it to 0
-    if sol_theta_min < 0: sol_theta_min = 0
-        
+    if sol_theta_min < 0:
+        sol_theta_min = 0
     return sol_theta_min,sol_theta_max
 
 
@@ -267,14 +280,14 @@ def get_tof(Tx,mx,Rstar) -> tuple:
     tup: (t_peak,t_van), seconds
     """
     # Get maximum psi and BDM velocity
-    psiM = Kinematics.get_maxPsi(Tx,mx)
-    vx = Kinematics.get_vx(Tx,mx)
+    psiM = get_maxPsi(Tx,mx)
+    vx = get_vx(Tx,mx)
     
     # Solving the corresponding theta that maximizes t
-    def _theta(theta):
+    def theta(theta):
         """ Target function """
         return cos(psiM - theta)/cos(theta) - vx
-    theta = _root_scalar(_theta, method='brentq', bracket=[0,pi/2]).root
+    theta = root_scalar(theta, method='brentq', bracket=[0,pi/2]).root
 
     # Evaluating the vanishing time and peak time
     t0 = Rstar*constant.kpc2cm/constant.c
