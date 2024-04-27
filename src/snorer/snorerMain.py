@@ -11,15 +11,23 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+__all__ = ['snNuSpectrum',
+           'dsigma_xv',
+           'emissivity',
+           'diff_flux',
+           'flux',
+           'event',]
+
+
+#---------- Import required utilities ----------#
 
 from numpy import pi,exp,arccos,cos,sin,isclose
 import vegas
 from .halo import dmNumberDensity
-from .kinematics import Kinematics,get_thetaRange,get_tof
+from .kinematics import Neutrino,fx_lab,get_vx,get_thetaRange,get_tof
 from .geometry import Geometry
-from .constant import Constants
+from .constants import constant
 from .sysmsg import FlagError
-
 
 
 ##########################################################################
@@ -47,9 +55,6 @@ Functions
 
 The docstrings should be sufficient for their self-explanations
 """
-
-
-constant = Constants()
 
 
 def snNuSpectrum(Ev,D,D_trunct=3.24e-15,is_density=False):
@@ -114,7 +119,7 @@ def dsigma_xv(Ev,mx,psi,sigxv0=1e-45):
     ------
     dsigma: cm^2 1/sr
     """ 
-    dndOmega = Kinematics.dmdOmega_lab(Ev,mx,psi) # angular distribution in lab frame
+    dndOmega = fx_lab(Ev,mx,psi) # angular distribution in lab frame
     return dndOmega*sigxv0
 
 
@@ -202,7 +207,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
 
     See the integrand in Eq. (6) in Phys. Rev. D 108, 083013 (2023), cf. Eq. (14)
     """
-    vx = Kinematics.get_vx(Tx,mx)        # Get BDM velocity
+    vx = get_vx(Tx,mx)        # Get BDM velocity
     
     # Initializing BDM Geometry class
     bdmGeometry = Geometry(t,theta,phi,vx,Rstar,Re,beta)
@@ -212,16 +217,14 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     psi = arccos(bdmGeometry.cosPsi) # Get the required scattering angle
     
     # Initializing BDM Kinematics class
-    bdmKinematics = Kinematics(Tx,mx,psi)
-    Ev = bdmKinematics.Ev                # Get the required Ev
-    dEv = bdmKinematics.dEv              # Get Jacobian dEv/dTx
-    is_sanity = bdmKinematics.is_sanity  # check if the combination (Tx,mx,psi) satisfies energy conservation
-                                         # True means energy conservation satisfied
-                                         # False means energy conservation violated
+    snv = Neutrino(Tx,mx,psi)
+    Ev = snv.Ev                # Get the required Ev
+    dEv = snv.dEv              # Get Jacobian dEv/dTx
+    is_sanity = snv.is_sanity  # check if the combination (Tx,mx,psi) satisfies energy conservation
+                               # True means energy conservation satisfied
+                               # False means otherwise
     
     if rprime >= r_cut and is_sanity:
-        # BDM scattering angle
-        
         # Evaluate the BDM emissivity
         jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,rh,sigv,tBH,profile,alpha,gamma)
         # Jacobian
@@ -266,8 +269,8 @@ def flux(t,Tx,mx,Rstar,beta,
         theta_min,theta_max = get_thetaRange(t,Tx,mx,Rstar)  # get the zenith angle range that contains non-zero BDM flux
         integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
         flux = integ(lambda x: diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],Rstar=Rstar,beta=beta,
-                                                sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                                is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma),
+                                         sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
+                                         is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma),
                     nitn=nitn,neval=neval).mean
         return flux
     else:                                                    # t > t_van will yield zero BDM
@@ -312,11 +315,11 @@ def event(mx,Rstar,beta,TxRange=[5,30],tRange=[10,35*constant.year2Seconds],
         t_max = t_van  # if so, reset t_max as t_van
     
     if t_min < t_max:  # sometimes the user-input beginning time could be larger than the vanishing time if DM mass is very light 
-        integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[theta_min,theta_max],[0,2*_np.pi]])  #(t,Tx,theta,phi)
+        integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[theta_min,theta_max],[0,2*pi]])  #(t,Tx,theta,phi)
         event = integ(lambda x: diff_flux(t=x[0],Tx=x[1],mx=mx,theta=x[2],phi=x[3],Rstar=Rstar,beta=beta,
                                           sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
                                           is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma),
                     nitn=nitn,neval=neval).mean
-        return event.mean
+        return event
     else:
         return 0    
