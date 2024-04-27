@@ -24,31 +24,12 @@ __author__       = 'Yen-Hsun Lin'
 __email__        = 'yenhsun@phys.ncku.edu.tw'
 __url__          = 'https://github.com/yenhsunlin/snorer'
 __license__      = 'GNU GPL-3.0'
-__all__          = ['snNuSpectrum',
-                    'dsigma_xv',
-                    'emissivity',
-                    'diff_flux',
-                    'flux',
-                    'event',
-                    'haloSpike',
-                    'rhox',
-                    'M_sigma',
-                    'radiusInfluence',
-                    'radiusSchwarzschild',
-                    'dmNumberDensity',
-                    'dmNumberDensity_general',
+__all__          = ['snNuSpectrum','dsigma_xv','emissivity','diff_flux','flux','event',
+                    'haloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','dmNumberDensity','dmNumberDensity_general',
                     'Geometry',
-                    'Neutrino',
-                    'get_vx',
-                    'get_maxPsi',
-                    'get_thetaRange',
-                    'get_tof',
-                    'fx_lab',
-                    'Constants',
-                    'constant',
-                    'sanity_check',
-                    'get_Ev',
-                    'get_dEv',]
+                    'Neutrino','get_vx','get_maxPsi','get_thetaRange','get_tof','fx_lab',
+                    'Constants','constant',
+                    'sanity_check','get_Ev','get_dEv',]
 
 
 #---------- Useful utilities for user ----------#
