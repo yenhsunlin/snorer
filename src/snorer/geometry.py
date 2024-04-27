@@ -67,11 +67,11 @@ class Geometry:
     
         t: The BDM ToF, seconds
     theta: The zenith angle at Earth, rad
+      phi: Azimuthal angle at Earth, rad
        vx: BDM velocity, in the unit of c
     Rstar: Distance from Earth to SN, kpc
        Re: Distance from Earth to GC, kpc
      beta: Off-center angle, rad
-      phi: Azimuthal angle at Earth, rad
 
 
     ********************
@@ -104,14 +104,14 @@ class Geometry:
     See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for theoretical foundation
     """
 
-    def __init__(self,t,theta,vx,Rstar,Re,beta,phi):
+    def __init__(self,t,theta,phi,vx,Rstar,Re,beta):
         self.t = t
         self.theta = theta
+        self.phi = phi
         self.vx = vx
         self.Rstar = Rstar
         self.Re = Re
         self.beta = beta
-        self.phi = phi
         
     @property
     def d(self):
