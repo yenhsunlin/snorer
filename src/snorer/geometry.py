@@ -17,7 +17,7 @@ __all__ = ['Geometry',]
 #---------- Import required utilities ----------#
 
 from numpy import sqrt,isclose,cos,sin
-from .constant import Constants
+from .constants import constant
 from .sysmsg import FlagError
 
 
@@ -42,9 +42,6 @@ None
 
 The docstrings should be sufficient for their self-explanations
 """
-
-
-constant = Constants()
 
 
 class Geometry:
