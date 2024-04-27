@@ -24,10 +24,31 @@ __author__       = 'Yen-Hsun Lin'
 __email__        = 'yenhsun@phys.ncku.edu.tw'
 __url__          = 'https://github.com/yenhsunlin/snorer'
 __license__      = 'GNU GPL-3.0'
-
+__all__          = ['snNuSpectrum',
+                    'dsigma_xv',
+                    'emissivity',
+                    'diff_flux',
+                    'flux',
+                    'event',
+                    'haloSpike',
+                    'rhox',
+                    'M_sigma',
+                    'radiusInfluence',
+                    'radiusSchwarzschild',
+                    'dmNumberDensity',
+                    'dmNumberDensity_general',
+                    'Geometry',
+                    'Neutrino',
+                    'get_vx',
+                    'get_maxPsi',
+                    'get_thetaRange',
+                    'get_tof',
+                    'constant',]
 
 from .snorerMain import snNuSpectrum,dsigma_xv,emissivity,diff_flux,flux,event
 from .halo import haloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
 from .geometry import Geometry
-from .kinematics import Kinematics,get_thetaRange,get_tof
-from .constant import Constants
+from .kinematics import Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof
+from .constant import Constants as _Constants
+
+contant = _Constants()
