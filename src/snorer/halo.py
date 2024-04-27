@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 
 
-__all__ = ['haloSpike',
+__all__ = ['HaloSpike',
            'rhox',
            'M_sigma',
            'radiusInfluence',
@@ -42,7 +42,7 @@ This script contains following classes and functions
 
 Classes
 ------
-1. haloSpike
+1. HaloSpike
 
 Functions
 ------
@@ -57,7 +57,7 @@ The docstrings should be sufficient for their self-explanations
 """
 
 
-class haloSpike(Constants):  
+class HaloSpike(Constants):  
     """
     Class for constructing DM halo with spike scaled to arbitrary galactic mass MG
 
@@ -96,7 +96,7 @@ class haloSpike(Constants):
     Suppose one inputed alpha = '3/2' during  the initialization, then for such instance
     we can find that
     
-    >>> nx = haloSpike(mBH=1e7,tBH=1e10,alpha='3/2',gamma=1)   # initializing haloSpike instance
+    >>> nx = HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2',gamma=1)   # initializing haloSpike instance
     >>> nx.alpha                                               # get the attribute alpha
     Fraction(3,2)
 
@@ -467,7 +467,7 @@ def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',a
         raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
 
     if is_spike is True:
-        nx = haloSpike(mBH,tBH,alpha,gamma)
+        nx = HaloSpike(mBH,tBH,alpha,gamma)
         if rh is None:
             return nx(r,mx,sigv,rhos,rs,n)
         else:
@@ -512,7 +512,7 @@ def dmNumberDensity_general(r,mx,rhos,rs,n,mBH,is_spike=True,rh=None,sigv=None,t
         rh = radiusInfluence(mBH)
 
     if is_spike is True:
-        nx = haloSpike(mBH,tBH,alpha,gamma)
+        nx = HaloSpike(mBH,tBH,alpha,gamma)
         if rh is None:  # auto-calculated SMBH influence radius
             return nx(r,mx,sigv,rhos,rs,n)
         else:  # user-defined SMBH influence radius
