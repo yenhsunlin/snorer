@@ -41,7 +41,7 @@ from .kinematics import Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof,fx_lab
 from .constants import Constants,constant
 
 
-#---------- Useful instances for user ----------#
+#---------- Useful functions for user ----------#
 
 sanity_check = Neutrino.sanity_check
 get_Ev = Neutrino.get_Ev
