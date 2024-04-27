@@ -20,7 +20,7 @@ __all__ = ['Neutrino',
 
 #---------- Import required utilities ----------#
 
-from np import sin,cos,tan,arccos,sqrt,isclose,pi
+from numpy import sin,cos,tan,arccos,sqrt,isclose,pi
 from scipy.optimize import root_scalar
 from .constant import Constants
 
