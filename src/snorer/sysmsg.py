@@ -22,7 +22,7 @@ class FlagError(Exception):
     
     def __init__(self, message):
         """
-        User-defined exception
+        Message to be raised when an unexpected keyword argument is assigned by user 
 
         Input
         ------
