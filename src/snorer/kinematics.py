@@ -11,12 +11,16 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-__all__ = ['Neutrino',
+__all__ = ['Kinematics',
+           'Mandelstam',
+           'Neutrino',
            'get_vx',
            'get_maxPsi',
            'fx_lab',
            'get_thetaRange',
-           'get_tof',]
+           'get_tof',
+           'KallenLambda',
+           'get_tBound',]
 
 
 #---------- Import required utilities ----------#
@@ -38,7 +42,9 @@ This script contains following classes and functions
 
 Classes
 ------
-1. Neutrino
+1. Kinematics
+2. Mandelstam
+3. Neutrino
 
 Functions
 ------
@@ -47,12 +53,190 @@ Functions
 3. fx_lab
 4. get_thetaRange
 5. get_tof
+6. KallenLambda
+7. get_tBound
 
 The docstrings should be sufficient for their self-explanations
 """
 
 
-class Neutrino:
+class Kinematics:
+    """
+    This class constructs the required kinetic energy T1 of incoming particle with
+    mass m1 to boost the target with mass m2 to kinetic energy T2 along the direction
+    psi. See the following scheme
+                                      
+                                  ●
+      m1          m2             /
+      ●----> T1   ◯         ------------
+                                 \ )psi
+                               T2 ◯
+         
+         Before                  After                            
+        
+    /*-----------------------------------------------------------------------------*/
+
+    ********************
+    *                  *
+    *   Class Inputs   *
+    *                  *
+    ********************
+    
+     m1: Incident particle mass, MeV
+     m2: Target mass, MeV
+     T2: Kinetic energy received by the target, MeV
+    psi: Lab frame scattering angle, rad
+
+
+    ********************
+    *                  *
+    *     Methods      *
+    *                  *
+    ********************
+
+    When an associated instance is established, the following methods can be called,
+
+        get_T1(): Get the required kietic energy T1 for the incident particle that
+                  can have (m2,T2,psi)
+       get_dT1(): Get the Jacobian dT1/dT2
+    get_sanity(): Does the given (m1,m2,T2,psi) satisfy energy conservation, bool
+     get_dLips(): Get the diff. Lorentz invariant phase space associated with psi
+
+    Note that the total energy of the target E2 = T2 + m2, similarily, E1 = T1 + m1
+
+
+    ********************
+    *                  *
+    *     Examples     *
+    *                  *
+    ********************
+    
+    In terms of SNv BDM, we would like to have T1 = Ev, m1 = mv = 0 and T2 = Tx,
+    m2 = mx. Suppose, mx = 0.001 MeV, Tx = 15 MeV with psi = 0.05 rad, we want to obtain
+    the required Ev to make this happens
+    
+    >>> snv = Kinematics(m1=0,m2=1e-3,T2=15,psi=0.05)
+    
+    Then,
+
+    >>> snv.get_T1()
+    -0.8451953159962898
+    >>> snv.get_dT1()
+    0.0031707324661873464
+    >>> snv.get_sanity()
+    False
+    >>> snv.get_dLips()
+    1583.2490337942002
+
+    The last methid get_sanity() yields False as the required SNv energy is negative, which
+    is clearly insane.
+    """
+    def __init__(self,m1,m2,T2,psi):
+        self.m1 = m1
+        self.m2 = m2
+        self.T2 = T2
+        self.psi = psi
+        self._x = cos(psi)
+
+    def get_sanity(self) -> bool:
+        return self.get_T1() >= 0 
+    
+    def get_T1(self) -> float:
+        T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
+        p2sq = T2*(T2+2*m2)
+        numerator = sqrt(m1**2*p2sq**2*x**4 + p2sq*T2**2*x**2*(m2**2-m1**2)) + m2*T2**2
+        denominator = p2sq*x**2 - T2**2
+        return numerator/denominator - m1
+
+    def get_dT1(self) -> float:
+        T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
+        numerator = (m2*x**2*(m1**2*T2*(-T2+(2*m2+T2)*x**2)+m2*(m2*T2*(T2+(2*m2+T2)*x**2)+2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2*(-T2+(2*m2+T2)*x**2))))))
+        denominator = ((T2-(2*m2+T2)*x**2)**2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2*(-T2+(2*m2+T2)*x**2))))
+        return numerator/denominator
+
+    def get_dLips(self) -> float:
+        T1,m1,m2 = self.get_T1(),self.m1,self.m2
+        s = m1**2 + m2**2 + 2*m2*(T1 + m1)
+        psq = (s - (m1+m2)**2)*(s-(m1-m2)**2)/4/s
+        return self._du_dx()/64/pi/s/psq/2/pi
+
+    def _du_dx(self) -> float:
+        T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
+        E1 = self.get_T1() + m1
+        E2 = T2 + m2
+        p2sq = T2*(T2+2*m2)
+        p2 = sqrt(p2sq)
+        num = (p2sq*T2**2*x*((m1-m2)*(m1+m2)*T2**2-(m1**2+m2**2)*p2sq*x**2-2*m2*sqrt((-m1**2+m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4)))
+        den = ((T2-p2*x)**2*(T2+p2*x)**2*sqrt((-m1**2+m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4))
+        return -2*(num/den)*(E2 - p2*x) + 2*E1*p2
+
+
+class Mandelstam(Kinematics):
+    """
+    This class constructs the associated Mandelstam variables associated with the
+    following scattering scheme with (m2,T2,psi) are given. See the docstring of
+    class Kinematics for detail.
+                                      
+                                  ●
+      m1          m2             /
+      ●----> T1   ◯         ------------
+                                 \ )psi
+                               T2 ◯
+         
+         Before                  After                            
+        
+    /*-----------------------------------------------------------------------------*/
+
+    ********************
+    *                  *
+    *   Class Inputs   *
+    *                  *
+    ********************
+    
+     m1: Incident particle mass, MeV
+     m2: Target mass, MeV
+     T2: Kinetic energy received by the target, MeV
+    psi: Lab frame scattering angle, rad
+
+
+    ********************
+    *                  *
+    *    Attributes     *
+    *                  *
+    ********************
+
+    When an associated instance is established, the following attributes are assigned,
+
+    T1: The required kietic energy for the incident particle that can have
+        (m2,T2,psi), MeV
+     s: Associated Mandelstam variable s, MeV^2
+     t: Associated Mandelstam variable t, MeV^2
+     u: Associated Mandelstam variable u, MeV^2
+    """
+    def __init__(self,m1,m2,T2,psi):
+        super().__init__(m1,m2,T2,psi)
+
+    @property
+    def T1(self) -> float:
+        """Get the required T1 and assigend it as an instance attribute"""
+        return self.get_T1()
+    
+    @property
+    def s(self):
+        E1 = self.T1 + self.m1
+        return 2*E1*self.m2 + self.m1**2 + self.m2**2
+    
+    @property
+    def t(self):
+        E2 = self.T2 + self.m2
+        return -2*E2*self.m2 + self.m1**2 + self.m2**2
+
+    @property
+    def u(self):
+        return 2*(self.m1**2 + self.m2**2) - self.s - self.t
+
+
+class Neutrino(Kinematics):
     """
     This class constructs the required neturino energy to have BDM compound (Tx,mx,psi) 
 
@@ -96,16 +280,16 @@ class Neutrino:
     False
 
     The last attribute is_sanity yields False as the required SNv energy is negative, which
-    is clearly insane. This class assists the user to check whether such BDM kinematics can
-    be accomplished or not.
+    is clearly insane.
     
     See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for details.
     """
     
     def __init__(self,Tx,mx,psi):
-        self.Tx = Tx
-        self.mx = mx
-        self.psi = psi
+        super().__init__(0,mx,Tx,psi)
+        #self.Tx = Tx
+        #self.mx = mx
+        #self.psi = psi
 
     @property
     def is_sanity(self):
@@ -113,45 +297,47 @@ class Neutrino:
         If returns False, it means the combination (Tx,mx,psi)
         violates energy conservation and is unphysical
         """
-        return self.__class__.sanity_check(self.Tx,self.mx,self.psi)
+        return self.get_sanity()
     
     @property
     def Ev(self):
-        return self.__class__.get_Ev(self.Tx,self.mx,self.psi)
+        """Get the required SNv energy"""
+        return self.get_T1()
 
     @property
     def dEv(self):
-        return self.__class__.get_dEv(self.Tx,self.mx,self.psi)
+        """Get the Jacobian dEv/dTx"""
+        return self.get_dT1()
     
-    @classmethod
-    def sanity_check(cls,Tx,mx,psi) -> bool:
-        """
-        Check if the combination (Tx,mx,psi) not violating
-        energy conservation
-        """
-        px = sqrt(Tx*(Tx + 2*mx))
-        if Tx < px*cos(psi):
-            return True
-        else:
-            return False
+    # @classmethod
+    # def sanity_check(cls,Tx,mx,psi) -> bool:
+    #     """
+    #     Check if the combination (Tx,mx,psi) not violating
+    #     energy conservation
+    #     """
+    #     px = sqrt(Tx*(Tx + 2*mx))
+    #     if Tx < px*cos(psi):
+    #         return True
+    #     else:
+    #         return False
     
-    @classmethod
-    def get_Ev(cls,Tx,mx,psi) -> float:
-        """
-        Get the required neutrino energy to boost DM up with kinetic
-        energy Tx at angle psi
-        """
-        px = sqrt(Tx*(Tx + 2*mx))
-        return - mx*Tx/(Tx - px*cos(psi))
+    # @classmethod
+    # def get_Ev(cls,Tx,mx,psi) -> float:
+    #     """
+    #     Get the required neutrino energy to boost DM up with kinetic
+    #     energy Tx at angle psi
+    #     """
+    #     px = sqrt(Tx*(Tx + 2*mx))
+    #     return - mx*Tx/(Tx - px*cos(psi))
     
-    @classmethod
-    def get_dEv(cls,Tx,mx,psi) -> float:
-        """
-        Get the dEv/dTx
-        """
-        px = sqrt(Tx*(Tx + 2*mx))
-        x = cos(psi)
-        return mx**2*Tx*x/px/(Tx - px*x)**2
+    # @classmethod
+    # def get_dEv(cls,Tx,mx,psi) -> float:
+    #     """
+    #     Get the dEv/dTx
+    #     """
+    #     px = sqrt(Tx*(Tx + 2*mx))
+    #     x = cos(psi)
+    #     return mx**2*Tx*x/px/(Tx - px*x)**2
 
 
 def get_vx(Tx,mx) -> float:
@@ -285,3 +471,43 @@ def get_tof(Tx,mx,Rstar) -> tuple:
     t_van = ((sin(theta) + sin(psiM - theta)/vx)/sin(psiM) - 1)*t0
     t_peak = Rstar*constant.kpc2cm/vx/constant.c - t0
     return t_peak,t_van
+
+
+def KallenLambda(x,y,z) -> float: 
+    """
+    Kallen lambda function
+
+    Input
+    ------
+    x: scalar variable
+    y: scalar variable
+    z: scalar variable
+
+    Output
+    ------
+    scalar
+    """
+    return x**2 + y**2 + z**2 - 2*(x*y + y*z + z*x)
+
+
+def get_tBound(m1,m2,T1) -> tuple:
+    """
+    Get the allowed range for Mandelstam variable t
+
+    Input
+    ------
+    m1: Incident particle mass, MeV
+    m2: Target mass, MeV
+    T1: Incident particle kinetic energy, MeV
+
+    Output
+    ------
+    tuple: (t_min,t_max), MeV^2 
+
+    See Eqs. (3.34,35) in V. Ilisie, Concepts in QFT, Springer (2016)
+    """
+    E1 = T1 + m1
+    s = 2*m2*E1 + m1**2 + m2**2
+    factor1 = m1**2 + m2**2 - s/2 - (m1**2 - m2**2)**2/2/s
+    factor2 = KallenLambda(s,m1**2,m2**2)/2/s
+    return factor1 - factor2,factor1 + factor2
