@@ -15,7 +15,7 @@ import vegas
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from .snorerMain import snNuSpectrum
-from .kinematics import Kinematics,get_thetaRange,get_tof
+from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaRange,get_tof
 from .geometry import Geometry
 from .halo import rhox
 from .constant import Constants
