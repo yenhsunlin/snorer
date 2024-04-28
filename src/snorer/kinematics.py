@@ -173,6 +173,8 @@ class Kinematics:
 
 class Mandelstam(Kinematics):
     """
+    Superclass: Kinematics
+
     This class constructs the associated Mandelstam variables associated with the
     following scattering scheme with (m2,T2,psi) are given. See the docstring of
     class Kinematics for detail.
@@ -201,7 +203,7 @@ class Mandelstam(Kinematics):
 
     ********************
     *                  *
-    *    Attributes     *
+    *    Attributes    *
     *                  *
     ********************
 
@@ -238,6 +240,8 @@ class Mandelstam(Kinematics):
 
 class Neutrino(Kinematics):
     """
+    Superclass: Kinematics
+    
     This class constructs the required neturino energy to have BDM compound (Tx,mx,psi) 
 
     /*-----------------------------------------------------------------------------*/
