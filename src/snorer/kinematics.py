@@ -21,7 +21,7 @@ __all__ = ['Neutrino',
 
 #---------- Import required utilities ----------#
 
-from numpy import sin,cos,tan,arccos,sqrt,isclose,pi
+from numpy import sin,cos,tan,arccos,sqrt,pi
 from scipy.optimize import root_scalar
 from .constants import constant
 
@@ -129,10 +129,8 @@ class Neutrino:
         Check if the combination (Tx,mx,psi) not violating
         energy conservation
         """
-        tan_psi2 = tan(psi)**2
-        if isclose(0,tan_psi2,atol=1e-100):
-            return False
-        elif Tx < 2*mx/tan_psi2:
+        px = sqrt(Tx*(Tx + 2*mx))
+        if Tx < px*cos(psi):
             return True
         else:
             return False
