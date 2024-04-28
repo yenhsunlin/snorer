@@ -18,6 +18,10 @@ class Constants:
         pass
     
     @property
+    def perMeV2cm(self):        # 1/MeV to cm
+        return 1.973e-11
+    
+    @property
     def md2MeVperCubicCM(self): # Msun/kpc^3 to MeV/cm^3
         return 3.796e-05        
     
