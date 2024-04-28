@@ -151,7 +151,7 @@ class Neutrino:
         """
         px = sqrt(Tx*(Tx + 2*mx))
         x = cos(psi)
-        return mx**2*Tx*x/(Tx - px*x)**2
+        return mx**2*Tx*x/px/(Tx - px*x)**2
 
 
 def get_vx(Tx,mx) -> float:
