@@ -27,9 +27,8 @@ __license__      = 'GNU GPL-3.0'
 __all__          = ['snNuSpectrum','dsigma_xv','emissivity','diff_flux','flux','event',
                     'HaloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','dmNumberDensity','dmNumberDensity_general',
                     'Geometry',
-                    'Neutrino','get_vx','get_maxPsi','get_thetaRange','get_tof','fx_lab',
-                    'Constants','constant',
-                    'sanity_check','get_Ev','get_dEv',]
+                    'Kinematics','Mandelstam','Neutrino','get_vx','get_maxPsi','get_thetaRange','get_tof','fx_lab','KallenLambda','get_tBound',
+                    'Constants','constant',]
 
 
 #---------- Useful utilities for user ----------#
@@ -37,12 +36,5 @@ __all__          = ['snNuSpectrum','dsigma_xv','emissivity','diff_flux','flux','
 from .snorerMain import snNuSpectrum,dsigma_xv,emissivity,diff_flux,flux,event
 from .halo import HaloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmNumberDensity,dmNumberDensity_general
 from .geometry import Geometry
-from .kinematics import Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof,fx_lab
+from .kinematics import Kinematics,Mandelstam,Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof,fx_lab,get_tBound,KallenLambda
 from .constants import Constants,constant
-
-
-#---------- Useful functions for user ----------#
-
-sanity_check = Neutrino.sanity_check
-get_Ev = Neutrino.get_Ev
-get_dEv = Neutrino.get_dEv
