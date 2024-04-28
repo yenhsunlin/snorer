@@ -287,9 +287,6 @@ class Neutrino(Kinematics):
     
     def __init__(self,Tx,mx,psi):
         super().__init__(0,mx,Tx,psi)
-        #self.Tx = Tx
-        #self.mx = mx
-        #self.psi = psi
 
     @property
     def is_sanity(self):
@@ -308,36 +305,6 @@ class Neutrino(Kinematics):
     def dEv(self):
         """Get the Jacobian dEv/dTx"""
         return self.get_dT1()
-    
-    # @classmethod
-    # def sanity_check(cls,Tx,mx,psi) -> bool:
-    #     """
-    #     Check if the combination (Tx,mx,psi) not violating
-    #     energy conservation
-    #     """
-    #     px = sqrt(Tx*(Tx + 2*mx))
-    #     if Tx < px*cos(psi):
-    #         return True
-    #     else:
-    #         return False
-    
-    # @classmethod
-    # def get_Ev(cls,Tx,mx,psi) -> float:
-    #     """
-    #     Get the required neutrino energy to boost DM up with kinetic
-    #     energy Tx at angle psi
-    #     """
-    #     px = sqrt(Tx*(Tx + 2*mx))
-    #     return - mx*Tx/(Tx - px*cos(psi))
-    
-    # @classmethod
-    # def get_dEv(cls,Tx,mx,psi) -> float:
-    #     """
-    #     Get the dEv/dTx
-    #     """
-    #     px = sqrt(Tx*(Tx + 2*mx))
-    #     x = cos(psi)
-    #     return mx**2*Tx*x/px/(Tx - px*x)**2
 
 
 def get_vx(Tx,mx) -> float:
