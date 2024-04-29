@@ -244,11 +244,11 @@ class GeneralInterface(Constants):
 
     @property
     def separation_3d(self):
-        return self._get_geometry_3d()[1]
+        return self.__class__.get_geometry_3d(self.SN_coord,self.GC_coord)[1]
 
     @property
     def beta(self):
-        return self._get_geometry_3d()[0]
+        return self.__class__.get_geometry_3d(self.SN_coord,self.GC_coord)[0]
 
     @property
     def Rstar(self):
@@ -261,10 +261,11 @@ class GeneralInterface(Constants):
     # def _nx(self,r,mx) -> float:
     #     return dmNumberDensity(r,mx,**self.__dict__)
 
-    def _get_geometry_3d(self) -> float:
+    @classmethod
+    def get_geometry_3d(cls,SN_coord,GC_coord) -> float:
         """Get the celestial geometry of SN and GC from user-input"""
-        snRA,snDEC,snDist = self.SN_coord  # right ascension, declination, distance in kpc
-        gcRA,gcDEC,gcDist = self.GC_coord  # right ascension, declination, distance in kpc
+        snRA,snDEC,snDist = SN_coord  # right ascension, declination, distance in kpc
+        gcRA,gcDEC,gcDist = GC_coord  # right ascension, declination, distance in kpc
         
         # Call SkyCoord in Astropy to tackle the celestial coordinates of these objects
         sn = SkyCoord(snRA,snDEC,distance=snDist*u.kpc)
