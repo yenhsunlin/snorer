@@ -23,7 +23,7 @@ __all__ = ['snNuSpectrum',
 
 from numpy import pi,exp,arccos,cos,sin,isclose
 import vegas
-from .halo import dmNumberDensity
+from .halo import dmNumberDensity,dmNumberDensity_general
 from .kinematics import Neutrino,fx_lab,get_vx,get_thetaRange,get_tof
 from .geometry import Geometry
 from .constants import constant
@@ -123,7 +123,7 @@ def dsigma_xv(Ev,mx,psi,sigxv0=1e-45):
     return dndOmega*sigxv0
 
 
-def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1):
+def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs):
     """
     SNv BDM emissivity at upscattered point, note the returned result is divided by sigxv and dimensionless DM velocity
     
@@ -135,7 +135,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     psi: the scattering angle in lab frame
     r: the distance from the scattering point to GC, in kpc
     D: Distance from the boosted point to the SN, kpc
-    sigxv0: DM-nu cross section, cm^2
+    sigxv0: Total DM-nu cross section, cm^2
     is_spike: Turn on/off spike feature, bool
     rh: SMBH influence radius, kpc
         None indicates automatically calculated using the given mBH
@@ -185,7 +185,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
 def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
               sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
               is_spike=True,rh=None,sigv=None,tBH=1e10,
-              profile='MW',alpha='3/2',gamma=1):
+              profile='MW',alpha='3/2',gamma=1,**kwargs):
     """
     The differential SNv BDM flux at Earth
     
@@ -198,10 +198,23 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     phi: The azimuthal angle along the Earth-SN axis, rad
     Rstar: Distance from Earth to SN, kpc
     beta: The deviation angle, characterizing how SN deviates the GC, rad
-    sigxv: DM-neutrino cross section, default 1e-45 cm^2
+    sigxv0: Total DM-neutrino cross section, default 1e-45 cm^2
     Re: The distance from Earth to GC, default 8.5 kpc
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
+    is_spike: Turn on/off DM spike, bool
+    rh: SMBH influence radius, kpc, leave it None for auto-generated value
+        from stellar dispersion relation
+    sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
+    tBH: SMBH age, years
+    profile: str type: 'MW' or 'LMC'
+    alpha: Slope of the DM spike
+    gamma: Slope of the initial profile
+    nitn: Number of interation chains in vegas, unsigned int
+    neval: Number of evaluation number in each chain in vegas, unsigned int
+    **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
+        specify the desired rhos, rs and n here. Those not specified will
+        be replaced by the MW's
     
     Output
     ------
@@ -228,7 +241,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     
     if rprime >= r_cut and is_sanity:
         # Evaluate the BDM emissivity
-        jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,rh,sigv,tBH,profile,alpha,gamma)
+        jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,rh,sigv,tBH,profile,alpha,gamma,**kwargs)
         # Jacobian
         if ~isclose(0,D,atol=1e-100):
             J = constant.c/((d - Rstar*cos(theta))/D + 1/vx)
@@ -244,7 +257,7 @@ def flux(t,Tx,mx,Rstar,beta,
          sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
          is_spike=True,rh=None,sigv=None,tBH=1e10,
          profile='MW',alpha='3/2',gamma=1,
-         nitn=10,neval=30000) -> float:
+         nitn=10,neval=30000,**kwargs) -> float:
     """
     The SNv BDM flux at Earth after integrated over zenith angle theta and
     azimuthal angle phi
@@ -256,12 +269,23 @@ def flux(t,Tx,mx,Rstar,beta,
     mx: DM mass, MeV
     Rstar: Distance from Earth to SN, kpc
     beta: The deviation angle, characterizing how SN deviates the GC, rad
-    sigxv: DM-neutrino cross section, default 1e-45 cm^2
+    sigxv0: Total DM-neutrino cross section, default 1e-45 cm^2
     Re: The distance from Earth to GC, default 8.5 kpc
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
-    nitn: Numer of chains in for iterations, vegas variable, unsigned int
-    neval: Number of evaluations in each chain, vegas variable, unsigned int
+    is_spike: Turn on/off DM spike, bool
+    rh: SMBH influence radius, kpc, leave it None for auto-generated value
+        from stellar dispersion relation
+    sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
+    tBH: SMBH age, years
+    profile: str type: 'MW' or 'LMC'
+    alpha: Slope of the DM spike
+    gamma: Slope of the initial profile
+    nitn: Number of interation chains in vegas, unsigned int
+    neval: Number of evaluation number in each chain in vegas, unsigned int
+    **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
+        specify the desired rhos, rs and n here. Those not specified will
+        be replaced by the MW's
     
     Output
     ------
@@ -275,7 +299,7 @@ def flux(t,Tx,mx,Rstar,beta,
         integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
         flux = integ(lambda x: diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],Rstar=Rstar,beta=beta,
                                          sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                         is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma),
+                                         is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
                     nitn=nitn,neval=neval).mean
         return flux
     else:                                                    # t > t_van will yield zero BDM
@@ -288,7 +312,7 @@ def event(mx,Rstar,beta,
           sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
           is_spike=True,rh=None,sigv=None,tBH=1e10,
           profile='MW',alpha='3/2',gamma=1,
-          nitn=10,neval=30000) -> float:
+          nitn=10,neval=30000,**kwargs) -> float:
     """
     The SNv BDM evnet at Earth after integrated over exposure time t, BDM
     kinetic energy Tx, zenith angle theta and azimuthal angle phi
@@ -300,10 +324,23 @@ def event(mx,Rstar,beta,
     beta: The deviation angle, characterizing how SN deviates the GC, rad
     TxRange: BDM kinetic energy range of interest, [Tx_min,Tx_max], MeV
     tRange: Detector exposure time, [t_min,t_max], seconds
-    sigxv: DM-neutrino cross section, default 1e-45 cm^2
+    sigxv0: Total DM-neutrino cross section, default 1e-45 cm^2
     Re: The distance from Earth to GC, default 8.5 kpc
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
+    is_spike: Turn on/off DM spike, bool
+    rh: SMBH influence radius, kpc, leave it None for auto-generated value
+        from stellar dispersion relation
+    sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
+    tBH: SMBH age, years
+    profile: str type: 'MW' or 'LMC'
+    alpha: Slope of the DM spike
+    gamma: Slope of the initial profile
+    nitn: Number of interation chains in vegas, unsigned int
+    neval: Number of evaluation number in each chain in vegas, unsigned int
+    **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
+        specify the desired rhos, rs and n here. Those not specified will
+        be replaced by the MW's
     
     Output
     ------
@@ -326,8 +363,8 @@ def event(mx,Rstar,beta,
         integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[theta_min,theta_max],[0,2*pi]])  #(t,Tx,theta,phi)
         event = integ(lambda x: diff_flux(t=x[0],Tx=x[1],mx=mx,theta=x[2],phi=x[3],Rstar=Rstar,beta=beta,
                                           sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                          is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma),
+                                          is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
                     nitn=nitn,neval=neval).mean
         return event
     else:
-        return 0    
+        return 0 
