@@ -199,7 +199,7 @@ class snorerGeneralInterface(Constants):
     *                  *
     ********************
 
-    This class has the following method
+    This class has the following methods
 
          sigma_xe(Tx,mx): Yields the total DM-e cross section for a given (Tx,mx), cm^2
     dsigma_xv(Tx,mx,psi): Yields the differential DM-v cross section at given (Tx,mx,psi), cm^2/sr
