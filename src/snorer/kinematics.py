@@ -25,7 +25,7 @@ __all__ = ['Kinematics',
 
 #---------- Import required utilities ----------#
 
-from numpy import sin,cos,tan,arccos,sqrt,pi
+from numpy import sin,cos,tan,arccos,sqrt,pi,abs
 from scipy.optimize import root_scalar
 from .constants import constant
 
@@ -163,7 +163,7 @@ class Kinematics:
         T1,m1,m2 = self.get_T1(),self.m1,self.m2
         s = m1**2 + m2**2 + 2*m2*(T1 + m1)
         psq = (s - (m1+m2)**2)*(s-(m1-m2)**2)/4/s
-        return self._du_dx()/64/pi/s/psq/2/pi
+        return abs(self._du_dx()/64/pi/s/psq/2/pi)
 
     def _du_dx(self) -> float:
         T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
