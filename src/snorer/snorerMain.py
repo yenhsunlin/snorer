@@ -146,8 +146,8 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     alpha: Slope of the spike, str type, '3/2' or '7/3'
     gamma: Slope of the initial profile
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
-        specify the desired rhos, rs and n here. Those not specified will
-        be replaced by the MW's
+        specify the desired rhos, rs, n, mBH and rh here. Those not
+        specified will be replaced by the values belong to the 'profile'
     
     Output
     ------
@@ -180,7 +180,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     dfv = snNuSpectrum(Ev,D,is_density=False)      # SNv flux
     dsigma = dsigma_xv(Ev,mx,psi,sigxv0)           # DM-v diff. cross section
     nx = dmNumberDensity(r,mx,is_spike,rh,sigv,
-                         tBH,profile,alpha,gamma)  # DM number density
+                         tBH,profile,alpha,gamma,**kwargs)  # DM number density
     jx = dfv*dsigma*dEv*nx
     return jx
 
@@ -216,8 +216,8 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     nitn: Number of interation chains in vegas, unsigned int
     neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
-        specify the desired rhos, rs and n here. Those not specified will
-        be replaced by the MW's
+        specify the desired rhos, rs, n, mBH and rh here. Those not
+        specified will be replaced by the values belong to the 'profile'
     
     Output
     ------
@@ -287,8 +287,8 @@ def flux(t,Tx,mx,Rstar,beta,
     nitn: Number of interation chains in vegas, unsigned int
     neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
-        specify the desired rhos, rs and n here. Those not specified will
-        be replaced by the MW's
+        specify the desired rhos, rs, n, mBH and rh here. Those not
+        specified will be replaced by the values belong to the 'profile'
     
     Output
     ------
@@ -342,8 +342,8 @@ def event(mx,Rstar,beta,
     nitn: Number of interation chains in vegas, unsigned int
     neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
-        specify the desired rhos, rs and n here. Those not specified will
-        be replaced by the MW's
+        specify the desired rhos, rs, n, mBH and rh here. Those not
+        specified will be replaced by the values belong to the 'profile'
     
     Output
     ------
