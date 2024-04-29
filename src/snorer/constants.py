@@ -134,6 +134,14 @@ class Constants:
         return ['05h35m27.8733s', '-69d16m10.478s',51.7]
 
     @property
+    def MW_profile(self):      # Profile parameters for MW
+        return {'rhos':184,'rs':24.42,'n':2,'mBH':self.M_SgrA,'rh':2e-3}
+    
+    @property
+    def LMC_profile(self):      # Profile parameters for LMC
+        return {'rhos':68,'rs':31.9,'n':3,'mBH':1e6,'rh':8.4e-4}
+    
+    @property
     def MagicalNumber(self):    # Magician does Magic!
         return 2.572e-64        
 
