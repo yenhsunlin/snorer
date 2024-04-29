@@ -123,7 +123,7 @@ def dsigma_xv(Ev,mx,psi,sigxv0=1e-45):
     return dndOmega*sigxv0
 
 
-def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs):
+def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs):
     """
     SNv BDM emissivity at upscattered point, note the returned result is divided by sigxv and dimensionless DM velocity
     
@@ -137,8 +137,6 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     D: Distance from the boosted point to the SN, kpc
     sigxv0: Total DM-nu cross section, cm^2
     is_spike: Turn on/off spike feature, bool
-    rh: SMBH influence radius, kpc
-        None indicates automatically calculated using the given mBH
     sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
         None indicates no annihilation
     tBH: SMBH age, years
@@ -179,7 +177,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     """
     dfv = snNuSpectrum(Ev,D,is_density=False)      # SNv flux
     dsigma = dsigma_xv(Ev,mx,psi,sigxv0)           # DM-v diff. cross section
-    nx = dmNumberDensity(r,mx,is_spike,rh,sigv,
+    nx = dmNumberDensity(r,mx,is_spike,sigv,
                          tBH,profile,alpha,gamma,**kwargs)  # DM number density
     jx = dfv*dsigma*dEv*nx
     return jx
@@ -187,7 +185,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
 
 def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
               sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
-              is_spike=True,rh=None,sigv=None,tBH=1e10,
+              is_spike=True,sigv=None,tBH=1e10,
               profile='MW',alpha='3/2',gamma=1,**kwargs):
     """
     The differential SNv BDM flux at Earth
@@ -206,8 +204,6 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
     is_spike: Turn on/off DM spike, bool
-    rh: SMBH influence radius, kpc, leave it None for auto-generated value
-        from stellar dispersion relation
     sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
@@ -244,7 +240,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     
     if rprime >= r_cut and is_sanity:
         # Evaluate the BDM emissivity
-        jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,rh,sigv,tBH,profile,alpha,gamma,**kwargs)
+        jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,sigv,tBH,profile,alpha,gamma,**kwargs)
         # Jacobian
         if ~isclose(0,D,atol=1e-100):
             J = constant.c/((d - Rstar*cos(theta))/D + 1/vx)
@@ -258,7 +254,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
 
 def flux(t,Tx,mx,Rstar,beta,
          sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
-         is_spike=True,rh=None,sigv=None,tBH=1e10,
+         is_spike=True,sigv=None,tBH=1e10,
          profile='MW',alpha='3/2',gamma=1,
          nitn=10,neval=30000,**kwargs) -> float:
     """
@@ -277,8 +273,6 @@ def flux(t,Tx,mx,Rstar,beta,
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
     is_spike: Turn on/off DM spike, bool
-    rh: SMBH influence radius, kpc, leave it None for auto-generated value
-        from stellar dispersion relation
     sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
@@ -302,7 +296,7 @@ def flux(t,Tx,mx,Rstar,beta,
         integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
         flux = integ(lambda x: diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],Rstar=Rstar,beta=beta,
                                          sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                         is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
+                                         is_spike=is_spike,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
                     nitn=nitn,neval=neval).mean
         return flux
     else:                                                    # t > t_van will yield zero BDM
@@ -313,7 +307,7 @@ def event(mx,Rstar,beta,
           TxRange=[5,30],
           tRange=[10,35*constant.year2Seconds],
           sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
-          is_spike=True,rh=None,sigv=None,tBH=1e10,
+          is_spike=True,sigv=None,tBH=1e10,
           profile='MW',alpha='3/2',gamma=1,
           nitn=10,neval=30000,**kwargs) -> float:
     """
@@ -332,8 +326,6 @@ def event(mx,Rstar,beta,
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
     is_spike: Turn on/off DM spike, bool
-    rh: SMBH influence radius, kpc, leave it None for auto-generated value
-        from stellar dispersion relation
     sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
@@ -366,7 +358,7 @@ def event(mx,Rstar,beta,
         integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[theta_min,theta_max],[0,2*pi]])  #(t,Tx,theta,phi)
         event = integ(lambda x: diff_flux(t=x[0],Tx=x[1],mx=mx,theta=x[2],phi=x[3],Rstar=Rstar,beta=beta,
                                           sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                          is_spike=is_spike,rh=rh,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
+                                          is_spike=is_spike,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
                     nitn=nitn,neval=neval).mean
         return event
     else:
