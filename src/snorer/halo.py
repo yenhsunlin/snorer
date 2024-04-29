@@ -59,10 +59,12 @@ The docstrings should be sufficient for their self-explanations
 
 class HaloSpike(Constants):  
     """
-    Class for constructing DM halo with spike scaled to arbitrary galactic mass MG
+    Class for constructing DM halo with spike due to supermassive black hole (SMBH)
+    in the galactic center.
 
     /*-----------------------------------------------------------------------------*/
 
+    
     ********************
     *                  *
     *   Class Inputs   *
@@ -81,7 +83,7 @@ class HaloSpike(Constants):
     *                  *
     ********************
 
-    When a haloSpike instance is initialized, the following attributes will be assigned,
+    When a HaloSpike instance is initialized, the following attributes will be assigned,
 
       mBH: SMBH mass, Msun
       tBH: SMBH age, years
