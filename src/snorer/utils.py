@@ -11,20 +11,21 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-__all__ = ['snorerGeneralInterface',]
+__all__ = ['GeneralInterface',]
 
 
 #---------- Import required utilities ----------#
 
 from numpy import pi,sin,cos,arccos,isclose
+from scipy.integrate import quad
 import vegas
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from .snorerMain import snNuSpectrum
-from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaRange,get_tof
+from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaRange,get_tof,get_tBound
 from .geometry import Geometry
-from .halo import rhox
-from .constant import Constants
+from .halo import rhox,dmNumberDensity
+from .constants import Constants,constant
 
 
 ##########################################################################
@@ -39,7 +40,7 @@ This script contains following classes and functions
 
 Classes
 ------
-1. snorerGeneralInterface
+1. GeneralInterface
 
 Functions
 ------
@@ -49,7 +50,7 @@ The docstrings should be sufficient for their self-explanations
 """
 
 
-class snorerGeneralInterface(Constants):
+class GeneralInterface(Constants):
     """
     Superclass: Constants
     
@@ -76,8 +77,8 @@ class snorerGeneralInterface(Constants):
               amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
               and the last one is the DM mass.
      amp2_xe: Identical to amp2_xv, but is for DM-e interaction
-    **kwargs: Keywaord arguments that will be passed to SkyCoord class in Astropy.
-              Leave it(them) blank if you have no idea to hack
+    **kwargs: Keywaord arguments that will be passed to dmNumberDensity(), see its
+              docstring for available options
 
 
     /*-------------------------------IMPORTANT NOTE--------------------------------*/
@@ -128,38 +129,34 @@ class snorerGeneralInterface(Constants):
 
     When an instance is initialized, it also automatically assigned a SNv spectrum
     (in flux unit) and a DM halo profile. The default SNv spectrum is borrowed from
-    `snNuSpectrum` and can be viewed
+    snNuSpectrum() and can be viewed
 
     >>> Ev,D=15,20      # MeV, kpc
     >>> sn1987a.snNuSpectrum(Ev,D)
     837920069.3938683
 
-    You are free to modify it if you have your own SNv model to test, say `foo_snv`.
+    You are free to modify it if you have your own SNv model to test, say foo_snv().
     The modified function takes two positioning-only arguments and can be accomplished
     by
 
-    >>> sn1987a.snNuSpectrum = lambda Ev,D: foo_snv(Ev,D)   # change to my own SNv flux
+    >>> sn1987a.snNuSpectrum = lambda Ev,D: foo_snv(Ev,D) 
 
-    Similarily, we also borrowed `rhox` to generate DM number density. The default
-    is MW NFW profile (# per cm^3) without spike and can be viewed
+    Similarily, we also borrowed dmNumberDensity() to generate DM number density. The
+    default is MW NFW profile (# per cm^3) without spike and can be viewed
 
     >>> r,mx = 15,1e-4  # kpc, MeV
-    >>> sn1987a.nx(15,1e-4)
+    >>> sn1987a.dmNumberDensity(15,1e-4)
     1149556.450912663
 
-    If you want to implement your own halo profile, say `foo_nx`, sure no problem.
+    If you want to implement your own halo profile, say foo_nx(), sure no problem!
     Same as above, this new function takes two positioning-only arguments
 
     >>> sn1987a.nx = lambda r,mx: foo_nx(r,mx)
 
-    Whatever features you wish to have in your `foo_snv` and `foo_nx`, you have to
-    hardcode them in the beginning as the associated attributes only take two
+    Whatever features you wish to have in your foo_snv() and foo_nx(), you have to
+    hardcode them in the inception as the associated attributes only take two
     positioning-only arguments.
     
-    If you have more than two inputs in these two functions, you might have to consider
-    removing them or apply `partial` in the functools module to assign them in the
-    beginning.
-
 
     /*---------------------------Constructing Amplitudes---------------------------*/
     
@@ -231,18 +228,14 @@ class snorerGeneralInterface(Constants):
     before its vanishing, SK can accumulate around 7.34e+33*1.1068e-32 ~ 81.2 events before SNv BDM
     vanished.
     """
-    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/,**kwargs): 
+    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/): 
         self.SN_coord = SN_coord
         self.GC_coord = GC_coord
         self.amp2_xv = amp2_xv
-        self.amp2_xe = amp2_xe
-        self.kwargs = kwargs                                    # keyword arguments that will be passed to SkyCoord in Astropy
-        self.__dict__.update(self.kwargs)
-        
-        #*------ Default attributes at the inception -----*#
-        self.nx = lambda r,mx: rhox(r,184,24.42,2)/mx           # default profile is MW NFW w/o spike
-        self.snNuSpectrum = lambda Ev,D: snNuSpectrum(Ev,D)     # default SN nu spectrum, flux unit
-
+        self.amp2_xe = amp2_xe                                    
+        self.snNuSpectrum = lambda Ev,D: snNuSpectrum(Ev,D)                       # default SN nu spectrum, flux unit
+        self.dmNumberDensity = lambda r,mx: dmNumberDensity(r,mx,is_spike=False)  # default DM halo profile
+    
     def __repr__(self):
         return '{:>18s}'.format('Dist to GC:') + ' {:>.3e} kpc'.format(self.Re) + '\n' +                 \
                '{:>18s}'.format('Dist to SN:') + ' {:>.3e} kpc'.format(self.Rstar) + '\n' +              \
@@ -265,14 +258,17 @@ class snorerGeneralInterface(Constants):
     def Re(self):
         return self.GC_coord[2]
 
+    # def _nx(self,r,mx) -> float:
+    #     return dmNumberDensity(r,mx,**self.__dict__)
+
     def _get_geometry_3d(self) -> float:
         """Get the celestial geometry of SN and GC from user-input"""
         snRA,snDEC,snDist = self.SN_coord  # right ascension, declination, distance in kpc
         gcRA,gcDEC,gcDist = self.GC_coord  # right ascension, declination, distance in kpc
         
         # Call SkyCoord in Astropy to tackle the celestial coordinates of these objects
-        sn = SkyCoord(snRA,snDEC,distance=snDist*u.kpc,**self.kwargs)
-        gc = SkyCoord(gcRA,gcDEC,distance=gcDist*u.kpc,**self.kwargs)
+        sn = SkyCoord(snRA,snDEC,distance=snDist*u.kpc)
+        gc = SkyCoord(gcRA,gcDEC,distance=gcDist*u.kpc)
         # Get the 3d seperation of these two stellar objects, kpc
         sepDist = sn.separation_3d(gc).value
         # Get beta, law of cosine
@@ -301,9 +297,10 @@ class snorerGeneralInterface(Constants):
         return sigma
             
     def _emissivity(self,Ev,dEv,Tx,mx,psi,r,D) -> float:
-        dfv = snNuSpectrum(Ev,D)                 # Get the SNv flux at D
+        dfv = self.snNuSpectrum(Ev,D) 
+        nx = self.dmNumberDensity(r,mx)          # Get the SNv flux at D
         dsigma = self.dsigma_xv(Tx,mx,psi)       # Get the diff. DM-v cross section at psi
-        jx = dfv*dsigma*dEv*self.nx(r,mx)        # Compute the emissivity at boost point
+        jx = dfv*dsigma*dEv*nx                   # Compute the emissivity at boost point
         return jx
 
     def _diff_flux(self,t,Tx,mx,theta,phi,tau) -> float:
