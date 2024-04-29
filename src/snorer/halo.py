@@ -475,7 +475,7 @@ def radiusSchwarzschild(mBH) -> float:
     return Rs
 
 
-def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1) -> float:
+def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs) -> float:
     """
     Obtain the DM number density at given r for MW or LMC
     
@@ -492,6 +492,9 @@ def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',a
     profile: str, 'MW' or 'LMC'
     alpha: Slope of the spike, str type, '3/2' or '7/3'
     gamma: Slope of the initial profile
+    **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
+        specify the desired rhos, rs, n, mBH and rh here. Those not
+        specified will be replaced by the values belong to the 'profile'
     
     Out
     ------
@@ -500,9 +503,9 @@ def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',a
     See the docstrings in class haloSpike and function rhox for more detail
     """
     if profile == 'MW':
-        rhos,rs,n,mBH,rh,Rs = 184,24.42,2,constant.M_SgrA,2e-3,4.0866e-10
+        rhos,rs,n,mBH,rh = 184,24.42,2,constant.M_SgrA,2e-3
     elif profile == 'LMC':
-        rhos,rs,n,mBH,rh,Rs = 68,31.9,3,1e6,0.84e-3,9.5036e-11
+        rhos,rs,n,mBH,rh = 68,31.9,3,1e6,0.84e-3
     else:
         raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
 
