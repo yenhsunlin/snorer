@@ -145,6 +145,9 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,rh=None,sigv=None,tB
     profile: str, 'MW' or 'LMC'
     alpha: Slope of the spike, str type, '3/2' or '7/3'
     gamma: Slope of the initial profile
+    **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
+        specify the desired rhos, rs and n here. Those not specified will
+        be replaced by the MW's
     
     Output
     ------
