@@ -260,6 +260,8 @@ def flux(t,Tx,mx,Rstar,beta,
     Re: The distance from Earth to GC, default 8.5 kpc
     r_cut: Ignore the BDM contribution when r' < r_cut, default 1e-5 kpc
     tau: The duration of SN explosion, default 10 s
+    nitn: Numer of chains in for iterations, vegas variable, unsigned int
+    neval: Number of evaluations in each chain, vegas variable, unsigned int
     
     Output
     ------
