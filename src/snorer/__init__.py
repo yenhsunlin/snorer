@@ -28,7 +28,8 @@ __all__          = ['snNuSpectrum','dsigma_xv','emissivity','diff_flux','flux','
                     'HaloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','dmNumberDensity','dmNumberDensity_general',
                     'Geometry',
                     'Kinematics','Mandelstam','Neutrino','get_vx','get_maxPsi','get_thetaRange','get_tof','fx_lab','KallenLambda','get_tBound',
-                    'Constants','constant',]
+                    'Constants','constant',
+                    'GeneralInterface',]
 
 
 #---------- Useful utilities for user ----------#
@@ -38,3 +39,4 @@ from .halo import HaloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,dmN
 from .geometry import Geometry
 from .kinematics import Kinematics,Mandelstam,Neutrino,get_vx,get_maxPsi,get_thetaRange,get_tof,fx_lab,get_tBound,KallenLambda
 from .constants import Constants,constant
+from .utils import GeneralInterface
