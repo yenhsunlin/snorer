@@ -261,8 +261,8 @@ class Neutrino(Kinematics):
     *                  *
     ********************
     
-     Tx: BDM kinetic energy, MeV
      mx: DM mass, MeV
+     Tx: BDM kinetic energy, MeV
     psi: Lab frame scattering angle,rad
 
 
@@ -298,7 +298,7 @@ class Neutrino(Kinematics):
     See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for details.
     """
     
-    def __init__(self,Tx,mx,psi):
+    def __init__(self,mx,Tx,psi):
         super().__init__(0,mx,Tx,psi)
 
     @property
