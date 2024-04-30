@@ -207,8 +207,6 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
     alpha: Slope of the DM spike
-    nitn: Number of interation chains in vegas, unsigned int
-    neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
         specify the desired rhos, rs, n, mBH and rh here. Those not
         specified will be replaced by the values belong to the 'profile'
