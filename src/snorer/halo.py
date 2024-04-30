@@ -17,8 +17,7 @@ __all__ = ['HaloSpike',
            'M_sigma',
            'radiusInfluence',
            'radiusSchwarzschild',
-           'dmNumberDensity',
-           'dmNumberDensity_general',]
+           'dmNumberDensity',]
 
 
 #---------- Import required utilities ----------#
