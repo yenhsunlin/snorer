@@ -77,8 +77,8 @@ class GeneralInterface(Constants):
               amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
               and the last one is the DM mass.
      amp2_xe: Identical to amp2_xv, but is for DM-e interaction
-    **kwargs: Keywaord arguments that will be passed to dmNumberDensity(), see its
-              docstring for available options
+    **kwargs: Keywaord arguments that will be passed to dmNumberDensity(), see the
+              following explanation
 
 
     /*-------------------------------IMPORTANT NOTE--------------------------------*/
@@ -127,35 +127,45 @@ class GeneralInterface(Constants):
 
     /*------------------------SNv Spectrum and DM Profile--------------------------*/
 
-    When an instance is initialized, it also automatically assigned a SNv spectrum
-    (in flux unit) and a DM halo profile. The default SNv spectrum is borrowed from
-    snNuSpectrum() and can be viewed
+    When an instance is initialized, it also automatically assigns a SNv spectrum and
+    a DM halo profile by snNuSpectrum() and dmNumberDensity().
 
-    >>> Ev,D=15,20      # MeV, kpc
-    >>> sn1987a.snNuSpectrum(Ev,D)
-    837920069.3938683
+    Note that SNv spectrum will have flux unit and DM spike is turn off by default in
+    the halo profile. Legal keyword arguments in dmNumberDensity() can be passed by
+    **kwargs durning instance's initialization.
 
-    You are free to modify it if you have your own SNv model to test, say foo_snv().
-    The modified function takes two positioning-only arguments and can be accomplished
-    by
+    The associated SNv flux can be viewed by, eg. Ev = 15 MeV and D = 10 kpc
+    
+    >>> sn1987a.snNuFlux(Ev=15,D=10)      # MeV, kpc
+    3351680277.5754733
 
-    >>> sn1987a.snNuSpectrum = lambda Ev,D: foo_snv(Ev,D) 
+    For the DM number density, if you passed keyword arguments durning the initialization
+    such as: (is_spike=True, sigv=3, tBH=1e9, mBH=1e8, rhos=107, rs=33.9), then it is
+    equivalent to have the DM number density
 
-    Similarily, we also borrowed dmNumberDensity() to generate DM number density. The
-    default is MW NFW profile (# per cm^3) without spike and can be viewed
+    dmNumberDensity(r,mx,is_spike=True,sigv=3,tBH=1e9,mBH=1e8,rhos=107,rs=33.9)
 
-    >>> r,mx = 15,1e-4  # kpc, MeV
-    >>> sn1987a.dmNumberDensity(15,1e-4)
-    1149556.450912663
+    Only those keyword arguments contained in dmNumberDensity() will be accepted or
+    exception will be raised.
 
-    If you want to implement your own halo profile, say foo_nx(), sure no problem!
-    Same as above, this new function takes two positioning-only arguments
+    Given these, we can viewed the DM number density in this instance by
 
-    >>> sn1987a.nx = lambda r,mx: foo_nx(r,mx)
+    >>> sn1987a.nx(r=5,mx=1e-2)
+    55092.31392649719
 
-    Whatever features you wish to have in your foo_snv() and foo_nx(), you have to
-    hardcode them in the inception as the associated attributes only take two
-    positioning-only arguments.
+    You can compare the result with dmNumberDensity by having
+
+    >>> dmNumberDensity(5,1e-2,is_spike=True,sigv=3,tBH=1e9,mBH=1e8,rhos=107,rs=33.9)
+    55092.31392649719
+
+    The two matched as expected!
+
+    The keyword arguments are stored in __dict__, you may update the value(s) or added
+    new keys by
+
+    >>> sn1987a.tBH=5e8
+
+    However, adding non-existent key(s) will trigger error during the calculation.
     
 
     /*---------------------------Constructing Amplitudes---------------------------*/
@@ -198,6 +208,8 @@ class GeneralInterface(Constants):
 
     This class has the following methods
 
+          snNuFlux(Ev,D): SNv flux after propagating D, 1/cm^2/MeV/s
+                nx(r,mx): DM number density at place distant r to GC, 1/cm^3
          sigma_xe(Tx,mx): Yields the total DM-e cross section for a given (Tx,mx), cm^2
     dsigma_xv(Tx,mx,psi): Yields the differential DM-v cross section at given (Tx,mx,psi), cm^2/sr
            flux(t,Tx,mx): Yields the SNv BDM flux at Earth given (t,Tx,mx), #/MeV/cm^2/s
@@ -227,14 +239,30 @@ class GeneralInterface(Constants):
     detector. For Super-Kamionkande, its total electron number is about 7.4e+33. Thus the total event
     before its vanishing, SK can accumulate around 7.34e+33*1.1068e-32 ~ 81.2 events before SNv BDM
     vanished.
+
+    There is one addiitonal class method that can be called without initialization of the instance.
+    This method can assist user to get the off-center angle beta and separation distance between the
+    two celestial objects.
+    
+    get_geometry_3d(SN_coord,GC_coord)
+
+    The inputs SN_coord and CG_coord are explained previously. The outputs are beta, rad, and separation
+    distance, kpc.
     """
-    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/): 
+    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/,**kwargs): 
         self.SN_coord = SN_coord
         self.GC_coord = GC_coord
         self.amp2_xv = amp2_xv
-        self.amp2_xe = amp2_xe                                    
-        self.snNuSpectrum = lambda Ev,D: snNuSpectrum(Ev,D)                       # default SN nu spectrum, flux unit
-        self.dmNumberDensity = lambda r,mx: dmNumberDensity(r,mx,is_spike=False)  # default DM halo profile
+        self.amp2_xe = amp2_xe
+        
+        # keyword arguments that will be passed to dmNumberDensity()
+        self.__dict__.update(kwargs)
+        # Default is to turn off spike unless user specified otherwise
+        if self.__dict__.get('is_spike') is None:
+            self.__dict__['is_spike'] = False
+
+        #self.snNuSpectrum = lambda Ev,D: snNuSpectrum(Ev,D)                       # default SN nu spectrum, flux unit
+        #self.dmNumberDensity = lambda r,mx: dmNumberDensity(r,mx,is_spike=False)  # default DM halo profile
     
     def __repr__(self):
         return '{:>18s}'.format('Dist to GC:') + ' {:>.3e} kpc'.format(self.Re) + '\n' +                 \
@@ -258,9 +286,6 @@ class GeneralInterface(Constants):
     def Re(self):
         return self.GC_coord[2]
 
-    # def _nx(self,r,mx) -> float:
-    #     return dmNumberDensity(r,mx,**self.__dict__)
-
     @classmethod
     def get_geometry_3d(cls,SN_coord,GC_coord) -> float:
         """Get the celestial geometry of SN and GC from user-input"""
@@ -277,16 +302,22 @@ class GeneralInterface(Constants):
         beta = arccos(cos_beta)
         return beta,sepDist
         
+    def nx(self,r,mx) -> float:
+        return dmNumberDensity(r,mx,**self.__dict__)
+    
+    def snNuFlux(self,Ev,D) -> float:
+        return snNuSpectrum(Ev,D)
+    
     def sigma_xe(self,Tx,mx) -> float:
         """Obtain total sigma_xe for a given (Tx,mx), cm^2"""
         me = self.me
-        Ex = Tx + mx                       # Total BDM energy, kinetic + mass
+        Ex = Tx + mx                             # Total BDM energy, kinetic + mass
         s = 2*me*Ex + mx**2 + me**2
         p_squared = (s - (me+mx)**2)*(s-(me-mx)**2)/4/s
         t_min,t_max = get_tBound(mx,me,Tx) # Allowed t range for dsigma/dt integration
         sigma = quad(lambda t: self.amp2_xe(s,t,2*(mx**2+me**2)-s-t,mx),t_min,t_max)[0]
-        sigma = sigma/32/s/p_squared       # integration over azimuthal angle 2pi is incoporated
-        sigma = sigma*self.perMeV2cm**2    # convert 1/MeV^2 to cm^2
+        sigma = sigma/32/s/p_squared             # integration over azimuthal angle 2pi is incoporated
+        sigma = sigma*self.perMeV2cm**2          # convert 1/MeV^2 to cm^2
         return sigma
 
     def dsigma_xv(self,Tx,mx,psi) -> float:
@@ -298,10 +329,10 @@ class GeneralInterface(Constants):
         return sigma
             
     def _emissivity(self,Ev,dEv,Tx,mx,psi,r,D) -> float:
-        dfv = self.snNuSpectrum(Ev,D) 
-        nx = self.dmNumberDensity(r,mx)          # Get the SNv flux at D
+        """Obtaing the emissivity at boost point, 1/cm^3/MeV/s"""
+        dfv = self.snNuFlux(Ev,D)                # Get the SNv flux at D
         dsigma = self.dsigma_xv(Tx,mx,psi)       # Get the diff. DM-v cross section at psi
-        jx = dfv*dsigma*dEv*nx                   # Compute the emissivity at boost point
+        jx = dfv*dsigma*dEv*self.nx(r,mx)        # Compute the emissivity at boost point
         return jx
 
     def _diff_flux(self,t,Tx,mx,theta,phi,tau) -> float:
