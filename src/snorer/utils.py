@@ -54,9 +54,9 @@ class GeneralInterface(Constants):
     """
     Superclass: Constants
     
-    Class for evaluating SNv BDM coming from SN in arbitrary distant galaxy with DM-v
-    and DM-e interaction cross sections descrbied by a sepcific particle model. This
-    class has an dependency on Astropy for handling SN/GC coordinates expressed in
+    Class with medoths that evaluate SNv BDM coming from SN in arbitrary distant galaxy
+    with DM-v and DM-e interaction cross sections descrbied by a specific particle model.
+    This class has an dependency on Astropy for handling SN/GC coordinates expressed in
     ICRS J2000.0 system.
 
 
@@ -77,7 +77,7 @@ class GeneralInterface(Constants):
               amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
               and the last one is the DM mass.
      amp2_xe: Identical to amp2_xv, but is for DM-e interaction
-    **kwargs: Keywaord arguments that will be passed to dmNumberDensity(), see the
+    **kwargs: Keyword arguments that will be passed to dmNumberDensity(), see the
               following explanation
 
 
@@ -285,6 +285,12 @@ class GeneralInterface(Constants):
     @property
     def Re(self):
         return self.GC_coord[2]
+    
+    @property
+    def __kwargs_nx(self):
+        """Remove the unnecessary kwargs for dmNumberDensity()"""
+        newDict = list(self.__dict__.items())[4:]  # the 1st 4 are class inputs
+        return dict(newDict)
 
     @classmethod
     def get_geometry_3d(cls,SN_coord,GC_coord) -> float:
@@ -303,7 +309,7 @@ class GeneralInterface(Constants):
         return beta,sepDist
         
     def nx(self,r,mx) -> float:
-        return dmNumberDensity(r,mx,**self.__dict__)
+        return dmNumberDensity(r,mx,**self.__kwargs_nx)
     
     def snNuFlux(self,Ev,D) -> float:
         return snNuSpectrum(Ev,D)
@@ -321,7 +327,7 @@ class GeneralInterface(Constants):
         return sigma
 
     def dsigma_xv(self,Tx,mx,psi) -> float:
-        """Obtain total sigma_xe for a given (Tx,mx), cm^2"""
+        """Obtain diff sigma_xv for a given (Tx,mx,psi), cm^2"""
         varMandelstam = Mandelstam(0,mx,Tx,psi)  # Get the Mandelstam variables and dLips at psi for (Tx,mx,psi)
         s,t,u,dLips = varMandelstam.s,varMandelstam.t,varMandelstam.u,varMandelstam.get_dLips()
         sigma = self.amp2_xv(s,t,u,mx)*dLips     # Evaluate the differential cross section at psi
@@ -385,7 +391,7 @@ class GeneralInterface(Constants):
     
         See Eq. (6) in Phys. Rev. D 108, 083013 (2023) 
         """
-        Rstar,Re,beta = self.Rstar,self.Re,self.beta
+        Rstar = self.Rstar
         _,t_van = get_tof(Tx,mx,Rstar)                           # get the vanishing time t_van 
         if t <= t_van:
             theta_min,theta_max = get_thetaRange(t,Tx,mx,Rstar)  # get the zenith angle range that contains non-zero BDM flux
