@@ -341,7 +341,7 @@ class HaloSpike(Constants):
                 rhoDM = rhox(r,rhos,rs,n)
                 return rhoDM*rhoc/(rhoDM + rhoc)/mx
     
-    def __call__(self,r,mx,sigv,rhos,rs,n):
+    def __call__(self,r,mx,/,sigv,rhos,rs,n):
         """
         Obtain the DM number density in the presence of spike
         
@@ -362,7 +362,7 @@ class HaloSpike(Constants):
         return self._nxSpike(r,mx,sigv,rhos,rs,n)
 
 
-def rhox(r,rhos,rs,n) -> float:
+def rhox(r,/,rhos,rs,n) -> float:
     """
     DM density at given r
     
@@ -472,7 +472,7 @@ def radiusSchwarzschild(mBH) -> float:
     return Rs
 
 
-def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs) -> float:
+def dmNumberDensity(r,mx,/,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs) -> float:
     """
     Obtain the DM number density at given r for MW or LMC
     
