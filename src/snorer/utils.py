@@ -348,7 +348,7 @@ class GeneralInterface(Constants):
         psi = arccos(bdmGeometry.cosPsi)
         
         # Required SNv energy
-        snv = Neutrino(Tx,mx,psi)
+        snv = Neutrino(mx,Tx,psi)
         Ev = snv.Ev 
         dEv = snv.dEv 
         is_sanity = snv.is_sanity
