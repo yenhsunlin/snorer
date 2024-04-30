@@ -88,13 +88,12 @@ class HaloSpike(Constants):
       mBH: SMBH mass, Msun
       tBH: SMBH age, years
     alpha: Slope of the spike profile
-    gamma: Slope of the initial profile
        rh: SMBH influence radius, kpc
     
     where the first four are the inputs with the last one auto-generated when initializing
     the instance. 
     
-    >>> nx = HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2',gamma=1)   # initializing haloSpike instance
+    >>> nx = HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2')   # initializing haloSpike instance
     
     Basic properties of the instance can be viewd by
 
@@ -172,17 +171,15 @@ class HaloSpike(Constants):
     See Phys. Rev. Lett. 83, 1719 (1999), arXiv:astro-ph/9906391 for the theoretical foundation
         JCAP 06, 004 (2023), arXiv:2301.08756 for the parameterizations deployed here
     """
-    def __init__(self,mBH,tBH,alpha,gamma):
+    def __init__(self,mBH,tBH,alpha):
         self.mBH = mBH
         self.tBH = tBH
-        self.gamma = gamma
         self.alpha = alpha
         self.rh = radiusInfluence(mBH)
 
     def __repr__(self):
         return '{:>18s}'.format('SMBH mass:') + ' {:>.3e} M_sun'.format(self.mBH) + '\n' +                 \
                '{:>18s}'.format('Spike slope:') + ' {}'.format(self._alpha) + '\n' + \
-               '{:>18s}'.format('Initial slope:') + ' {:<.3e}'.format(self.gamma) + '\n' + \
                '{:>18s}'.format('Spike radius:') + ' {:>.3e} kpc'.format(self.Rs) + '\n' +              \
                '{:>18s}'.format('Influence radius:') + ' {:>.3e} kpc'.format(self.rh)
      
@@ -475,7 +472,7 @@ def radiusSchwarzschild(mBH) -> float:
     return Rs
 
 
-def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs) -> float:
+def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs) -> float:
     """
     Obtain the DM number density at given r for MW or LMC
     
@@ -489,7 +486,6 @@ def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/
     tBH: SMBH age, years
     profile: str, 'MW' or 'LMC'
     alpha: Slope of the spike, str type, '3/2' or '7/3'
-    gamma: Slope of the initial profile
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
         specify the desired rhos, rs, n, mBH or rh here. Those are not
         specified will be replaced by the values belong to the 'profile'
@@ -519,7 +515,7 @@ def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/
     rhos,rs,n,mBH,rh = profile_params_dict.values()
 
     if is_spike is True:
-        nx = HaloSpike(mBH,tBH,alpha,gamma)
+        nx = HaloSpike(mBH,tBH,alpha)
         if rh is None:   # use auto-generated rh
             return nx(r,mx,sigv,rhos,rs,n)
         else:
@@ -578,45 +574,45 @@ def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/
 #         raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
 
 
-def dmNumberDensity_general(r,mx,rhos,rs,n,mBH,is_spike=True,rh=None,sigv=None,tBH=1e10,alpha='3/2',gamma=1) -> float:
-    """
-    Obtain the DM number density at given r for user-defined DM halo profile
+# def dmNumberDensity_general(r,mx,rhos,rs,n,mBH,is_spike=True,rh=None,sigv=None,tBH=1e10,alpha='3/2',gamma=1) -> float:
+#     """
+#     Obtain the DM number density at given r for user-defined DM halo profile
     
-    In
-    ------
-    r: distance to GC, kpc
-    mx: DM mass, MeV
-    rhos: The characteristic density, MeV/cm^3
-    rs: The characteristic radius, kpc
-    n: Slope of the DM profile
-    mBH: SMBH mass, Msun
-        if is_spike = False, mBH has no effect
-    is_spike: Turn on/off spike feature, bool
-    rh: SMBH influence radius, kpc
-        None indicates automatically calculated using the given mBH
-    sigv: DM annihilation cross section in the unit of 1e-26 cm^3/s, float
-        None indicates no annihilation
-    tBH: SMBH age, years
-    alpha: Slope of the spike, str type, '3/2' or '7/3'
-    gamma: Slope of the initial profile, float
+#     In
+#     ------
+#     r: distance to GC, kpc
+#     mx: DM mass, MeV
+#     rhos: The characteristic density, MeV/cm^3
+#     rs: The characteristic radius, kpc
+#     n: Slope of the DM profile
+#     mBH: SMBH mass, Msun
+#         if is_spike = False, mBH has no effect
+#     is_spike: Turn on/off spike feature, bool
+#     rh: SMBH influence radius, kpc
+#         None indicates automatically calculated using the given mBH
+#     sigv: DM annihilation cross section in the unit of 1e-26 cm^3/s, float
+#         None indicates no annihilation
+#     tBH: SMBH age, years
+#     alpha: Slope of the spike, str type, '3/2' or '7/3'
+#     gamma: Slope of the initial profile, float
     
-    Out
-    ------
-    number density: 1/cm^3
+#     Out
+#     ------
+#     number density: 1/cm^3
 
-    See the docstrings in class haloSpike and function rhox for more detail
-    """
-    if rh is None:
-        rh = radiusInfluence(mBH)
+#     See the docstrings in class haloSpike and function rhox for more detail
+#     """
+#     if rh is None:
+#         rh = radiusInfluence(mBH)
 
-    if is_spike is True:
-        nx = HaloSpike(mBH,tBH,alpha,gamma)
-        if rh is None:  # auto-calculated SMBH influence radius
-            return nx(r,mx,sigv,rhos,rs,n)
-        else:  # user-defined SMBH influence radius
-            nx.rh = rh
-            return nx(r,mx,sigv,rhos,rs,n)
-    elif is_spike is False:       
-        return rhox(r,rhos,rs,n)/mx
-    else:
-        raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
+#     if is_spike is True:
+#         nx = HaloSpike(mBH,tBH,alpha,gamma)
+#         if rh is None:  # auto-calculated SMBH influence radius
+#             return nx(r,mx,sigv,rhos,rs,n)
+#         else:  # user-defined SMBH influence radius
+#             nx.rh = rh
+#             return nx(r,mx,sigv,rhos,rs,n)
+#     elif is_spike is False:       
+#         return rhox(r,rhos,rs,n)/mx
+#     else:
+#         raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
