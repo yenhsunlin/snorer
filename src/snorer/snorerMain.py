@@ -123,7 +123,7 @@ def dsigma_xv(Ev,mx,psi,sigxv0=1e-45):
     return dndOmega*sigxv0
 
 
-def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs):
+def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs):
     """
     SNv BDM emissivity at upscattered point, note the returned result is divided by sigxv and dimensionless DM velocity
     
@@ -142,7 +142,6 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,sigv=None,tBH=1e10,p
     tBH: SMBH age, years
     profile: str, 'MW' or 'LMC'
     alpha: Slope of the spike, str type, '3/2' or '7/3'
-    gamma: Slope of the initial profile
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
         specify the desired rhos, rs, n, mBH and rh here. Those not
         specified will be replaced by the values belong to the 'profile'
@@ -178,7 +177,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,sigv=None,tBH=1e10,p
     dfv = snNuSpectrum(Ev,D,is_density=False)      # SNv flux
     dsigma = dsigma_xv(Ev,mx,psi,sigxv0)           # DM-v diff. cross section
     nx = dmNumberDensity(r,mx,is_spike,sigv,
-                         tBH,profile,alpha,gamma,**kwargs)  # DM number density
+                         tBH,profile,alpha,**kwargs)  # DM number density
     jx = dfv*dsigma*dEv*nx
     return jx
 
@@ -186,7 +185,7 @@ def emissivity(Ev,dEv,mx,psi,r,D,sigxv0=1e-45,is_spike=True,sigv=None,tBH=1e10,p
 def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
               sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
               is_spike=True,sigv=None,tBH=1e10,
-              profile='MW',alpha='3/2',gamma=1,**kwargs):
+              profile='MW',alpha='3/2',**kwargs):
     """
     The differential SNv BDM flux at Earth
     
@@ -208,7 +207,6 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
     alpha: Slope of the DM spike
-    gamma: Slope of the initial profile
     nitn: Number of interation chains in vegas, unsigned int
     neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
@@ -240,7 +238,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     
     if rprime >= r_cut and is_sanity:
         # Evaluate the BDM emissivity
-        jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,sigv,tBH,profile,alpha,gamma,**kwargs)
+        jx = emissivity(Ev,dEv,mx,psi,rprime,D,sigxv0,is_spike,sigv,tBH,profile,alpha,**kwargs)
         # Jacobian
         if ~isclose(0,D,atol=1e-100):
             J = constant.c/((d - Rstar*cos(theta))/D + 1/vx)
@@ -255,7 +253,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
 def flux(t,Tx,mx,Rstar,beta,
          sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
          is_spike=True,sigv=None,tBH=1e10,
-         profile='MW',alpha='3/2',gamma=1,
+         profile='MW',alpha='3/2',
          nitn=10,neval=30000,**kwargs) -> float:
     """
     The SNv BDM flux at Earth after integrated over zenith angle theta and
@@ -277,7 +275,6 @@ def flux(t,Tx,mx,Rstar,beta,
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
     alpha: Slope of the DM spike
-    gamma: Slope of the initial profile
     nitn: Number of interation chains in vegas, unsigned int
     neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
@@ -296,7 +293,7 @@ def flux(t,Tx,mx,Rstar,beta,
         integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
         flux = integ(lambda x: diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],Rstar=Rstar,beta=beta,
                                          sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                         is_spike=is_spike,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
+                                         is_spike=is_spike,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,**kwargs),
                     nitn=nitn,neval=neval).mean
         return flux
     else:                                                    # t > t_van will yield zero BDM
@@ -308,7 +305,7 @@ def event(mx,Rstar,beta,
           tRange=[10,35*constant.year2Seconds],
           sigxv0=1e-45,Re=8.5,r_cut=1e-8,tau=10,
           is_spike=True,sigv=None,tBH=1e10,
-          profile='MW',alpha='3/2',gamma=1,
+          profile='MW',alpha='3/2',
           nitn=10,neval=30000,**kwargs) -> float:
     """
     The SNv BDM evnet at Earth after integrated over exposure time t, BDM
@@ -330,7 +327,6 @@ def event(mx,Rstar,beta,
     tBH: SMBH age, years
     profile: str type: 'MW' or 'LMC'
     alpha: Slope of the DM spike
-    gamma: Slope of the initial profile
     nitn: Number of interation chains in vegas, unsigned int
     neval: Number of evaluation number in each chain in vegas, unsigned int
     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
@@ -358,7 +354,7 @@ def event(mx,Rstar,beta,
         integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[theta_min,theta_max],[0,2*pi]])  #(t,Tx,theta,phi)
         event = integ(lambda x: diff_flux(t=x[0],Tx=x[1],mx=mx,theta=x[2],phi=x[3],Rstar=Rstar,beta=beta,
                                           sigxv0=sigxv0,Re=Re,r_cut=r_cut,tau=tau,
-                                          is_spike=is_spike,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,gamma=gamma,**kwargs),
+                                          is_spike=is_spike,sigv=sigv,tBH=tBH,profile=profile,alpha=alpha,**kwargs),
                     nitn=nitn,neval=neval).mean
         return event
     else:
