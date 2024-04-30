@@ -23,7 +23,7 @@ __all__ = ['snNuSpectrum',
 
 from numpy import pi,exp,arccos,cos,sin,isclose
 import vegas
-from .halo import dmNumberDensity,dmNumberDensity_general
+from .halo import dmNumberDensity
 from .kinematics import Neutrino,fx_lab,get_vx,get_thetaRange,get_tof
 from .geometry import Geometry
 from .constants import constant
@@ -226,7 +226,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     rprime = bdmGeometry.rprime
     psi = arccos(bdmGeometry.cosPsi) # Get the required scattering angle
     
-    # Initializing BDM Kinematics class
+    # Initializing Neutrino class
     snv = Neutrino(mx,Tx,psi)
     Ev = snv.Ev                # Get the required Ev
     dEv = snv.dEv              # Get Jacobian dEv/dTx
