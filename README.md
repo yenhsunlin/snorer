@@ -104,6 +104,7 @@ $$
 N_{\rm BDM} = \int_{t_{\rm min}}^{\rm t_{\rm max}} dt \int_{T_{\chi,{\rm min}}}^{T_{\chi,{\rm max}}}
 \frac{d\Phi_{\chi}(T_\chi, t^\prime)}{dT_{\chi}dt} \times N_e \sigma_{\chi e}
 $$
+
 where $N_e$ is the total electron number in the detector and $\sigma_{\chi e}$ the DM-$e$ cross section.
 This can be accomplished by `snorer.event()` with $(m_\chi,R_\star,\beta)$ the necessary inputs.
 The default $(t_{\rm min},t_{\rm max})=(10~{\rm s},35~{\rm yrs})$ and $(T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,30)$ MeV.
