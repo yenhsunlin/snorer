@@ -6,7 +6,7 @@
 # snorer: *S*upernova-*N*eutrino-b*O*osted da*R*k matt*ER*
 
 
-`snorer` is a package for evaluating time-of-flight signatures of supernova-neutrino-boosted dark matter (${\rm SN}\nu~{\rm BDM}$) from our Milky Way (MW) and SN1987a in Large Magellanic Cloud (LMC) based on
+`snorer` is a package for evaluating time-of-flight signatures of supernova-neutrino-boosted dark matter (SN*ν* BDM) from our Milky Way (MW) and SN1987a in Large Magellanic Cloud (LMC) based on
 <a href = "https://doi.org/10.1103/PhysRevLett.130.111002" target = "_blank">*Phys. Rev. Lett.* **130**, 111002 (2023)</a> [<a href = "https://arxiv.org/abs/2206.06864" target = "_blank">arXiv:2206.06864</a>]
 and
 <a href = "https://doi.org/10.1103/PhysRevD.108.083013" target = "_blank">*Phys. Rev. D* **108**, 083013 (2023)</a>
@@ -76,7 +76,7 @@ Let $(T_\chi,m_\chi)=(15,0.075)$ MeV, we can use
     0.9999876239921284
 
 
-### ${\rm SN}\nu~{\rm BDM}$ Flux 
+### SN*ν* BDM Flux 
 
 The BDM flux, or *afterglow* to the ${\rm SN}\nu$, due to SN that is $R_\star$ distant away from us can be evaluated by 
 
@@ -96,7 +96,7 @@ Suppose SN's location is at GC, we have $R_\star=8.5$ kpc and $\beta=0$, and exa
 
 Users can turn off the spike feature by inserting `is_spike=False` and will find both numerical results are similar. It implies the contribution to the BDM flux is due to the place outside the spike's influencial region.
 
-### ${\rm SN}\nu~{\rm BDM}$ Event
+### SN*ν* BDM Event
 
 The BDM event number in a detector after exposing to the flux for a period of time, $(t_{\rm min},t_{\rm max})$, can be evaluated by
 
@@ -124,16 +124,34 @@ Suppose it happened in Super-Kamiokande with $N_e\approx 7\times 10^{33}$ and as
     >>> N_BDM*Ne*sigma_xe
     1.1635218251002724e-07
 
-### *Experimental* :: Implementation of Particle Physics Model and Arbitrary Distant Galaxy
+### *Experimental* :: Implementation of Particle Physics Model and SN in Arbitrary Distant Galaxy
 
 The aforementioned functions for evaluating BDM signatures are based on model-agnostic picture. It generally means the cross sections between dark and visble sectors are simply independent of any physical quantities, eg. energy, mass and coupling constants.
 
 The most important feature of `snorer` is that it offers a general interface for users to implement their favorite particle models.
+Furthermore, SN is not necessary residing in MW or LMC. As long as users can provide these celetial objects' coordinates expressed in *ICRS J2000.0* system, `snorer` can do the calculation.
+`snorer` also allows users to customize the halo shape, including or excluding spike feature, of such distant galaxy.
+
+This will be done by introducing a *class* `snorer.GeneralInterface`.
+All these user-specified features will compose an instance of `snorer.GeneralInterface`.
+The BDM signatures can be evaluated by calling the associated *methods* within it.
+We have a detail example of this in `examples/tutorial.ipynb`, also see the in-class docstring for more information.
 
 
-### Useful Classes
+### Other Useful Classes
 
 We also provide many useful `classes` at users' disposal. See `examples/tutorial.ipynb` for details.
+
+## Known Issue
+
+To evaluate BDM event, `snorer` uses `vegas` as the backend engine for handling multidimensional integration.
+The sampling method of `vegas` cannot manipulate`snorer.event()` as well as the method in the instance of `snorer.GeneralInterface` properly, when SN is exactly at GC with spike feature turning on and no DM self-annihilation.
+
+Since the spike is a highly singular behavior, the sampling method may miss the substantial DM contribution from the inner galactic region and causes underestimate of $N_{\rm BDM}$ plus unstable results. 
+To avoid this, users may try to displace the SN from GC when evaluating $N_{\rm BDM}$ when DM sipke turning on and no DM annihilation.
+For BDM flux evaluation, there is no such issue.
+
+This issue is scheduled to fix in the next version of `snorer`.
 
 ## Bugs and troubleshooting
 
