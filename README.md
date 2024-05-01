@@ -150,7 +150,7 @@ To evaluate BDM event, `snorer` uses `vegas` to handle the multidimensional inte
 The sampling method of `vegas` cannot manipulate`snorer.event()` as well as the method in the instance of `snorer.GeneralInterface` properly, when SN is exactly at GC with spike feature turning on and no DM self-annihilation.
 
 Since the spike is a highly singular behavior, the sampling method may miss the substantial DM contribution from the inner galactic region and causes underestimate of $N_{\rm BDM}$ plus unstable results. 
-To avoid this, users may try to displace the SN from GC when evaluating $N_{\rm BDM}$ whith DM sipke turning on and no DM annihilation.
+To avoid this, users may try to displace the SN from GC a little bit when evaluating $N_{\rm BDM}$ with DM sipke turning on and no DM annihilation.
 For BDM flux evaluation, there is no such issue.
 
 To be fair, the probability of a very cuspy DM spike surving the gravitational disturbance without annihilating away and SN happening exactly at the GC might be very rare.
