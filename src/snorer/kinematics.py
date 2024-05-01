@@ -239,7 +239,7 @@ class Mandelstam(Kinematics):
     @property
     def t(self):
         E2 = self.T2 + self.m2
-        return -2*E2*self.m2 + self.m1**2 + self.m2**2
+        return -2*self.m2*(E2 - self.m2)
 
     @property
     def u(self):
