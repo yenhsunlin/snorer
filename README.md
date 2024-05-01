@@ -31,7 +31,7 @@ and everything should be processed on-the-fly.
 
 ### Dependency
 
-`snorer` requires python >= 3.8 and the following packages these external packages
+`snorer` requires python >= 3.8 and the following external packages
 
 - `numpy` >= 1.20.0
 - `scipy` >= 1.10.0
