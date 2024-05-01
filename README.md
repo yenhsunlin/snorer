@@ -52,14 +52,14 @@ To import, do
     >>> import snorer
 
 in python terminal and is similar in the jupyter notebook.
-All functions and classes can be accessed by typing `snorer.foo()` where `foo` is the name.
+All functions and classes can be accessed by typing `snorer.foo()` where `foo` is the function/class/module name.
 
 
 
 
 ### Useful Constants
 
-We document various useful physical constants and conversion factors...etc as the *attributes* of an instance `snorer.constant`.
+We document various useful physical constants and conversion factors...etc as the *attributes* of the instance `snorer.constant`.
 For example, we can retrieve
 
     >>> snorer.constant.me      # electron mas, MeV
@@ -87,7 +87,7 @@ Let $(T_\chi,m_\chi)=(15,0.075)$ MeV, we can use
 
 ### SN*ν* BDM Flux 
 
-The BDM flux, or *afterglow* to the ${\rm SN}\nu$, due to SN that is $R_\star$ distant away from us can be evaluated by 
+The BDM flux, or *afterglow* to the ${\rm SN}\nu$, due to SN exploded at $R_\star$ distant away from us can be evaluated by 
 
 $$
 \frac{d\Phi_{\chi}(T_\chi, t^\prime)}{dT_{\chi}dt} =
@@ -97,14 +97,16 @@ $$
 where $t$ is the BDM ToF with time-zero at the discovery of SN*ν* on Earth and $t^\prime$ is the total time. We focus on $t$ instead of $t^\prime$.
 Zenith angle $\theta$ and azimuthal angle $\phi$ are relative to the SN-Earth line-of-sight. The default DM-*ν* cross section is $\sigma_{\chi\nu}=10^{-45}$ cm<sup>2</sup>.
 
-The function to evaluate this flux is `snorer.flux()` with $(t,T_\chi,m_\chi,R_\star,\beta)$ are the necessary inputs. 
-Suppose SN's location is at GC, we have $R_\star=8.5$ kpc and $\beta=0$, and examine the flux with turning on DM spike feature
+The function to evaluate this is `snorer.flux()` with $(t,T_\chi,m_\chi,R_\star,\beta)$ are the necessary inputs. 
+Suppose SN's location is at GC, we have $R_\star=8.5$ kpc and $\beta=0$, with default GC-Earth distance $R_e=8.5$ kpc, too.
+With DM spike included, the BDM flux can be calcualted
 
     >>> t,Tx,mx,Rstar,beta = 100,15,1e-2,8.5,0
-    >>> snorer.flux(t,Tx,mx,Rstar,beta,neval=15000)
+    >>> snorer.flux(t,Tx,mx,Rstar,beta,is_spike=True,neval=15000)
     4.572295175982701e-16
 
-Users can turn off the spike feature by inserting `is_spike=False` and will find both numerical results are similar. It implies the contribution to the BDM flux is due to the place outside the spike's influencial region.
+Users can of course turn off the spike feature by setting `is_spike=False` and will find both numerical results are similar.
+It implies the contribution to the BDM flux comes from the place outside the spike's influence.
 
 ### SN*ν* BDM Event
 
@@ -116,7 +118,7 @@ N_{\rm BDM} = \int_{t_{\rm min}}^{\rm t_{\rm max}} dt \int_{T_{\chi,{\rm min}}}^
 $$
 
 where $N_e$ is the total electron number in the detector and $\sigma_{\chi e}$ the DM-*e* cross section.
-This can be accomplished by `snorer.event()` with $(m_\chi,R_\star,\beta)$ the necessary inputs.
+This task can be accomplished by `snorer.event()` with $(m_\chi,R_\star,\beta)$ the necessary inputs.
 The default $(t_{\rm min},t_{\rm max})=(10~{\rm s},35~{\rm yrs})$ and $(T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,30)$ MeV.
 
 Note that this function is normalized to $N_e=1$ and $\sigma_{\chi e}=1$ cm<sup>2</sup>.
@@ -129,7 +131,7 @@ Now let $m_\chi=0.015$ MeV,
     >>> N_BDM
     1.662174035857532e-06
 
-Suppose it happened in Super-Kamiokande with $N_e\approx 7\times 10^{33}$ and assume $\sigma_{\chi e}=10^{-35}$ cm<sup>2</sup>. The correct $N_{\rm BDM}$ would be
+For Super-Kamiokande, it has $N_e\approx 7\times 10^{33}$ and assume $\sigma_{\chi e}=10^{-35}$ cm<sup>2</sup>. The associated $N_{\rm BDM}$ is
 
     >>> Ne,sigma_xe = 7e33,1e-35
     >>> N_BDM*Ne*sigma_xe
@@ -137,14 +139,14 @@ Suppose it happened in Super-Kamiokande with $N_e\approx 7\times 10^{33}$ and as
 
 ### *Experimental* :: Implementation of Particle Physics Model and SN in Arbitrary Distant Galaxy
 
-The aforementioned functions for evaluating BDM signatures are based on model-agnostic picture. It means the cross sections between dark and visble sectors are generally independent of any physical quantities, eg. energy, mass and coupling constants.
+The aforementioned functions for evaluating BDM signatures are based on model-agnostic picture. It means the cross sections between dark and visble sectors are generally independent of physical quantities, eg. energy, mass and coupling constants.
 
-The most important feature of `snorer` is that it offers a general interface for users to implement their favorite particle models.
-Furthermore, SN is not necessary residing in MW or LMC. As long as users can provide these celetial objects' coordinates expressed in *ICRS J2000.0* system, `snorer` can do the calculation.
+The most important feature `snorer` carries is that it offers a general interface for users to implement their favorite particle models.
+Furthermore, SN is not necessary exploding in our MW or LMC. As long as users can provide these celetial objects' coordinates and expressed them in *ICRS J2000.0* metrics, `snorer` can do the calculation.
 `snorer` also allows users to customize the halo shape, by manipulating $\rho_s$, $r_s$ and $n$...etc, and including or excluding spike feature, of such distant galaxy.
 
-This will be done by introducing a *class* `snorer.GeneralInterface`.
-All these user-specified features will compose an instance of `snorer.GeneralInterface`.
+This will be done by the *class* `snorer.GeneralInterface`.
+All these user-specified features will be composed into an instance of `snorer.GeneralInterface`.
 The BDM signatures can be evaluated by calling the associated *methods* within it.
 We have an example in `examples/tutorial.ipynb`, also see the in-class docstring for more information.
 
@@ -156,15 +158,15 @@ We also provide many useful functions and classes at users' disposal. See `examp
 ## Known Issue
 
 To evaluate BDM event, `snorer` uses `vegas` to handle the multidimensional integration.
-The sampling method of `vegas` cannot manipulate`snorer.event()` as well as the method in the instance of `snorer.GeneralInterface` properly, when SN is exactly at GC with spike feature turning on and no DM self-annihilation.
+The sampling method of `vegas` cannot manipulate event calculation, e.g. `snorer.event()` and the method in the instance of `snorer.GeneralInterface`, properly, when SN is exactly at GC with spike and no DM self-annihilation.
 
 Since the spike is a highly singular behavior, the sampling method may miss the substantial DM contribution from the inner galactic region and causes underestimate of $N_{\rm BDM}$ plus unstable results. 
-To avoid this, users may try to displace the SN from GC a little bit when evaluating $N_{\rm BDM}$ with DM sipke turning on and no DM annihilation.
+To avoid this, users may try to displace the SN from GC a little bit when evaluating $N_{\rm BDM}$ with DM sipke and no DM annihilation.
 For BDM flux evaluation, there is no such issue.
 
 To be fair, the probability of a very cuspy DM spike surving the gravitational disturbance without annihilating away and SN happening exactly at the GC might be very rare.
 
-This issue is scheduled to fix in the next version of `snorer`.
+This issue is scheduled to fix in the next major update of `snorer`.
 
 ## Bugs and troubleshooting
 
