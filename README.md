@@ -12,6 +12,15 @@ and
 <a href = "https://doi.org/10.1103/PhysRevD.108.083013" target = "_blank">*Phys. Rev. D* **108**, 083013 (2023)</a>
 [<a href = "https://arxiv.org/abs/2307.03522" target = "_blank">arXiv:2307.03522</a>].
 
+### Citation
+
+If you use this package or part of the code in your research, please cite the following:
+
+1. Y.-H. Lin *et al.*, *Phys. Rev. Lett.* **130**, 111002 (2023), arXiv:2206.06864
+2. Y.-H. Lin *et al.*, *Phys. Rev. D* **108**, 083013 (2023), arXiv:2307.03522
+3. `snorer`: https://github.com/yenhsunlin/snorer
+
+
 ## Installation
 
 To install, excute the following command on the prompt
