@@ -424,7 +424,7 @@ class GeneralInterface(Constants):
         See Eq. (16) in Phys. Rev. D 108, 083013 (2023) and the discussion in
         the maintext.
         """
-        Rstar,Re,beta = self.Rstar,self.Re,self.beta
+        Rstar = self.Rstar
         Tx_min,Tx_max = TxRange
         t_min,t_max = tRange
         
