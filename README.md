@@ -82,7 +82,7 @@ The BDM flux, or *afterglow* to the ${\rm SN}\nu$, due to SN that is $R_\star$ d
 
 $$
 \frac{d\Phi_{\chi}(T_\chi, t^\prime)}{dT_{\chi}dt} =
-\left.\tau\int_0^{2\pi} d\phi\int_{0}^{\pi/2}\sin\theta d\theta~ \mathcal{J} j_{\chi}(r(\phi),D,T_{\chi},\psi)\right|_{t^{\prime}=\frac{D}{c}+\frac{d}{v_{\chi}}}
+\tau\int_0^{2\pi} d\phi\int_{0}^{\pi/2}\sin\theta d\theta~ \mathcal{J} j_{\chi}(r(\phi),D,T_{\chi},\psi)
 $$
 
 where $t$ is the BDM ToF with time-zero at the discovery of  ${\rm SN}\nu$ on Earth and $t^\prime$ is the total time. We focus on $t$ instead of $t^\prime$.
