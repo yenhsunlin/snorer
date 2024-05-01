@@ -151,7 +151,7 @@ The BDM signatures can be evaluated by calling the associated *methods* within i
 We have an example in `examples/tutorial.ipynb`, also see the in-class docstring for more information.
 
 
-### Other Useful Functions Classes
+### Other Useful Functions and Classes
 
 We also provide many useful functions and classes at users' disposal. See `examples/tutorial.ipynb` for details.
 
