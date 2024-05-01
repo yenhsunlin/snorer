@@ -139,25 +139,28 @@ class Kinematics:
         self.psi = psi
 
     @property
-    def _x(self):
+    def x(self):
         return cos(self.psi)
     
     def get_sanity(self) -> bool:
         return self.get_T1() >= 0 
     
     def get_T1(self) -> float:
-        T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
-        p2sq = T2*(T2+2*m2)
+        T2,m1,m2,x = self.T2,self.m1,self.m2,self.x
         # Mathematica generated expression
-        numerator = sqrt(m1**2*p2sq**2*x**4 + p2sq*T2**2*x**2*(m2**2-m1**2)) + m2*T2**2
-        denominator = p2sq*x**2 - T2**2
-        return numerator/denominator - m1
+        numerator = (2*m1*T2+2*m2*T2-4*m1*m2*x**2-2*m1*T2*x**2+sqrt(-4*(-m1**2*T2-2*m1*m2*T2  \
+                     -m2**2*T2)*(-T2+2*m2*x**2+T2*x**2)+(-2*m1*T2-2*m2*T2+4*m1*m2*x**2        \
+                     +2*m1*T2*x**2)**2))
+        denominator = (2*(-T2+2*m2*x**2+T2*x**2))
+        return numerator/denominator
 
     def get_dT1(self) -> float:
-        T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
+        T2,m1,m2,x = self.T2,self.m1,self.m2,self.x
         # Mathematica generated expression
-        numerator = (m2*x**2*(m1**2*T2*(-T2+(2*m2+T2)*x**2)+m2*(m2*T2*(T2+(2*m2+T2)*x**2)+2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2*(-T2+(2*m2+T2)*x**2))))))
-        denominator = ((T2-(2*m2+T2)*x**2)**2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2*(-T2+(2*m2+T2)*x**2))))
+        numerator = (m2*x**2*(m1**2*T2*(-T2+(2*m2+T2)*x**2)+m2*(m2*T2*(T2+(2*m2+T2)*x**2)+    \
+                     2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2*(-T2+(2*m2+T2)*x**2)))))) 
+        denominator = ((T2-(2*m2+T2)*x**2)**2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2       \
+                      *(-T2+(2*m2+T2)*x**2))))
         return numerator/denominator
 
     def get_dLips(self) -> float:
@@ -173,7 +176,8 @@ class Kinematics:
         p2sq = T2*(T2+2*m2)
         p2 = sqrt(p2sq)
         # Mathematica generated expression
-        num = (p2sq*T2**2*x*((m1-m2)*(m1+m2)*T2**2-(m1**2+m2**2)*p2sq*x**2-2*m2*sqrt((-m1**2+m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4)))
+        num = (p2sq*T2**2*x*((m1-m2)*(m1+m2)*T2**2-(m1**2+m2**2)*p2sq*x**2-2*m2*sqrt((-m1**2  \
+               +m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4)))
         den = ((T2-p2*x)**2*(T2+p2*x)**2*sqrt((-m1**2+m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4))
         return -2*(num/den)*(E2 - p2*x) + 2*E1*p2
 
