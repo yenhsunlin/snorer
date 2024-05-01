@@ -120,7 +120,7 @@ Now let $m_\chi=0.015$ MeV,
     >>> N_BDM
     1.662174035857532e-06
 
-Suppose it happened in Super-Kamiokande with $N_e\approx 7\times 10^{33}$ and assume $\sigma_{\chi e}=10^{-30}$ cm<sup>2</sup>. The correct $N_{\rm BDM}$ would be
+Suppose it happened in Super-Kamiokande with $N_e\approx 7\times 10^{33}$ and assume $\sigma_{\chi e}=10^{-35}$ cm<sup>2</sup>. The correct $N_{\rm BDM}$ would be
 
     >>> Ne,sigma_xe = 7e33,1e-35
     >>> N_BDM*Ne*sigma_xe
