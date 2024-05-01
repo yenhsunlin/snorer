@@ -14,7 +14,7 @@ and
 
 ### Citation
 
-If you use this package or part of the code in your research, please cite the following:
+If you use this package or part of the code in your research, please cite the followings:
 
 1. Y.-H. Lin *et al.*, *Phys. Rev. Lett.* **130**, 111002 (2023), arXiv:2206.06864
 2. Y.-H. Lin *et al.*, *Phys. Rev. D* **108**, 083013 (2023), arXiv:2307.03522
