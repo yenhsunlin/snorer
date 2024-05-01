@@ -85,8 +85,8 @@ $$
 \tau\int_0^{2\pi} d\phi\int_{0}^{\pi/2}\sin\theta d\theta~ \mathcal{J} j_{\chi}(r(\phi),D,T_{\chi},\psi)
 $$
 
-where $t$ is the BDM ToF with time-zero at the discovery of  ${\rm SN}\nu$ on Earth and $t^\prime$ is the total time. We focus on $t$ instead of $t^\prime$.
-Zenith angle $\theta$ and azimuthal angle $\phi$ are relative to the SN-Earth line-of-sight. The default DM-$\nu$ cross section is $\sigma_{\chi\nu}=10^{-45}$ cm<sup>2</sup>.
+where $t$ is the BDM ToF with time-zero at the discovery of SN*ν* on Earth and $t^\prime$ is the total time. We focus on $t$ instead of $t^\prime$.
+Zenith angle $\theta$ and azimuthal angle $\phi$ are relative to the SN-Earth line-of-sight. The default DM-*ν* cross section is $\sigma_{\chi\nu}=10^{-45}$ cm<sup>2</sup>.
 
 The function to evaluate this flux is `snorer.flux()` with $(t,T_\chi,m_\chi,R_\star,\beta)$ are the necessary inputs. 
 Suppose SN's location is at GC, we have $R_\star=8.5$ kpc and $\beta=0$, and examine the flux with turning on DM spike feature
@@ -106,7 +106,7 @@ N_{\rm BDM} = \int_{t_{\rm min}}^{\rm t_{\rm max}} dt \int_{T_{\chi,{\rm min}}}^
 \frac{d\Phi_{\chi}(T_\chi, t^\prime)}{dT_{\chi}dt} \times N_e \sigma_{\chi e}
 $$
 
-where $N_e$ is the total electron number in the detector and $\sigma_{\chi e}$ the DM-$e$ cross section.
+where $N_e$ is the total electron number in the detector and $\sigma_{\chi e}$ the DM-*e* cross section.
 This can be accomplished by `snorer.event()` with $(m_\chi,R_\star,\beta)$ the necessary inputs.
 The default $(t_{\rm min},t_{\rm max})=(10~{\rm s},35~{\rm yrs})$ and $(T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,30)$ MeV.
 
@@ -128,30 +128,31 @@ Suppose it happened in Super-Kamiokande with $N_e\approx 7\times 10^{33}$ and as
 
 ### *Experimental* :: Implementation of Particle Physics Model and SN in Arbitrary Distant Galaxy
 
-The aforementioned functions for evaluating BDM signatures are based on model-agnostic picture. It generally means the cross sections between dark and visble sectors are simply independent of any physical quantities, eg. energy, mass and coupling constants.
+The aforementioned functions for evaluating BDM signatures are based on model-agnostic picture. It means the cross sections between dark and visble sectors are generally independent of any physical quantities, eg. energy, mass and coupling constants.
 
 The most important feature of `snorer` is that it offers a general interface for users to implement their favorite particle models.
 Furthermore, SN is not necessary residing in MW or LMC. As long as users can provide these celetial objects' coordinates expressed in *ICRS J2000.0* system, `snorer` can do the calculation.
-`snorer` also allows users to customize the halo shape, including or excluding spike feature, of such distant galaxy.
+`snorer` also allows users to customize the halo shape, by manipulating $\rho_s$, $r_s$ and $n$...etc, and including or excluding spike feature, of such distant galaxy.
 
 This will be done by introducing a *class* `snorer.GeneralInterface`.
 All these user-specified features will compose an instance of `snorer.GeneralInterface`.
 The BDM signatures can be evaluated by calling the associated *methods* within it.
-We have a detail example of this in `examples/tutorial.ipynb`, also see the in-class docstring for more information.
+We have an example in `examples/tutorial.ipynb`, also see the in-class docstring for more information.
 
 
-### Other Useful Classes
+### Other Useful Functions Classes
 
-We also provide many useful `classes` at users' disposal. See `examples/tutorial.ipynb` for details.
+We also provide many useful functions and classes at users' disposal. See `examples/tutorial.ipynb` for details.
 
 ## Known Issue
 
-To evaluate BDM event, `snorer` uses `vegas` as the backend engine for handling multidimensional integration.
+To evaluate BDM event, `snorer` uses `vegas` to handle the multidimensional integration.
 The sampling method of `vegas` cannot manipulate`snorer.event()` as well as the method in the instance of `snorer.GeneralInterface` properly, when SN is exactly at GC with spike feature turning on and no DM self-annihilation.
 
 Since the spike is a highly singular behavior, the sampling method may miss the substantial DM contribution from the inner galactic region and causes underestimate of $N_{\rm BDM}$ plus unstable results. 
-To avoid this, users may try to displace the SN from GC when evaluating $N_{\rm BDM}$ when DM sipke turning on and no DM annihilation.
+To avoid this, users may try to displace the SN from GC when evaluating $N_{\rm BDM}$ whith DM sipke turning on and no DM annihilation.
 For BDM flux evaluation, there is no such issue.
+(to be fair, the probability of a very cuspy DM spike surving the gravitational distrubance and SN happening exactly at the GC might be very rare)
 
 This issue is scheduled to fix in the next version of `snorer`.
 
