@@ -392,15 +392,15 @@ class GeneralInterface(Constants):
         See Eq. (6) in Phys. Rev. D 108, 083013 (2023) 
         """
         Rstar = self.Rstar
-        _,t_van = get_tof(Tx,mx,Rstar)                           # get the vanishing time t_van 
-        if t <= t_van:
-            theta_min,theta_max = get_thetaRange(t,Tx,mx,Rstar)  # get the zenith angle range that contains non-zero BDM flux
-            integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
-            flux = integ(lambda x: self._diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],tau=tau),
-                         nitn=nitn,neval=neval).mean
-            return flux
-        else:                                                    # t > t_van will yield zero BDM
-            return 0
+        # _,t_van = get_tof(Tx,mx,Rstar)                           # get the vanishing time t_van 
+        # if t <= t_van:
+        theta_min,theta_max = get_thetaRange(t,Tx,mx,Rstar)  # get the zenith angle range that contains non-zero BDM flux
+        integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
+        flux = integ(lambda x: self._diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],tau=tau),
+                        nitn=nitn,neval=neval).mean
+        return flux
+        # else:                                                    # t > t_van will yield zero BDM
+        #     return 0
     
     def event(self,mx,TxRange=[5,30],tRange=[10,35*constant.year2Seconds],tau=10,
               nitn=10,neval=30000) -> float:
