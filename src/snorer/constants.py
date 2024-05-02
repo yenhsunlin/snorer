@@ -131,7 +131,7 @@ class Constants:
     
     @property
     def SN1987a_coord(self):   # SN1987a's RA, DEC and distance
-        return ['05h35m27.8733s', '-69d16m10.478s',51.7]
+        return ['05h35m27.8733s', '-69d16m10.478s',51.4]
 
     @property
     def MW_profile(self):      # Profile parameters for MW
