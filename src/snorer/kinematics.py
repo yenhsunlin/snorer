@@ -170,7 +170,7 @@ class Kinematics:
         return abs(self._du_dx()/64/pi/s/psq/2/pi)
 
     def _du_dx(self) -> float:
-        T2,m1,m2,x = self.T2,self.m1,self.m2,self._x
+        T2,m1,m2,x = self.T2,self.m1,self.m2,self.x
         E1 = self.get_T1() + m1
         E2 = T2 + m2
         p2sq = T2*(T2+2*m2)
