@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "snorer"
-version = "1.0.0"
+version = "1.0.1"
 description = "This package evaluates the time-of-flight signatures of boosted dark matter due to supernova neutrinos from our Milky Way"
 readme = "README.md"
 authors = [{ name = "Yen-Hsun Lin", email = "yenhsun@phys.ncku.edu.tw" }]
