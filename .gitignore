@@ -33,3 +33,4 @@ pip-wheel-metadata/
 tests/
 test.*
 .virtual_documents/
+.DS_Store
