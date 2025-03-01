@@ -16,7 +16,7 @@ __all__ = ['Geometry',]
 
 #---------- Import required utilities ----------#
 
-from numpy import sqrt,isclose,cos,sin
+from numpy import sqrt,isclose,cos,sin,clip,finfo
 from .constants import constant
 from .sysmsg import FlagError
 
@@ -150,13 +150,10 @@ class Geometry:
         D = sqrt(D2)
         # Get cos(psi)
         denominator = 2*D*d # check if the denominator in the law of cosine is not 0.0
-        if ~isclose(0,denominator,atol=1e-100):
+        #if ~isclose(0,denominator,atol=1e-100):
+        if abs(denominator) > finfo(float).eps:
             numerator = Rstar**2 - D2 - d**2
-            cosPsi = numerator/denominator
-            # Dealing with round-off error
-            if cosPsi > 1: cosPsi = 1
-            elif cosPsi < -1: cosPsi = -1
-            else: pass
+            cosPsi = clip(numerator/denominator,-1,1)
         else:
             # the denominator is 0.0, which means d = 0, applying L'Hospital's rule to get cos(psi)
             cosPsi = 0
@@ -181,7 +178,7 @@ class Geometry:
         # Calculate D^2 via law of cosine
         D2 = d**2 + Rstar**2 - 2*d*Rstar*cos(theta)
         # D2 might turn minus due to round-off error, it shoud truncate at 0
-        if D2 < 0: D2 = 0
+        D2 = clip(D2,0,None)
     
         if is_squared is True:
             return D2
@@ -210,7 +207,7 @@ class Geometry:
         # Calculate ell^2 via law of cosine
         ell2 = Re**2 + (d*cos(theta))**2 - 2*Re*d*cos(theta)*cos(beta)
         # ell2 might turn minus due to round-off error, it should truncate at 0
-        if ell2 < 0: ell2 = 0.0
+        ell2 = clip(ell2,0,None)
     
         if is_squared is True:
             return ell2
@@ -245,11 +242,7 @@ class Geometry:
         denominator = 2*cos(theta)*sqrt(ell2)*d # check if the denomator in the law of cosine is not 0.0
         if ~isclose(0,denominator,atol=1e-100):
             numerator = Re**2 - ell2 - (d*cos(theta))**2
-            cosIota = numerator/denominator
-            # Dealing with round-off error
-            if cosIota > 1: cosIota = 1
-            elif cosIota < -1: cosIota = -1
-            else: pass
+            cosIota = clip(numerator/denominator,-1,1)
         else:
             # the denominator is 0, which means d = 0, applying L'Hospital to get cos(iota)
             cosIota = 0
@@ -258,6 +251,7 @@ class Geometry:
         
         # Calculate r'^2
         rp2 = ell2*cosIota**2 + (sqrt(ell2)*sinIota - h*sin(phi))**2 + h**2*cos(phi)**2
+        rp2 = clip(rp2,0,None) # avoid negative rprime^2 due to round-off error
         return sqrt(rp2)
     
     @classmethod
@@ -280,7 +274,6 @@ class Geometry:
         cos_theta = cos(theta)
         prefactor = vx/(1 - vx**2)
         root_squared = (Rstar**2 - zeta**2)*(1 - vx**2) + (Rstar*vx*cos_theta - zeta)**2
-        if root_squared < 0:
-            root_squared = 0
+        root_squared = clip(root_squared,0,None) # avoid negative root squared due to round-off error
         d = prefactor*(zeta - Rstar*vx*cos_theta - sqrt(root_squared))
-        return abs(d)
+        return clip(d,0,None) # avoid negative distance

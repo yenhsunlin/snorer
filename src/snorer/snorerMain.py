@@ -227,7 +227,7 @@ def diff_flux(t,Tx,mx,theta,phi,Rstar,beta,
     psi = arccos(bdmGeometry.cosPsi) # Get the required scattering angle
     
     # Initializing Neutrino class
-    snv = Neutrino(mx,Tx,psi)
+    snv = Neutrino(Tx,mx,psi)
     Ev = snv.Ev                # Get the required Ev
     dEv = snv.dEv              # Get Jacobian dEv/dTx
     is_sanity = snv.is_sanity  # check if the combination (Tx,mx,psi) satisfies energy conservation

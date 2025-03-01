@@ -25,7 +25,7 @@ __all__ = ['Kinematics',
 
 #---------- Import required utilities ----------#
 
-from numpy import sin,cos,tan,arccos,sqrt,pi,abs
+from numpy import sin,cos,tan,arccos,sqrt,pi,abs,clip
 from scipy.optimize import root_scalar
 from .constants import constant
 
@@ -136,11 +136,11 @@ class Kinematics:
         self.m1 = m1
         self.m2 = m2
         self.T2 = T2
-        self.psi = psi
+        self._x = cos(psi)
 
     @property
     def x(self):
-        return cos(self.psi)
+        return self._x
     
     def get_sanity(self) -> bool:
         T2,m2,x = self.T2,self.m2,self.x
@@ -238,24 +238,41 @@ class Mandelstam(Kinematics):
     """
     def __init__(self,m1,m2,T2,psi):
         super().__init__(m1,m2,T2,psi)
+        self.T1 = self.get_T1()
+        self.s = self.__class__.get_s()
+        self.t = self.__class__.get_t()
+        self.u = self.__class__.get_u()
 
-    @property
-    def T1(self) -> float:
-        """Get the required T1 and assigend it as an instance attribute"""
-        return self.get_T1()
+    # @property
+    # def T1(self) -> float:
+    #     """Get the required T1 and assigend it as an instance attribute"""
+    #     return self._T1
     
-    @property
-    def s(self):
+    # @property
+    # def s(self):
+    #     return self._s
+    
+    # @property
+    # def t(self):
+    #     E2 = self.T2 + self.m2
+    #     return -2*self.m2*(E2 - self.m2)
+
+    # @property
+    # def u(self):
+    #     return 2*(self.m1**2 + self.m2**2) - self.s - self.t
+    
+    @classmethod
+    def get_s(self):
         E1 = self.T1 + self.m1
         return 2*E1*self.m2 + self.m1**2 + self.m2**2
     
-    @property
-    def t(self):
+    @classmethod
+    def get_t(self):
         E2 = self.T2 + self.m2
         return -2*self.m2*(E2 - self.m2)
 
-    @property
-    def u(self):
+    @classmethod
+    def get_u(self):
         return 2*(self.m1**2 + self.m2**2) - self.s - self.t
 
 
@@ -301,7 +318,7 @@ class Neutrino(Kinematics):
     >>> snv.Ev
     -0.8451953159963379
     >>> snv.dEv
-    0.04756415761959332
+    0.00317073246618734
     >>> snv.is_sanity
     False
 
@@ -311,26 +328,29 @@ class Neutrino(Kinematics):
     See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for details.
     """
     
-    def __init__(self,mx,Tx,psi):
+    def __init__(self,Tx,mx,psi):
         super().__init__(0,mx,Tx,psi)
+        self.is_sanity = self.get_sanity() # False means the input (Tx,mx,psi) violating the energy conservation
+        self.Ev = self.get_T1() # Get the required SNv energy
+        self.dEv = self.get_dT1() # Get the dEv/dTx
 
-    @property
-    def is_sanity(self):
-        """
-        If returns False, it means the combination (Tx,mx,psi)
-        violates energy conservation and is unphysical
-        """
-        return self.get_sanity()
+    # @property
+    # def is_sanity(self):
+    #     """
+    #     If returns False, it means the combination (Tx,mx,psi)
+    #     violates energy conservation and is unphysical
+    #     """
+    #     return self.get_sanity()
     
-    @property
-    def Ev(self):
-        """Get the required SNv energy"""
-        return self.get_T1()
+    # @property
+    # def Ev(self):
+    #     """Get the required SNv energy"""
+    #     return self.get_T1()
 
-    @property
-    def dEv(self):
-        """Get the Jacobian dEv/dTx"""
-        return self.get_dT1()
+    # @property
+    # def dEv(self):
+    #     """Get the Jacobian dEv/dTx"""
+    #     return self.get_dT1()
 
 
 def get_vx(Tx,mx) -> float:
@@ -395,6 +415,7 @@ def get_maxPsi(Tx,mx) -> float:
     psi_max: rad
     """
     maxCosValue = sqrt(Tx/(Tx + 2*mx))
+    maxCosValue = clip(maxCosValue,-1,1)
     return arccos(maxCosValue)
 
 

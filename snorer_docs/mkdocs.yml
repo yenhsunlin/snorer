@@ -1,0 +1,41 @@
+site_name: snorer
+
+nav:
+  - Introduction: index.md
+  - User Manual:
+    - Physics Overview: manual/overview.md
+    - Tutorial: tutorial.md
+    - Advanced: advanced.md
+    - Miscellaneous: misc.md
+  - API:
+    - Dark matter halo:
+      - Spike in the center: api/halo/spike.md
+      - Classes:
+        - <code>HaloSpike</code>: api/halo/cls_spike.md
+      - Functions:
+        - <code>dmNumberDensity</code>: api/halo/func_dmnd.md
+    - Particle kinematics:
+      - 2-2 scattering (intro): api/kinematics/22scat.md
+    - Propagation geometry: api/geometry.md
+    - Constants:
+      - Classes:
+        - <code>constants</code>: api/constants/cls_const.md
+    - Utilities:
+      - Monte Carlo generator: api/utils/mcgen.md
+
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  
+
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js

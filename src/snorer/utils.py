@@ -16,13 +16,13 @@ __all__ = ['GeneralInterface',]
 
 #---------- Import required utilities ----------#
 
-from numpy import pi,sin,cos,arccos,isclose
+from numpy import pi,sin,cos,arccos,isclose,clip
 from scipy.integrate import quad
 import vegas
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from .snorerMain import snNuSpectrum
-from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaRange,get_tof,get_tBound
+from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaRange,get_tof,get_tBound,fx_lab
 from .geometry import Geometry
 from .halo import rhox,dmNumberDensity
 from .constants import Constants,constant
@@ -50,14 +50,14 @@ The docstrings should be sufficient for their self-explanations
 """
 
 
-class GeneralInterface(Constants):
+class BoostedDarkMatter(Constants):
     """
     Superclass: Constants
     
     Class with medoths that evaluate SNv BDM coming from SN in arbitrary distant galaxy
-    with DM-v and DM-e interaction cross sections descrbied by a specific particle model.
-    This class has an dependency on Astropy for handling SN/GC coordinates expressed in
-    ICRS J2000.0 system.
+    with DM-v and DM-e interaction cross sections descrbied by a specific particle model
+    or energy-independent cross section. This class has an dependency on Astropy for
+    handling SN/GC coordinates expressed in ICRS J2000.0 system.
 
 
     /*-----------------------------------------------------------------------------*/
@@ -68,17 +68,22 @@ class GeneralInterface(Constants):
     *                  *
     ********************
     
-    SN_coord: SN coordinate list, [RA,DEC,dist]: the first two are right ascension
-              and declination of the celestial object respectively, both in string
-              type. The last one is the distance to the object in kpc
-    GC_coord: Identical to SN_coord, but is for the galactic center
-     amp2_xv: Func type, amplitude squared for DM-v interaction, 4 positioning
-              arguments.
-              amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
-              and the last one is the DM mass.
-     amp2_xe: Identical to amp2_xv, but is for DM-e interaction
-    **kwargs: Keyword arguments that will be passed to dmNumberDensity(), see the
-              following explanation
+      SN_coord: SN coordinate list, [RA,DEC,dist]: the first two are right ascension
+                and declination of the celestial object respectively, both in string
+                type. The last one is the distance to the object in kpc
+      GC_coord: Identical to SN_coord, but is for the galactic center
+       amp2_xv: Func type, amplitude squared for DM-v interaction, 4 positioning
+                arguments.
+                amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
+                and the last one is the DM mass.
+       amp2_xe: Identical to amp2_xv, but is for DM-e interaction
+    dsigma0_xv: Default is None. If you want to use differential DM-nu cross section
+                given by particle model, leave this None. Otherwise, it will disregard
+                amp2_xv.
+     sigma0_xe: Total DM-electron cross section. Default is None. If not None, it will
+                disregard amp2_xe.
+      **kwargs: Keyword arguments that will be passed to dmNumberDensity(), see the
+                following explanation
 
 
     /*-------------------------------IMPORTANT NOTE--------------------------------*/
@@ -249,14 +254,18 @@ class GeneralInterface(Constants):
     The inputs SN_coord and CG_coord are explained previously. The outputs are beta, rad, and separation
     distance, kpc.
     """
-    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/,**kwargs): 
+    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/,dsigma0_xv=None,sigma0_xe=None,**kwargs): 
         self.SN_coord = SN_coord
         self.GC_coord = GC_coord
         self.amp2_xv = amp2_xv
         self.amp2_xe = amp2_xe
-        
+        self.dsigma0_xv = dsigma0_xv
+        self.sigma0_xe = sigma0_xe
+        # Get seperation 3d and beta
+        self._sep3d, self._beta = self.__class__.get_geometry_3d(self.SN_coord,self.GC_coord)
         # keyword arguments that will be passed to dmNumberDensity()
         self.__dict__.update(kwargs)
+        
         # Default is to turn off spike unless user specified otherwise
         if self.__dict__.get('is_spike') is None:
             self.__dict__['is_spike'] = False
@@ -272,11 +281,11 @@ class GeneralInterface(Constants):
 
     @property
     def separation_3d(self):
-        return self.__class__.get_geometry_3d(self.SN_coord,self.GC_coord)[1]
+        return self._sep3d
 
     @property
     def beta(self):
-        return self.__class__.get_geometry_3d(self.SN_coord,self.GC_coord)[0]
+        return self._beta
 
     @property
     def Rstar(self):
@@ -289,7 +298,7 @@ class GeneralInterface(Constants):
     @property
     def __kwargs_nx(self):
         """Remove the unnecessary kwargs for dmNumberDensity()"""
-        newDict = list(self.__dict__.items())[4:]  # the 1st 4 are class inputs
+        newDict = list(self.__dict__.items())[8:]  # the 1st 8 are class inputs
         return dict(newDict)
 
     @classmethod
@@ -305,6 +314,7 @@ class GeneralInterface(Constants):
         sepDist = sn.separation_3d(gc).value
         # Get beta, law of cosine
         cos_beta = (snDist**2 + gcDist**2 - sepDist**2)/2/snDist/gcDist
+        cos_beta = clip(cos_beta,-1,1)
         beta = arccos(cos_beta)
         return beta,sepDist
         
@@ -337,11 +347,17 @@ class GeneralInterface(Constants):
     def _emissivity(self,Ev,dEv,Tx,mx,psi,r,D) -> float:
         """Obtaing the emissivity at boost point, 1/cm^3/MeV/s"""
         dfv = self.snNuFlux(Ev,D)                # Get the SNv flux at D
-        dsigma = self.dsigma_xv(Tx,mx,psi)       # Get the diff. DM-v cross section at psi
+        # Get the diff. DM-v cross section at psi
+        if self.dsigma0_xv is None:
+            # Using model amplitude
+            dsigma = self.dsigma_xv(Tx,mx,psi)
+        else:
+            # Constant xv differential cross section
+            dsigma = fx_lab(Ev,mx,psi)*self.sigma0_const 
         jx = dfv*dsigma*dEv*self.nx(r,mx)        # Compute the emissivity at boost point
         return jx
 
-    def _diff_flux(self,t,Tx,mx,theta,phi,tau) -> float:
+    def _diff_flux(self,t,Tx,mx,theta,phi,tau,r_cut=1e-3) -> float:
         """Get the BDM differential flux"""
         Rstar,Re,beta = self.Rstar,self.Re,self.beta
         vx = get_vx(Tx,mx)
@@ -354,12 +370,12 @@ class GeneralInterface(Constants):
         psi = arccos(bdmGeometry.cosPsi)
         
         # Required SNv energy
-        snv = Neutrino(mx,Tx,psi)
+        snv = Neutrino(Tx,mx,psi)
         Ev = snv.Ev 
         dEv = snv.dEv 
         is_sanity = snv.is_sanity
         
-        if is_sanity:
+        if rprime >= r_cut and is_sanity:
             jx = self._emissivity(Ev,dEv,Tx,mx,psi,rprime,D)
             # Jacobian
             if ~isclose(0,D,atol=1e-100):
