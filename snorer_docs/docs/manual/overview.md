@@ -6,7 +6,7 @@ window.MathJax = {
 };
 </script>
 
-# Physics Overview
+# BDM Physics
 
 We review all the details provided in Refs. [[1](#bib_Lin2023PRL), [2](#bib_Lin2023PRD)].
 While these papers present mathematical expressions suitable for general readers, the content in this section is tailored for programming purposes.
@@ -19,7 +19,7 @@ Given non-zero cross section between DM ($\chi$) and neutrino ($\nu$), it is exp
 from the explosion site. We display the general scheme in [Fig. 1](#snv_bdm_scheme). In this figure, SN, galactic center (GC) and Earth are denoted as S, G and E respectively.
 
 <figure id="snv_bdm_scheme">
-<center><img src="/figs/scheme.svg" alt="scheme" style="width: 60%;">
+<center><img src="../../figs/scheme.svg" alt="scheme" style="width: 60%;">
 <figcaption>Figure 1. The 3D scheme for SN\(\nu\) BDM.
 </figure>
 
@@ -30,9 +30,9 @@ n_\chi(r)=\frac{\rho_s}{m_\chi}\frac{1}{\frac{r}{r_s}(1+\frac{r}{r_s})^2}
 \end{equation}
 $$
 where $\rho_s=184$ MeV cm<sup>−3</sup> and $r_s=24.4$ kpc.
-Due to its spherical symmetric nature, one does not need to know where the galactic plane lies. Unless S is on the axis $\overline{\mathsf{GE}}$, BDM is not azimuthally symmetric around $\varphi$.
+Due to its spherical symmetric nature, one does not need to know where the galactic plane lies. Unless S lies on the axis $\overline{\mathsf{GE}}$, BDM is not azimuthally symmetric around $\varphi$.
 
-### Particle kinematics
+### Particle kinematics 
 
 When a $\nu$ carries energy $E_\nu$ and scatters with a static $\chi$ at B, DM will receive kinetic energy $T_\chi$ by
 $$
@@ -63,7 +63,7 @@ and is independent of $\gamma$.
 
 
 
-When $d$, $\ell$ and $R_s$ are specified, one can determine $\psi$ by law of cosine
+When $d$, $\ell$ and $R_s$ are specified, one can determined $\psi$ by law of cosine
 $$
 R_s^2 = d^2+\ell^2-2d\ell \cos(\pi-\psi)
 $$
@@ -81,11 +81,11 @@ However, $[0,\pi/2]$ is simply the full range allowed by kinematics, if we exami
 Let's consider the $\chi\nu$ scattering in lab frame in [Fig. 2](#lab_scatt)
 
 <figure id="lab_scatt">
-<center><img src="/figs/lab_scattering.svg" alt="scheme" style="width: 40%;">
+<center><img src="../../figs/lab_scattering.svg" alt="scheme" style="width: 40%;">
 <figcaption>Figure 2. \(\chi\nu\) scattering in lab frame.
 </figure>
 
-We write down the four-momenta for every particles,
+We write down the four-momenta for each particle,
 
 $$
 \begin{align*}
@@ -105,11 +105,11 @@ m_\chi^2 - 2E_\nu (E_\chi -|\mathbf{p}_{\chi}|\cos\psi) &= m_\chi^2-2m_\chi E_\n
 \end{align*}
 $$
 
-We can rewrite the last line by $E_\chi = T_\chi + m_\chi$ and $T_\chi = E_\nu - E_\nu^\prime$ which yields
+We can rewrite the last line by $E_\chi = T_\chi + m_\chi$ and $T_\chi = E_\nu - E_\nu^\prime$ which results in
 
 $$
 \begin{equation}\label{eq:Ev}
-E_\nu = \frac{m_\chi T_\chi}{ |\mathbf{p}_{\chi}|\cos\psi - T_\chi}.
+E_\nu = \frac{T_\chi m_\chi }{ |\mathbf{p}_{\chi}|\cos\psi - T_\chi}.
 \end{equation}
 $$
 
@@ -122,7 +122,7 @@ $$
 \end{equation}
 $$
 
-It is also not hard to deduce that $|\mathbf{p}_{\chi}|=\sqrt{T_\chi (2m_\chi + T_\chi)}$.
+It is also not hard to deduce that $|\mathbf{p}_{\chi}|=\sqrt{T_\chi ( T_\chi+2m_\chi )}$.
 Hence the realistic range for $\psi$ is
 $$
 \begin{equation}
@@ -131,9 +131,19 @@ $$
 $$
 while $E_\nu$ diverges at $\psi=\psi_{\rm max}$.
 
+Moreover, we can differentiate Eq. $\eqref{eq:Ev}$ w.r.t. $T_\chi$ and obtain
+
+$$
+\begin{equation}\label{eq:dEv/dTx}
+\frac{dE_\nu}{dT_\chi}=\left(\frac{ m_\chi }{|\mathbf{p}_{\chi}|\cos\psi-T_\chi }\right)^2\frac{T_\chi}{|\mathbf{p}_{\chi}|}\cos\psi.
+\end{equation}
+$$
+
+This function will be useful later.
+
 ## Dark emissivity
 
-The most crucial thing is to know how many $\chi$s are boosted at B. This is generally characterized by the emissivity which has a unit of cm<sup>−3</sup> s<sup>−1</sup> and of MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> in terms of energy spectrum.
+The key factor is determining how many $\chi$s are boosted at B. This is generally characterized by the emissivity which has units of of cm<sup>−3</sup> s<sup>−1</sup> and of MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> in terms of energy spectrum.
 
 ### SN$\nu$ spectrum
 
@@ -205,9 +215,9 @@ $$
 \frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu}\frac{\tau_s}{h}= \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i}\rangle c} f_{\nu_i}(E_\nu).
 \end{equation}
 $$
-One examines that $dn_\nu/dE_\nu$ has MeV<sup>−1</sup> cm<sup>−3</sup>, which is exactly the energy spectrum of SN$\nu$ number density on the shell.
+One can verify that $dn_\nu/dE_\nu$ has MeV<sup>−1</sup> cm<sup>−3</sup>, which is exactly the energy spectrum of SN$\nu$ number density on the shell.
 
-By multiplying $E_\nu$, one can eliminate MeV<sup>−1</sup> and receive
+By multiplying $E_\nu$, one can eliminate MeV<sup>−1</sup> and receives
 $$
 n_\nu =\frac{E_\nu}{c} \frac{dN_\nu}{dE_\nu}
 $$
@@ -215,33 +225,33 @@ the SN$\nu$ number density.
 
 ### Emissivity on the shell
 
-To obtain emissivity at B on the SN$\nu$ shell, one simply do
+To obtain emissivity $j_\chi$ at B on the SN$\nu$ shell, one simply do
 $$
-j_\chi = c n_\nu n_\chi \frac{d\sigma_{\chi\nu}}{d\Omega_{\rm lab}}
+j_\chi := c n_\nu n_\chi \frac{d\sigma_{\chi\nu}}{d\Omega_{\rm lab}}
 $$
-which has a unit cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup> and sr<sup>−1</sup> indicates per steradian.
+which has units of cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup> and sr<sup>−1</sup> indicates per steradian.
 It would be more convenient to restore the energy spectrum form and translate it into $T_\chi$ expression,
 $$
 \begin{equation}\label{eq:jx}
-j_\chi(d,r,T_\chi,\psi) = cn_\chi \frac{dn_\nu}{dE_\nu}  \left(\frac{1}{2\pi}\frac{d\sigma_{\chi\nu}}{d\cos\psi}\right)\frac{dE_\nu}{dT_\chi}
+j_\chi(d,r,T_\chi,\psi) = cn_\chi \frac{dn_\nu}{dE_\nu}  \left(\frac{1}{2\pi}\frac{d\sigma_{\chi\nu}}{d\cos\psi}\right)\left(\frac{dE_\nu}{dT_\chi}\frac{v_\chi}{c}\right)
 \end{equation}
 $$
-where $dE_\nu/dT_\chi$ can be obtained by differentiating Eq. $\eqref{eq:Ev}$ w.r.t $T_\chi$ directly.
-Eq. $\eqref{eq:jx}$ now describes the BDM emissivity at any point on the shell
+where $dE_\nu/dT_\chi$ is given in Eq. $\eqref{eq:dEv/dTx}$.
+The above equation describes the BDM emissivity at any point on the shell
 and has a unit MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup>.
 
 
 
 ## SN$\nu$ BDM flux
 
-When the emissivity at any point is known, one can calculate the BDM flux at Earth by integrating $j_\chi$ over the ling-of-sight (l.o.s) $\ell$.
+When the emissivity at any point is known, one can calculate the BDM flux at Earth by integrating $j_\chi$ over the ling-of-sight (l.o.s.) $\ell$.
 Thus, cf. [Figs. 1](#snv_bdm_scheme) and [3](#2d_shell),
 $$
 \begin{equation}\label{eq:total_Phi}
 \frac{d\Phi_\chi}{dT_\chi d\Omega}=\int d\ell ~  j_\chi \Theta(r_\nu - d)\Theta(d+h-r_\nu)
 \end{equation}
 $$
-where $d\Omega$ is the field-of-view centering SN.
+where $d\Omega$ is the field-of-view (f.o.v.) centering SN.
 The two $\Theta$ functions restrict $j_\chi$ is only non-zero within the shell.
 Without loss of generality, $h\ll d$ always holds such that 
 $$
@@ -252,7 +262,7 @@ Note that $\delta(r_\nu-d)$ actually carries \[L<sup>−1</sup>\] and cancels th
 This approximation remains dimensionless and is self-consistent.
 
 <figure id="2d_shell">
-<center><img src="/figs/2D_scheme.svg" alt="scheme" style="width: 45%;">
+<center><img src="../../figs/2D_scheme.svg" alt="scheme" style="width: 45%;">
 <figcaption>Figure 3. BDM production on the shell with thickness \(h\) at \(d\) distant to SN.
 When \(\ell\) and \(\theta\) are specified, \(j_\chi\) is non-zero at \(r_\nu\) only when \(d\leq r_\nu\leq d+h\).
 </figure>
@@ -262,7 +272,7 @@ When \(\ell\) and \(\theta\) are specified, \(j_\chi\) is non-zero at \(r_\nu\) 
 However, Eq. $\eqref{eq:total_Phi}$ is inadequate because it does not take DM velocity into account.
 Given massive DM, BDM cannot have the same velocity as SN$\nu$. Depending on where $\chi$ is upscattered, it will arrive on Earth at different times. This results in a prolonged flux vs. time compared to the SN$\nu$ flux. BDM arrives earlier if it was upscattered closer and much later if it was upscattered farther away.
 
-To incorporate time-dependent feature, we first set the time of SN explosion as the time-zero. Then SN$\nu$ needs
+To incorporate time-dependent feature, let the time of SN explosion be the time-zero. Then SN$\nu$ needs
 $$
 t_\nu = \frac{R_s}{c}
 $$
@@ -291,8 +301,9 @@ $$
 Note that $\mathcal{J}$ has the same dimension as velocity \[L T<sup>−1</sup>\].
 Before recasting Eq. $\eqref{eq:total_Phi}$ into time-dependent form, we firstly manage
 $$
-c\tau_s \delta(r_\nu-d) = \tau_s \delta\left(\frac{r_\nu}{c}- \frac{d}{c}\right) = \tau_s\delta\left(\frac{r_\nu}{c}- t^\prime +\frac{\ell}{v_\chi}\right)=\tau_s\delta\left(t^\prime - \frac{r_\nu}{c}-\frac{\ell}{v_\chi}\right).
+c\tau_s \delta(r_\nu-d) = \tau_s \delta\left(\frac{r_\nu}{c}- \frac{d}{c}\right) = \tau_s\delta\left(\frac{r_\nu}{c}- t^\prime +\frac{\ell}{v_\chi}\right)=\tau_s\delta\left(t^\prime - \frac{r_\nu}{c}-\frac{\ell}{v_\chi}\right)
 $$
+by $\delta(ax)=\delta(x)/|a|$.
 Using thin-shell approximation, $h\ll d$, we approximate
 $$
 d \leq r_\nu \leq d+h \approx  1 \leq \frac{r_\nu}{d} \leq 1+\frac{h}{d} \to r_\nu\approx d.
@@ -302,13 +313,14 @@ $$
 c\tau_s\delta(r_\nu-d) \approx \tau_s\delta \left(t^\prime - \frac{d}{c}-\frac{\ell}{v_\chi} \right).
 $$
 
-Hence we can recast Eq. $\eqref{eq:total_Phi}$ into
+Hence we can recast Eq. $\eqref{eq:total_Phi}$ from l.o.s. integration into time integration
 
 $$
-\frac{d\Phi_\chi}{dT_\chi d\Omega} = \tau_s \int dt^\prime  \mathcal{J}  j_\chi \delta \left(t^\prime - \frac{d}{c}-\frac{\ell}{v_\chi} \right) = \left. \tau_s\mathcal{J}  j_\chi \right|_{t^\prime = \frac{d}{c}+\frac{\ell}{v_\chi}},
+\frac{d\Phi_\chi}{dT_\chi d\Omega} = \tau_s \int dt^\prime  \mathcal{J}  j_\chi \delta \left(t^\prime - \frac{d}{c}-\frac{\ell}{v_\chi} \right) = \left. \tau_s\mathcal{J}  j_\chi \right|_{t^\prime = \frac{d}{c}+\frac{\ell}{v_\chi}}.
 $$
 
-and finally,
+In the last step, the $\delta$ function restricts the integrand to be non-zero at $t^\prime = d/c+\ell/v_\chi$.
+Finally, we integrate over the f.o.v. from the viewpoint on Earth,
 
 $$
 \begin{equation}\label{eq:BDM_flux}
@@ -323,7 +335,7 @@ $$
 $$
 that shows Eq. $\eqref{eq:BDM_flux}$ has the same unit as flux per energy width.
 
-The time-zero for $t^\prime$ is set to the SN explosion. For our convenience, we can shift it by $t_\nu$,
+Instead of setting time-zero for $t^\prime$ as the SN explosion, for our convenience, we can shift it by $t_\nu$,
 $$
 \begin{equation}\label{eq:t}
 t := t^\prime - t_\nu = \frac{d}{c} + \frac{\ell}{v_\chi} - t_\nu
@@ -352,30 +364,50 @@ $$
 then
 $$
 \begin{equation}\label{eq:t_psi}
-t =\frac{R_s}{c}\frac{\sin\theta}{\sin\psi}+\frac{R_s}{v_\chi}\frac{\sin(\psi-\theta)} {\sin\psi}.
+t =\frac{R_s}{c}\frac{\sin\theta}{\sin\psi}+\frac{R_s}{v_\chi}\frac{\sin(\psi-\theta)} {\sin\psi}-t_\nu.
 \end{equation}
 $$
-We omit $t_\nu$ since it is a constant.
 Obviously, when we fix $\theta$ in Eq. $\eqref{eq:t_psi}$, $t$ increases monotonically with $\psi \in [0,\pi/2]$.
-Thus to find the corresponding $\theta$ that maximizes $t$, we restrict ourselves at $\psi=\psi_{\rm max}$, cf. Eq. $\eqref{eq:psi_max}$.
-Hence we can do $dt/d\theta=0$ and solve
+Thus to find the corresponding $\theta$ that maximizes $t$ globally, we restrict ourselves at $\psi=\psi_{\rm max}$, cf. Eq. $\eqref{eq:psi_max}$, which only depends on $T_\chi$ and $m_\chi$.
+Hence we can do $dt/d\theta=0$ and obtain
 $$
 \begin{equation}\label{eq:theta_maximum_t}
-\frac{\cos\theta}{c}=\frac{\cos(\psi_{\rm max}-\theta)}{v_\chi}
+\frac{\cos\theta}{c}=\frac{\cos(\psi_{\rm max}-\theta)}{v_\chi}.
 \end{equation}
 $$
-for $\theta$. Suppose $\theta^*$ satisfy Eq. $\eqref{eq:theta_maximum_t}$, then we have
+It can be solved numerically for $\theta$. Suppose $\theta_{\rm MAX}$ satisfy Eq. $\eqref{eq:theta_maximum_t}$, then we have
 
 $$
 \begin{equation}\label{eq:tvan}
-t_{\rm van} = \frac{d(\theta^*)}{c} + \frac{\ell(\theta^*)}{v_\chi} - t_\nu.
+t_{\rm van} = \frac{d(\theta_{\rm MAX})}{c} + \frac{\ell(\theta_{\rm MAX})}{v_\chi} - t_\nu.
 \end{equation}
 $$
 
 We note that Eq. $\eqref{eq:tvan}$ is the exact solution for $t_{\rm van}$ and valid for both relativistic and non-relativistic cases. However, an approximation given by Eq. (13) in Ref. [[2](#bib_Lin2023PRD)] is only suitable for relativistic case.
 
+### Field-of-view across the sky
+
+One can understand from the last subsection that $\theta_{\rm MAX}$ dictates the largest f.o.v. at $t_{\rm van}$.
+Now we can do it the other way around that by giving a particular time $t^* < t_{\rm van}$.
+The $\theta^*_M$ that satisfies Eq. $\eqref{eq:t_psi}$,
+
+$$
+\begin{equation}
+t^* = \frac{R_s}{c}\frac{\sin\theta^*_M}{\sin\psi_{\rm max}} + \frac{R_s}{v_\chi}\frac{\sin(\psi_{\rm max}-\theta_M^*)}{\sin\psi_{\rm max}}-t_\nu
+\end{equation}
+$$
+
+corresponds the maximum f.o.v. at $t=t^*$.
+Thus we conclude that at any specific time, the f.o.v. that contains non-zero BDM flux distributes across
+$$
+\begin{equation}
+\theta \in [0,\theta^*_M).
+\end{equation}
+$$
+
+#### References
 
 1. <p id="bib_Lin2023PRL">Y.-H. Lin *et al.*, *Phys. Rev. Lett.* **130**, 111002 (2023)</p>
-2. <p id="bib_Lin2023PRD">Y.-H. Lin *et al.*, *Phys. Rev. Lett.* **108**, 083013 (2023)</p>
+2. <p id="bib_Lin2023PRD">Y.-H. Lin *et al.*, *Phys. Rev. D.* **108**, 083013 (2023)</p>
 3. <p id="bib_NFW">J. F. Navarro *et al.*, *Astrophys. J.* **462**, 563 (1996)</p>
 4. <p id="bib_Duan2006PRD">H. Duan *et al.*, *Phys. Rev. D* **74**, 105014 (2006)</p>

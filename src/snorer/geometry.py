@@ -11,12 +11,13 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-__all__ = ['Geometry',]
+__all__ = ['Geometry',
+           'Propagation',]
 
 
 #---------- Import required utilities ----------#
 
-from numpy import sqrt,isclose,cos,sin,clip,finfo
+from numpy import sqrt,cos,sin,clip,finfo
 from .constants import constant
 from .sysmsg import FlagError
 
@@ -46,13 +47,8 @@ The docstrings should be sufficient for their self-explanations
 
 class Geometry:
     """
-    This class constructs the propagation geometry when the loactions of SN, GC and
-    Earth, ToF and BDM velocity are specified.
-
-    This class is not exclusively for SN in MW or LMC, it can be generalized to SN
-    in arbitrary distant galaxy as long as the aforementioned inputs are determined.
-    The BDM emissivity along the line-of-sight then can be determined when calculate
-    the BDM flux and event at Earth associated to that particular SN.
+    The class constructs the static geomatrical relations for d, rprime and cos(psi)
+    when (l,theta,phi) and (Rs,Re,beta) are specified. 
 
     /*-----------------------------------------------------------------------------*/
 
@@ -62,11 +58,10 @@ class Geometry:
     *                  *
     ********************
     
-        t: The BDM ToF, seconds
-    theta: The zenith angle at Earth, rad
-      phi: Azimuthal angle at Earth, rad
-       vx: BDM velocity, in the unit of c
-    Rstar: Distance from Earth to SN, kpc
+        l: The line-of-sight distance, kpc
+    theta: The zenith angle at Earth, centers SN, rad
+      phi: Azimuthal angle at Earth, centers SN, rad
+       Rs: Distance from Earth to SN, kpc
        Re: Distance from Earth to GC, kpc
      beta: Off-center angle, rad
 
@@ -79,201 +74,215 @@ class Geometry:
 
     When a Geometry instance is initialized, the following attributes will be assigned,
 
-         d: Distance from Earth to upscattered point, kpc
-         D: Distance from SN to upscattered point, kpc
-    rprime: Distance from GC to upscattered point, kpc
-    cosPsi: The cosine value of the required scattering angle that points toward Earth
-            at the upscattered point
+          d: Distance from SN to boost point, kpc
+     rprime: Distance from GC to boost point, kpc
+    cos_psi: cos(psi) at boost point where psi is the direction for BDM at B pointing
+             Earth
     
     Suppose,
     
-    >>> bdmGeo = Geometry(t=59,theta=1e-4,vx=0.9,Rstar=11.6,Re=8.5,beta=0.71,phi=0)
+    >>> l,theta,phi,Rs,Re,beta = 5.160e-9,1e-4,0,11.6,8.5,0.71
+    >>> bdmGeo = Geometry(l,theta,phi,Rs,Re,beta)
+    
+    Then the lengths and cos(psi) in the propagation geometry are specified by 
+    
+    >>> print(bdmGeo.d)
+    11.59999999483988
+    >>> print(bdmGeo.rprime)
+    8.49999999608676
+    >>> print(bdmGeo.cos_psi)
+    0.9999999721078604
+
+    See API/Propagation/Positioning for detail
+    """
+
+    def __init__(self,l,theta,phi,Rs,Re,beta):
+        self.l = l 
+        self.theta = theta
+        self.phi = phi
+        self.Rs = Rs
+        self.Re = Re
+        self.beta = beta
+
+        # Evaluated quantities
+        self._h = self.l*sin(theta)
+        self._b = self.l*cos(theta)
+        self._rho2 = self.get_rho2(self._b)
+        self._cos_delta = self.get_cos_delta()
+        self._a2 = self.get_a2()
+        self._d2 = self.get_d2()
+        
+        # Following will be assigned as class attributes
+        self._rprime = sqrt(self.get_rprime2())
+        self._d = sqrt(self._d2)
+        self._cos_psi = self.get_cos_psi()
+        
+    @property
+    def rprime(self):
+        return self._rprime
+    
+    @property
+    def d(self):
+        return self._d
+    
+    @property
+    def cos_psi(self):
+        return self._cos_psi
+
+    # --- The following geometrical quantities are evaluated in squared terms
+    def get_rho2(self,b):
+        """
+        Get rho-squared, see Eq. (5) in document
+        """
+        Re, beta = self.Re, self.beta
+        rho2 = b**2 + Re**2 - 2 * b * cos(beta)
+        rho2 = clip(rho2,0,None) # restricts rho-squared to be positive
+        return rho2
+    
+    def get_cos_delta(self):
+        """
+        Get cos(delta), see Eq. (6) in document
+        """
+        Re, rho2, b = self.Re, self._rho2, self._b
+        rho = sqrt(rho2)
+        cos_delta = (Re**2 - rho2 - b**2)/2/rho/b
+        return clip(cos_delta,-1,1) # restrics sin value in [-1,1]
+    
+    def get_a2(self):
+        """
+        Get a-squared, see Eq. (4) in document
+        """
+        rho2 = self._rho2
+        rho = sqrt(rho2)
+        h = self._h
+        cos_delta = self._cos_delta
+        sin_delta = sqrt(1 - cos_delta**2)
+        sin_phi = sin(self.phi)
+        a2 = rho2 + h**2 * sin_phi**2 - 2 * rho * h * sin_delta * sin_phi
+        return clip(a2,0,None) # restricts rho-squared to be positive
+    
+    def get_rprime2(self):
+        """
+        Get r'-squared, see Eq. (3) in document
+        """
+        a2, h2 = self._a2, self._h**2
+        cos_phi = cos(self.phi)
+        rprime2 = a2 + h2 * cos_phi**2
+        return clip(rprime2,0,None) # restricts rho-squared to be positive
+    
+    def get_d2(self):
+        """
+        Get d-squared, see Eq. (8) in document
+        """
+        l, Rs, theta = self.l, self.Rs, self.theta
+        d2 = l**2 + Rs**2 - 2 * l * Rs * cos(theta)
+        return clip(d2,0,None) # restricts rho-squared to be positive
+    
+    def get_cos_psi(self):
+        """
+        Get cos(psi), see Eq. (7) in document
+        """
+        Rs, d2, l = self.Rs, self._d2, self.l
+        d = self.d
+        cos_psi = (Rs**2 - d2 - l**2)/2/d/l
+        return clip(cos_psi,-1,1)
+
+
+class Propagation(Geometry):
+    """
+    Superclass: Geometry
+
+    The class constructs the dynamical geomatrical relations for d, rprime and cos(psi)
+    when (t,vx,theta,phi) and (Rs,Re,beta) are specified.
+
+    Unlike its superclass Geometry, the class parameter l is now replaced by a specific
+    time t and dimensionless BDM velocity vx. This allows it to incorporate time-dependent
+    feature when evaluating the geometrical quantities during propagation.  
+
+    This class is also not exclusively for SN in MW or LMC, it can be generalized to SN
+    in arbitrary distant galaxy as long as the aforementioned inputs are determined.
+    The BDM emissivity along the line-of-sight then can be determined when calculate
+    the BDM flux and event at Earth associated to that particular SN.
+
+    /*-----------------------------------------------------------------------------*/
+
+    ********************
+    *                  *
+    *   Class Inputs   *
+    *                  *
+    ********************
+    
+        t: The BDM at specific time, seconds
+           Time-zero is set to be the arrival of SNnu at Earth
+       vx: BDM dimesionless velocity, in the unit of c
+    theta: The zenith angle at Earth, rad
+      phi: Azimuthal angle at Earth, rad
+       Rs: Distance from Earth to SN, kpc
+       Re: Distance from Earth to GC, kpc
+     beta: Off-center angle, rad
+
+
+    ********************
+    *                  *
+    *    Attributes    *
+    *                  *
+    ********************
+
+    When a Geometry instance is initialized, the following attributes will be assigned,
+
+          l: The line-of-sight distance, kpc
+          d: Distance from SN to upscattered point, kpc
+     rprime: Distance from GC to upscattered point, kpc
+    cos_psi: cos(psi) at boost point where psi is the direction for BDM at B pointing
+             Earth
+    
+    Suppose,
+    
+    >>> bdmProp = Propagation(t=59,vx=0.9,theta=1e-4,phi=0,Rs=11.6,Re=8.5,beta=0.71)
     
     Then the lengths in the propagation geometry are specified by 
     
-    >>> bdmGeo.d
+    >>> print(bdmProp.l)  
     5.160120751743069e-09
-    >>> bdmGeo.D
+    >>> print(bdmProp.d)  
     11.59999999483988
-    >>> bdmGeo.rprime
+    >>> print(bdmProp.rprime)
     8.49999999608676
+    >>> print(bdmProp.cos_psi) 
+    1.0
 
-    See Phys. Rev. D 108, 083013 (2023), arXiv:2307.03522 for theoretical foundation
+    See API/Propagation/Positioning for detail
     """
 
-    def __init__(self,t,theta,phi,vx,Rstar,Re,beta):
+    def __init__(self,t,theta,phi,vx,Rs,Re,beta):
         self.t = t
-        self.theta = theta
-        self.phi = phi
         self.vx = vx
-        self.Rstar = Rstar
-        self.Re = Re
-        self.beta = beta
-        
-    @property
-    def d(self):
-        return self.__class__.get_d(self.t,self.vx,self.Rstar,self.theta)
+        self.Rs = Rs
+        self.theta = theta
 
-    @property
-    def D(self):
-        return self.__class__.get_D(self.d,self.Rstar,self.theta)
+        # Evaluated quantities
+        self._zeta = self.get_zeta()
+        self._l = self.get_ell()
 
-    @property
-    def rprime(self):
-        return self.__class__.get_rPrime(self.d,self.Re,self.theta,self.phi,self.beta)
-
-    @property
-    def cosPsi(self):
-        return self.__class__.get_cosPsi(self.d,self.Rstar,self.theta)
+        # Now initialize superclass
+        super().__init__(self._l,theta,phi,Rs,Re,beta)
     
-    @classmethod
-    def get_cosPsi(cls,d,Rstar,theta) -> float:
+    def get_zeta(self):
         """
-        Get the cosine value of scattering angle cos(psi).
-        If we did it with law of cosine, then for the case of psi > pi/2,
-        it will always return pi - psi which cannot reflect the pratical
-        situation
-        
-        Input
-        ------
-        d: the l.o.s distance, kpc
-        Rstar: the distance between Earth and SN, kpc
-        theta: the open-angle, rad
-        
-        Output
-        ------
-        psi: scattering angle, rad
+        Get zeta, see Eq. (10) in the document, kpc
         """
-        
-        # Get D^2
-        D2 = cls.get_D(d,Rstar,theta,is_squared = True)
-        D = sqrt(D2)
-        # Get cos(psi)
-        denominator = 2*D*d # check if the denominator in the law of cosine is not 0.0
-        #if ~isclose(0,denominator,atol=1e-100):
-        if abs(denominator) > finfo(float).eps:
-            numerator = Rstar**2 - D2 - d**2
-            cosPsi = clip(numerator/denominator,-1,1)
-        else:
-            # the denominator is 0.0, which means d = 0, applying L'Hospital's rule to get cos(psi)
-            cosPsi = 0
-        return cosPsi
+        Rs, t = self.Rs, self.t
+        zeta = Rs + constant.c * t / constant.kpc2cm
+        return zeta
     
-    @classmethod
-    def get_D(cls,d,Rstar,theta,is_squared = False) -> float:
+    def get_ell(self):
         """
-        Calculate the distance between SN and boosted point D
-        
-        Input
-        ------
-        d: the l.o.s distance, kpc
-        Rstar: the distance between Earth and SN, kpc
-        theta: the open-angle, rad
-        is_squared: return the square of such distance, default is False
-        
-        Output
-        ------
-        D: the distance D
+        Get ell, see Eq. (11) in the document, kpc
         """
-        # Calculate D^2 via law of cosine
-        D2 = d**2 + Rstar**2 - 2*d*Rstar*cos(theta)
-        # D2 might turn minus due to round-off error, it shoud truncate at 0
-        D2 = clip(D2,0,None)
-    
-        if is_squared is True:
-            return D2
-        elif is_squared is False:
-            return sqrt(D2)
-        else:
-            raise FlagError('Keyword argument \'is_squared\' must be a boolean.')
-        
-    @classmethod
-    def get_ell(cls,d,Re,theta,beta,is_squared = False) -> float:
-        """
-        Calculate the distance ell
-        
-        Input
-        ------
-        d: the l.o.s distance, kpc
-        Re: the distance between Earth and GC, kpc
-        theta: the open-angle, rad
-        beta: the off-center angle, rad
-        is_square: return the squared ell, default is False
-        
-        Output
-        ------
-        ell: the distance ell
-        """
-        # Calculate ell^2 via law of cosine
-        ell2 = Re**2 + (d*cos(theta))**2 - 2*Re*d*cos(theta)*cos(beta)
-        # ell2 might turn minus due to round-off error, it should truncate at 0
-        ell2 = clip(ell2,0,None)
-    
-        if is_squared is True:
-            return ell2
-        elif is_squared is False:
-            return sqrt(ell2)
-        else:
-            raise FlagError('Flag \'is_squared\' must be a boolean.')
-    
-    @classmethod
-    def get_rPrime(cls,d,Re,theta,phi,beta) -> float:
-        """
-        Calculate the distance from boosted point to GC r'
-        
-        Input
-        ------
-        d: the l.o.s distance, kpc
-        Re: the distance between Earth and GC, kpc
-        theta: the open-angle, rad
-        phi: the azimuthal angle, rad
-        beta: the off-center angle, rad
-        
-        Output
-        ------
-        r': kpc
-        """
-        # ell^2
-        ell2 = cls.get_ell(d,Re,theta,beta,is_squared=True)
-        # h
-        h = d*sin(theta)
-        
-        # Calculate cos(iota) and iota
-        denominator = 2*cos(theta)*sqrt(ell2)*d # check if the denomator in the law of cosine is not 0.0
-        if ~isclose(0,denominator,atol=1e-100):
-            numerator = Re**2 - ell2 - (d*cos(theta))**2
-            cosIota = clip(numerator/denominator,-1,1)
-        else:
-            # the denominator is 0, which means d = 0, applying L'Hospital to get cos(iota)
-            cosIota = 0
-        # Using sin(arccos(x)) = sqrt(1-x^2)
-        sinIota = sqrt(1 - cosIota**2)
-        
-        # Calculate r'^2
-        rp2 = ell2*cosIota**2 + (sqrt(ell2)*sinIota - h*sin(phi))**2 + h**2*cos(phi)**2
-        rp2 = clip(rp2,0,None) # avoid negative rprime^2 due to round-off error
-        return sqrt(rp2)
-    
-    @classmethod
-    def get_d(cls,t,vx,Rstar,theta) -> float:
-        """
-        Calculate the distance line-of-sight d
-        
-        Input
-        ------
-        t: the arrival time of BDM at Earth calibrated by SN neutrino, second
-        vx: BDM velocity in the unit of light speed
-        Rstar: the distance between Earth and SN, kpc
-        theta: the open-angle, rad
-        
-        Output
-        ------
-        d: the l.o.s, kpc
-        """
-        zeta = Rstar + constant.c*t/constant.kpc2cm
+        vx, Rs, theta, zeta = self.vx, self.Rs, self.theta, self._zeta
         cos_theta = cos(theta)
-        prefactor = vx/(1 - vx**2)
-        root_squared = (Rstar**2 - zeta**2)*(1 - vx**2) + (Rstar*vx*cos_theta - zeta)**2
-        root_squared = clip(root_squared,0,None) # avoid negative root squared due to round-off error
-        d = prefactor*(zeta - Rstar*vx*cos_theta - sqrt(root_squared))
-        return clip(d,0,None) # avoid negative distance
+        alpha = sqrt((Rs**2 - zeta**2) * (1 - vx**2) + (Rs * vx * cos_theta - zeta)**2)
+        gamma = Rs * vx * cos_theta
+        ell = - vx * (alpha + gamma - zeta) / (1 - vx**2)
+        return ell
+

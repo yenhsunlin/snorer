@@ -24,8 +24,8 @@ __all__ = ['HaloSpike',
 
 from numpy import pi
 from fractions import Fraction
-from .constants import Constants,constant
-from .sysmsg import FlagError
+from constants import Constants,constant
+from sysmsg import FlagError
 
 
 
@@ -58,8 +58,8 @@ The docstrings should be sufficient for their self-explanations
 
 class HaloSpike(Constants):  
     """
-    Class for constructing DM halo with spike due to supermassive black hole (SMBH)
-    in the galactic center.
+    Class for constructing dark matter halo with spike due to supermassive black hole
+    (SMBH) in the galactic center.
 
     /*-----------------------------------------------------------------------------*/
 
@@ -73,7 +73,6 @@ class HaloSpike(Constants):
       mBH: SMBH mass, Msun
       tBH: SMBH age, years
     alpha: Slope of the spike profile
-    gamma: Slope of the initial profile
 
 
     ********************
@@ -88,11 +87,12 @@ class HaloSpike(Constants):
       tBH: SMBH age, years
     alpha: Slope of the spike profile
        rh: SMBH influence radius, kpc
+      Rsp: Spike radius, kpc
     
     where the first four are the inputs with the last one auto-generated when initializing
     the instance. 
     
-    >>> nx = HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2')   # initializing haloSpike instance
+    >>> nx = HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2')   # initializing HaloSpike instance
     
     Basic properties of the instance can be viewd by
 
@@ -148,7 +148,7 @@ class HaloSpike(Constants):
     *                    *
     **********************
 
-    After initializing the haloSpike instance, it is callable like normal function with the
+    After initializing the HaloSpike instance, it is callable like normal function with the
     following required inputs. The output is the DM number density, #/cm^3, at r
 
         r: Distance to GC, kpc
@@ -174,17 +174,20 @@ class HaloSpike(Constants):
         self.mBH = mBH
         self.tBH = tBH
         self.alpha = alpha
-        self.rh = radiusInfluence(mBH)
+
+        # Evaluated quantities
+        self._rh = radiusInfluence(mBH)
+        self._Rsp = radiusSchwarzschild(self.mBH)
 
     def __repr__(self):
         return '{:>18s}'.format('SMBH mass:') + ' {:>.3e} M_sun'.format(self.mBH) + '\n' +                 \
                '{:>18s}'.format('Spike slope:') + ' {}'.format(self._alpha) + '\n' + \
-               '{:>18s}'.format('Spike radius:') + ' {:>.3e} kpc'.format(self.Rs) + '\n' +              \
+               '{:>18s}'.format('Spike radius:') + ' {:>.3e} kpc'.format(self.Rsp) + '\n' +              \
                '{:>18s}'.format('Influence radius:') + ' {:>.3e} kpc'.format(self.rh)
      
     @property
-    def Rs(self):
-        return radiusSchwarzschild(self.mBH)
+    def Rsp(self):
+        return self._Rsp
     
     @property
     def rh(self):
@@ -226,7 +229,7 @@ class HaloSpike(Constants):
         # ini parameters
         mBH = self.mBH
         rh = self.rh
-        Rs = self.Rs
+        Rs = self.Rsp
         
         ri = 4*Rs
         alpha = float(self.alpha)
@@ -276,7 +279,7 @@ class HaloSpike(Constants):
         rhoPrime: MeV/cm^3
         """
         # ini parameters
-        Rs = self.Rs
+        Rs = self.Rsp
         rh = self.rh
         alpha = float(self.alpha)
         
@@ -315,7 +318,7 @@ class HaloSpike(Constants):
         number density: #/cm^3
         """
         # ini parameters
-        Rs = self.Rs
+        Rs = self.Rsp
         tBH = self.tBH
         ri = 4*Rs
         
@@ -340,7 +343,7 @@ class HaloSpike(Constants):
                 rhoDM = rhox(r,rhos,rs,n)
                 return rhoDM*rhoc/(rhoDM + rhoc)/mx
     
-    def __call__(self,r,mx,/,sigv,rhos,rs,n):
+    def __call__(self,r,mx,sigv,rhos,rs,n):
         """
         Obtain the DM number density in the presence of spike
         
@@ -361,33 +364,38 @@ class HaloSpike(Constants):
         return self._nxSpike(r,mx,sigv,rhos,rs,n)
 
 
-def rhox(r,/,rhos,rs,n) -> float:
+def rhox(r,rhos,rs,n) -> float:
     """
-    DM density at given r
+    Dark matter density at r
     
-    Input
-    ------
-    r: distance to GC, kpc
-    rhos: The characteristic density, MeV/cm^3
-    rs: The characteristic radius, kpc
-    n: Slope of the DM profile
+    Parameters
+    ----------
+    r : array_like
+        Distance to GC, kpc
+    rhos : array_like
+        Characteristic density, MeV/cm^3
+    rs : array_like 
+        Characteristic radius, kpc
+    n : array_like
+        Slope of the DM profile
     
-    Output
-    ------
-    rhox: DM density at r, MeV/cm^3
-
+    Returns
+    -------
+    out : scalar/ndarray
+        DM density at r, MeV/cm^3. Out is scalar if all inputs
+        are scalars
 
     /*---------------------------*/
     
     Additional Description
     ------
 
-    This function evaluates the DM density described by the profile
+    This function evaluates the DM density profile
 
           rhox(r) = rhos/(r/rs)/(1+r/rs)^n
 
     where rhos and rs are characteristic density and radius respectively.
-    when (rhos,rs,n) = (184 MeV/cm^3, 24.42 kpc, 2), it is the famous
+    wWhen (rhos,rs,n) = (184 MeV/cm^3, 24.42 kpc, 2), it is the famous
     Navarro–Frenk–White (NFW) profile. If divided by DM mass mx, it becomes
     the DM number density with unit #/cm^3
 
@@ -399,23 +407,26 @@ def rhox(r,/,rhos,rs,n) -> float:
 
 def M_sigma(mBH):
     """
-    M-sigma relation for black holes
+    Stellar dispersion relation under the influence of supermassive black hole.
+    Also known as M-sigma relation.
 
-    Input
-    -----
-    mBH: SMBH mass, Msun
+    Parameters
+    ----------
+    mBH : array_like
+        SMBH mass, Msun
 
-    Output
-    -----
-    sigma: stellar velocity dispersion, km/s
-
+    Returns
+    -------
+    out : scalar/ndarray
+        Stellar velocity dispersion, km/s. Out is scalar if the input is scalar
+        too.
 
     /*---------------------------*/
     
     Additional Description
     ------
 
-    This function evaluates the stellar dispersion sigma_s in SMBH adjacent
+    This function evaluates the stellar dispersion sigma_s near SMBH
 
           log10(mBH/Msun) = 8.29 + 5.12*log10(sigma_s/200 km/s)
 
@@ -426,16 +437,17 @@ def M_sigma(mBH):
 
 def radiusInfluence(mBH):
     """
-    SMBH influence radius
+    Influence radius of a supermassive black hole
 
-    Input
-    -----
-    mBH: SMBH mass, Msun
+    Parameters
+    ----------
+    mBH : array_like 
+        Supermassive black hole mass, Msun
     
-    Output
-    ------
-    rh: influence radisu, kpc
-
+    Returns
+    -------
+    out : scalar/ndarray
+        Influence radisu, kpc. Out is scalar if the input is scalar.
 
     /*---------------------------*/
     
@@ -446,7 +458,7 @@ def radiusInfluence(mBH):
 
           rh = G*mBH/sigma_s^2
 
-    where sigma_s is the stellar dispersion in SMBH adjacent, also see
+    where sigma_s is the stellar dispersion near SMBH, also see
     the docstring in function M_sigma for extra information
     """
     sigma_s = M_sigma(mBH)
@@ -456,27 +468,29 @@ def radiusInfluence(mBH):
 
 def radiusSchwarzschild(mBH) -> float:
     """
-    Calculating the Schawarzschild radius of a SMBH
+    Schawarzschild radius of a supermassive black hole
 
-    Input
-    ------
-    mBH: Black hole mass, Msun
+    Parameters
+    ----------
+    mBH : array_like
+        Black hole mass, Msun
 
-    Output
-    ------
-    Rs: Schwarzschild radius, kpc
+    Returns
+    -------
+    out : scalar/ndarray
+        Schwarzschild radius, kpc. Out is scalar if the input is scalar.
     """
     mBH = mBH*constant.Msun_kg
     Rs = mBH*1.48e-25/constant.kpc2cm  # convert Rs into kpc
     return Rs
 
 
-def dmNumberDensity(r,mx,/,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs) -> float:
+def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs) -> float:
     """
-    Obtain the DM number density at given r for MW or LMC
+    Obtain the dark matter number density at given r for MW or LMC
     
-    In
-    ------
+    Parameters
+    ----------
     r: distance to GC, kpc
     mx: DM mass, MeV
     is_spike: Turn on/off spike feature, bool
@@ -489,8 +503,8 @@ def dmNumberDensity(r,mx,/,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='
         specify the desired rhos, rs, n, mBH or rh here. Those are not
         specified will be replaced by the values belong to the 'profile'
     
-    Out
-    ------
+    Returns
+    -------
     number density: 1/cm^3
 
     See the docstrings in class haloSpike and function rhox for more detail
@@ -615,3 +629,34 @@ def dmNumberDensity(r,mx,/,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='
 #         return rhox(r,rhos,rs,n)/mx
 #     else:
 #         raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
+
+import numpy as np
+import matplotlib.pyplot as plt
+if __name__=="__main__":
+    # Get MW rhos, rs, n, mBH and rh
+    rhos,rs,n,mBH,rh = constant.MW_profile.values()
+    # Assuming BH age is 1 Gyr
+    tBH = 1e10
+    # DM mass, MeV
+    mx = 0.1
+    # Annihilation cross section
+    sigv_list = [3,0.03,None]
+    sigv_label = ['3','0.03','0']
+    # Initializing instances with two different alphas
+    nx = HaloSpike(mBH=mBH,tBH=tBH,alpha='3/2')  # alpha = 3/2
+
+    # radius, kpc
+    r_vals = np.logspace(-5,2,100)
+
+    for i in range(3):
+        sigv = sigv_list[i]
+        nx_vals = [nx(r,mx,sigv,rhos,rs,n) for r in r_vals]
+        plt.plot(r_vals,nx_vals,label=sigv_label[i] + r'$\times10^{-26}\,{\rm cm^3~s^{-1}}$')
+        #plt.plot(r_vals,nx73_vals)
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel(r'$r$ [kpc]')
+    plt.ylabel(r'$n_\chi(r)$ [cm$^{-3}$]')
+    plt.title(fr'$m_\chi = {mx:.1f}$ MeV')
+    plt.legend()
+    plt.savefig('nx.svg',bbox_inches='tight')

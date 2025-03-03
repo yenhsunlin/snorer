@@ -35,7 +35,7 @@ Other dependencies may be required by these packages and will be installed as we
 
 `snorer` can be imported like any other packages
 ```python
-import snorer    # Import snorer functions
+import snorer as sn   # Import snorer functions
 ```
 Assuming the following locations:
 
@@ -52,13 +52,9 @@ and DM properties:
 Suppose we want to evaluate the BDM flux at $t=100$ seconds after the observation of SN$\nu$, then
 
 ```python
-# Collecting parameters
-t,Tx,mx,Rstar,beta = 100,15,1e-2,8.5,0
-# Evaluating flux, 1/MeV/cm^2/s
-flux = snorer.flux(t,Tx,mx,Rstar,beta,is_spike=True,neval=15000)
-print(flux)
-```
-```python
+>>> t,Tx,mx,Rstar,beta = 100,15,1e-2,8.5,0 # Collecting parameters
+>>> flux = sn.flux(t,Tx,mx,Rstar,beta,is_spike=True,neval=15000) # Evaluating flux, 1/MeV/cm^2/s
+>>> print(flux)
 4.572295175982701e-16
 ```
 

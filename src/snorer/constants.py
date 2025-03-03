@@ -13,6 +13,9 @@
 
 
 class Constants:
+    """
+    A data class stores many physical constants and coversion factors for convenient use.
+    """
     
     def __init__(self):
         pass
@@ -24,10 +27,6 @@ class Constants:
     @property
     def md2MeVperCubicCM(self): # Msun/kpc^3 to MeV/cm^3
         return 3.796e-05        
-    
-    @property
-    def md2MeVperQuadCM(self):  # Msun/kpc^3 to MeV/cm^2
-        return 1.171e+17        
     
     @property
     def year2Seconds(self):     # year to seconds

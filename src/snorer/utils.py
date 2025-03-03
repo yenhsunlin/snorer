@@ -16,15 +16,15 @@ __all__ = ['GeneralInterface',]
 
 #---------- Import required utilities ----------#
 
-from numpy import pi,sin,cos,arccos,isclose,clip
+from numpy import pi,sin,cos,arccos,isclose,clip,broadcast_arrays,asarray,ndarray
 from scipy.integrate import quad
 import vegas
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from .snorerMain import snNuSpectrum
-from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaRange,get_tof,get_tBound,fx_lab
+from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaMax,get_tvan,get_tBound,get_gx
 from .geometry import Geometry
-from .halo import rhox,dmNumberDensity
+from .halo import dmNumberDensity
 from .constants import Constants,constant
 
 
@@ -458,4 +458,3 @@ class BoostedDarkMatter(Constants):
             return event
         else:
             return 0    
-        
