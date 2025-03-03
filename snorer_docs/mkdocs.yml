@@ -17,8 +17,9 @@ nav:
       - Classes:
         - HaloSpike: api/halo/HaloSpike.md
       - Functions:
-        - dmNumberDensity: api/halo/dmNumberDensity.md
         - M_sigma: api/halo/M_sigma.md
+        - nx: api/halo/nx.md
+        - nxSpike: api/halo/nxSpike.md
         - radiusInfluence: api/halo/radiusInfluence.md
         - radiusSchwarzschild: api/halo/radiusSchwarzschild.md
         - rhox: api/halo/rhox.md

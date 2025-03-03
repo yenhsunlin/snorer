@@ -591,9 +591,9 @@ def get_tvan(Tx,mx,Rs) -> float:
     """
     Rs = atleast_1d(Rs) # Let Rs be at least 1d array for easy manipulation
     Tx,mx,Rs = broadcast_arrays(Tx,mx,Rs)
-    # Setup empty array to store t_van values for every Rs
+    # Setup empty array to store t_van values
     t_van = zeros_like(Rs)
-    # Use nditer to iterate and get the t_van
+    # Use nditer to mimic vectorization and retrieve t_van
     with nditer([Tx,mx,Rs,t_van],op_flags=[['readonly'],['readonly'],['readonly'],['writeonly']]) as it:
         for T,m,r,tvan in it:
             tvan[...] = _get_tof(T,m,r)[-1]

@@ -17,15 +17,16 @@ __all__ = ['HaloSpike',
            'M_sigma',
            'radiusInfluence',
            'radiusSchwarzschild',
-           'dmNumberDensity',]
+           'dmNumberDensity',
+           'nx',]
 
 
 #---------- Import required utilities ----------#
 
-from numpy import pi
+from numpy import pi,broadcast_arrays,atleast_1d,zeros_like,nditer
 from fractions import Fraction
-from constants import Constants,constant
-from sysmsg import FlagError
+from .constants import Constants,constant
+from .sysmsg import FlagError
 
 
 
@@ -485,59 +486,103 @@ def radiusSchwarzschild(mBH) -> float:
     return Rs
 
 
-def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/2',**kwargs) -> float:
+def nx(r,mx,profile='MW'):
     """
-    Obtain the dark matter number density at given r for MW or LMC
-    
+    Dark matter number density of Milky Way of Large Magellanic Cloud at
+    distance r to the galactic center. Spike feature is not included.
+
     Parameters
     ----------
-    r: distance to GC, kpc
-    mx: DM mass, MeV
-    is_spike: Turn on/off spike feature, bool
-    sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
-        None indicates no annihilation
-    tBH: SMBH age, years
-    profile: str, 'MW' or 'LMC'
-    alpha: Slope of the spike, str type, '3/2' or '7/3'
-    **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
-        specify the desired rhos, rs, n, mBH or rh here. Those are not
-        specified will be replaced by the values belong to the 'profile'
+    r : array_like
+        Distance to galactic center, kpc
+    mx : array_like
+        Dark matter mass, MeV
+    profile : str
+        'MW' or 'LMC', stands for MW halo or LMC halo
     
     Returns
     -------
-    number density: 1/cm^3
-
-    See the docstrings in class haloSpike and function rhox for more detail
+    out : scalar/ndarray
+        Dark matter number density at r, 1/cm^3
     """
-    # setup profile parameters
-    # they are stored in the dict with keys: {'rhos','rs','n','mBH',rh}
+    # Which profile to be used
     if profile == 'MW':
-        profile_params_dict = constant.MW_profile
+        params_dict = constant.MW_profile
     elif profile == 'LMC':
-        profile_params_dict = constant.LMC_profile
+        params_dict = constant.LMC_profile
     else:
+        # Invalid profile name
         raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
+    # Extract parameter values
+    rhos,rs,n,_,_ = params_dict.values()
+    # Return number density
+    return rhox(r,rhos,rs,n)/mx
 
-    # if users have their own keyword arguments for the profile
-    for key,value in kwargs.items():
-        if profile_params_dict.get(key) is not None:  # check if the user-input exist or not
-            profile_params_dict[key] = value
-        else:
-            raise TypeError(f'dmNumberDensity() got an unexpected keyword argument \'{key}\'')
-    # assign values to variables
-    rhos,rs,n,mBH,rh = profile_params_dict.values()
 
-    if is_spike is True:
-        nx = HaloSpike(mBH,tBH,alpha)
-        if rh is None:   # use auto-generated rh
-            return nx(r,mx,sigv,rhos,rs,n)
-        else:
-            nx.rh = rh   # use user-defined rh
-            return nx(r,mx,sigv,rhos,rs,n)
-    elif is_spike is False:       
-        return rhox(r,rhos,rs,n)/mx
+def nxSpike(r,mx,profile='MW',sigv=None,tBH=1e+10,alpha='3/2') -> float: #,**kwargs) -> float:
+    """
+    Dark matter number density of Milky Way of Large Magellanic Cloud at
+    distance r to the galactic center. Spike feature is included.
+    
+    Parameters
+    ----------
+    r : array_like
+        Distance to galactic center, kpc
+    mx : array_like
+        Dark matter mass, MeV
+    profile : str
+        'MW' or 'LMC', stands for MW halo or LMC halo
+    sigv : scalar 
+        DM annihilation cross section, in the unit of 1e-26 cm^3/s
+        None indicates no annihilation
+    tBH : scalar
+        Supermassive black hole age, years
+    alpha : str
+        Slope of the spike, str type, '3/2' or '7/3'
+    
+    Returns
+    -------
+    out : scalar/ndarray
+        Dark matter number density at r with spike in the center, 1/cm^3
+    """
+    # --- Setup halo instance --- #
+    # Which profile to be used
+    if profile == 'MW':
+        params_dict = constant.MW_profile
+    elif profile == 'LMC':
+        params_dict = constant.LMC_profile
     else:
-        raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
+        # Invalid profile name
+        raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
+    # Extract parameter values
+    rhos,rs,n,mBH,rh = params_dict.values()
+    # Initializing HaloSpike instance
+    nx_spike = HaloSpike(mBH,tBH,alpha)
+    # Use recorded rh instead of auto generated
+    nx_spike.rh = rh
+
+    # --- Prepare for vectorization --- #
+    r = atleast_1d(r) # Let r be at least 1d array for easy manipulation
+    R,MX = broadcast_arrays(r,mx)
+    # Setup empty array to store nx values
+    NX = zeros_like(R)
+    # Use nditer to mimic vectorization and retrieve nx
+    with nditer([R,MX,NX],op_flags=[['readonly'],['readonly'],['writeonly']]) as it:
+        for r,m,nd in it:
+            nd[...] = nx_spike(r,mx,sigv,rhos,rs,n)
+    # Return the result with dimension as the input
+    return NX if NX.size > 1 else NX.item()
+    # if is_spike is True:
+        
+    #     if rh is None:   # use auto-generated rh
+    #         return nx(r,mx,sigv,rhos,rs,n)
+    #     else:
+    #         nx.rh = rh   # use user-defined rh
+    #         return nx(r,mx,sigv,rhos,rs,n)
+    # elif is_spike is False:       
+    #     return rhox(r,rhos,rs,n)/mx
+    # else:
+    #     raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
 
 
 # def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs) -> float:
@@ -630,33 +675,4 @@ def dmNumberDensity(r,mx,is_spike=True,sigv=None,tBH=1e10,profile='MW',alpha='3/
 #     else:
 #         raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
 
-import numpy as np
-import matplotlib.pyplot as plt
-if __name__=="__main__":
-    # Get MW rhos, rs, n, mBH and rh
-    rhos,rs,n,mBH,rh = constant.MW_profile.values()
-    # Assuming BH age is 1 Gyr
-    tBH = 1e10
-    # DM mass, MeV
-    mx = 0.1
-    # Annihilation cross section
-    sigv_list = [3,0.03,None]
-    sigv_label = ['3','0.03','0']
-    # Initializing instances with two different alphas
-    nx = HaloSpike(mBH=mBH,tBH=tBH,alpha='3/2')  # alpha = 3/2
 
-    # radius, kpc
-    r_vals = np.logspace(-5,2,100)
-
-    for i in range(3):
-        sigv = sigv_list[i]
-        nx_vals = [nx(r,mx,sigv,rhos,rs,n) for r in r_vals]
-        plt.plot(r_vals,nx_vals,label=sigv_label[i] + r'$\times10^{-26}\,{\rm cm^3~s^{-1}}$')
-        #plt.plot(r_vals,nx73_vals)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel(r'$r$ [kpc]')
-    plt.ylabel(r'$n_\chi(r)$ [cm$^{-3}$]')
-    plt.title(fr'$m_\chi = {mx:.1f}$ MeV')
-    plt.legend()
-    plt.savefig('nx.svg',bbox_inches='tight')
