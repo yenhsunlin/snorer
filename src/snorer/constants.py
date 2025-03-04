@@ -142,7 +142,7 @@ class Constants:
     
     @property
     def MagicalNumber(self):    # Magician does Magic!
-        return 2.572e-64        
+        return 2.572e-64         
 
 
 constant = Constants()

@@ -6,15 +6,20 @@ window.MathJax = {
 };
 </script>
 
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 # snorer.get_vx
 
 
-###  snorer.get_vx(*Tx*, *mx*)
+###  <span class="mono">ssnorer.get_vx(*Tx*,*mx*)</span>
 
 Get dimensionless BDM velocity $v_\chi/c$.
-See [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#from-line-of-sight-to-time-dependency){:target="_blank"}.
+See [BDM Physics](../../manual/overview.md#from-line-of-sight-to-time-dependency){:target="_blank"} for detail.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 

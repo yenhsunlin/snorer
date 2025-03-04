@@ -6,12 +6,18 @@ window.MathJax = {
 };
 </script>
 
+</script>
 
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.radiusSchwarzschild
 
 
-###  snorer.radiusSchwarzschild(*mBH*)
+###  <span class="mono">snorer.radiusSchwarzschild(*mBH*)</span>
 
 Schawarzschild radius of a supermassive black hole.
 

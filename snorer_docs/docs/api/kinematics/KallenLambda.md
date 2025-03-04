@@ -6,12 +6,16 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.KallenLambda
 
 
-###  snorer.KallenLambda(*x*, *y*, *z*)
+###  <span class="mono">snorer.KallenLambda(*x*,*y*,*z*)</span>
 
 K&auml;llen lambda function
 $$

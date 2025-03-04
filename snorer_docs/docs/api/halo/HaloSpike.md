@@ -5,13 +5,19 @@ window.MathJax = {
   }
 };
 </script>
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 # snorer.HaloSpike
 
 
-### *`class`* snorer.HaloSpike(*mBH*, *tBH*, *alpha*)
+### *`class`*  <span class="mono">snorer.HaloSpike(*mBH*,*tBH*,*alpha*)</span>
+
+Superclass: `snorer.Constants`
 
 Class for constructing dark matter halo with spike due to supermassive black hole
 (SMBH) in the galactic center.
@@ -43,9 +49,9 @@ Class for constructing dark matter halo with spike due to supermassive black hol
 
 > `Rsp` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp; Spike radius $R_{\rm sp}$, kpc
 
-### *`__call__`* (*r*, *mx*, *sigv*, *rhos*, *rs*, *n*)
+### *`__call__`*  <span class="mono">(*r*,*mx*,*sigv*,*rhos*,*rs*,*n*)</span>
 
-After initializing the `snorer.HaloSpike` instance, it is callable like normal function with the following required inputs. 
+After initializing `snorer.HaloSpike` instance, it is callable like normal function with the following required inputs. 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 

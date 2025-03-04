@@ -6,12 +6,16 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.M_sigma
 
 
-###  snorer.M_sigma(*mBH*)
+###  <span class="mono">snorer.M_sigma(*mBH*)</span>
 
 Stellar dispersion relation under the influence of black hole. Also known
 as $M-\sigma$ relation.

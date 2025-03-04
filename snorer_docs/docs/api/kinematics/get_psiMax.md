@@ -5,16 +5,20 @@ window.MathJax = {
   }
 };
 </script>
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 # snorer.get_psiMax
 
 
-###  snorer.get_psiMax(*Tx*, *mx*)
+###  <span class="mono">ssnorer.get_psiMax(*Tx*,*mx*)</span>
 
 Get the maximumly allowed scattering angle $\psi_{\rm max}$.
-Se Eq. (6) [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#constraint-by-positive-definite-e_nu){:target="_blank"}.
+Se Eq. (6) [BDM Physics](../../manual/overview.md#constraint-by-positive-definite-e_nu){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 

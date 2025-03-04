@@ -12,7 +12,12 @@ nav:
   - API:
     - Main:
       - Functions:
+        - sn_nu_spectrum: api/main/sn_nu_spectrum.md
+        - dsigma_xv: api/main/dsigma_xv.md
+        - emissivity_jx: api/main/emissivity_jx.md
+        - differential_flux: api/main/differential_flux.md
         - flux: api/main/flux.md
+        - event:  api/main/event.md
     - Halo:
       - Classes:
         - HaloSpike: api/halo/HaloSpike.md
@@ -35,7 +40,7 @@ nav:
         - get_tvan: api/kinematics/get_tvan.md
         - get_psiMax: api/kinematics/get_psiMax.md
         - get_vx: api/kinematics/get_vx.md
-        - KallenLambda: api/kinematics/KallenLambda
+        - KallenLambda: api/kinematics/KallenLambda.md
     - Propagation: 
       - Positioning: api/geometry/Positioning.md
       - Classes:
@@ -44,7 +49,12 @@ nav:
     - Constants:
       - Classes:
         - api/constants/Constants.md
-    - Utilities: api/utils/utils.md
+    - Utilities:
+      - Classes:
+        - BoostedDarkMatter: api/utils/BDM.md
+      - Functions:
+        - icrs_to_betaRs: api/utils/icrs_to_betaRs.md
+        - galactic_to_betaRs: api/utils/galactic_to_betaRs.md
 
 theme:
   name: readthedocs

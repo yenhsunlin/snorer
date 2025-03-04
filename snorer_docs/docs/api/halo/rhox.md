@@ -6,12 +6,16 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.rhox
 
 
-###  snorer.rhox(*r*, *rhos*, *rs*, *n*)
+###  <span class="mono">snorer.rhox(*r*,*rhos*,*rs*,*n*)</span>
 
 Dark matter density at $r$.
 

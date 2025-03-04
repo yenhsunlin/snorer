@@ -5,13 +5,18 @@ window.MathJax = {
   }
 };
 </script>
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 
 # snorer.nx
 
 
-###  snorer.nx(*r*, *mx*, *profile = 'MW'*)
+###  <span class="mono">snorer.nx(*r*,*mx*,*profile='MW'*)</span>
 
 Dark matter number density of Milky Way of Large Magellanic Cloud at distance $r$ to the galactic center.  Spike feature is not included.
 
@@ -25,7 +30,7 @@ Dark matter number density of Milky Way of Large Magellanic Cloud at distance $r
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**
 
-> `out` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter number density at $r$, 1/cm^3
+> `out` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter number density at $r$, cm<sup>−3</sup>
 
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div>**
 

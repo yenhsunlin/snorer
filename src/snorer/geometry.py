@@ -18,8 +18,7 @@ __all__ = ['Geometry',
 #---------- Import required utilities ----------#
 
 from numpy import sqrt,cos,sin,clip,finfo
-from .constants import constant
-from .sysmsg import FlagError
+from constants import constant
 
 
 
@@ -254,7 +253,7 @@ class Propagation(Geometry):
     See API/Propagation/Positioning for detail
     """
 
-    def __init__(self,t,theta,phi,vx,Rs,Re,beta):
+    def __init__(self,t,vx,theta,phi,Rs,Re,beta):
         self.t = t
         self.vx = vx
         self.Rs = Rs

@@ -7,11 +7,16 @@ window.MathJax = {
 </script>
 
 
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.radiusInfluence
 
 
-###  snorer.radiusInfluence(*mBH*)
+###  <span class="mono">snorer.radiusInfluence(*mBH*)</span>
 
 Influence radius of a supermassive black hole
 
@@ -31,6 +36,6 @@ Influence radius of a supermassive black hole
 
 This function evaluates the influence radius of a supermassive black hole
 $$
-r_h = G\frac{M_{\rm BH}}{\sigma_s^2}
+r_h = \frac{GM_{\rm BH}}{\sigma_s^2}
 $$
-where sigma_s is the stellar dispersion near SMBH. See also [**snorer.M_sigma**](M_sigma.md){:target="_blank"}.
+where sigma_s is the stellar dispersion near SMBH. See also [`snorer.M_sigma`](M_sigma.md){:target="_blank"}.

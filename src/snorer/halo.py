@@ -17,17 +17,16 @@ __all__ = ['HaloSpike',
            'M_sigma',
            'radiusInfluence',
            'radiusSchwarzschild',
-           'dmNumberDensity',
-           'nx',]
+           'nx',
+           'nxSpike',]
 
 
 #---------- Import required utilities ----------#
 
 from numpy import pi,broadcast_arrays,atleast_1d,zeros_like,nditer
 from fractions import Fraction
-from .constants import Constants,constant
-from .sysmsg import FlagError
-
+from constants import Constants,constant
+from sysmsg import FlagError
 
 
 ##########################################################################
@@ -572,107 +571,4 @@ def nxSpike(r,mx,profile='MW',sigv=None,tBH=1e+10,alpha='3/2') -> float: #,**kwa
             nd[...] = nx_spike(r,mx,sigv,rhos,rs,n)
     # Return the result with dimension as the input
     return NX if NX.size > 1 else NX.item()
-    # if is_spike is True:
-        
-    #     if rh is None:   # use auto-generated rh
-    #         return nx(r,mx,sigv,rhos,rs,n)
-    #     else:
-    #         nx.rh = rh   # use user-defined rh
-    #         return nx(r,mx,sigv,rhos,rs,n)
-    # elif is_spike is False:       
-    #     return rhox(r,rhos,rs,n)/mx
-    # else:
-    #     raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
-
-
-# def dmNumberDensity(r,mx,is_spike=True,rh=None,sigv=None,tBH=1e10,profile='MW',alpha='3/2',gamma=1,**kwargs) -> float:
-#     """
-#     Obtain the DM number density at given r for MW or LMC
     
-#     In
-#     ------
-#     r: distance to GC, kpc
-#     mx: DM mass, MeV
-#     is_spike: Turn on/off spike feature, bool
-#     rh: SMBH influence radius, kpc
-#         None indicates automatically calculated using the given mBH
-#     sigv: DM annihilation cross section, in the unit of 1e-26 cm^3/s
-#         None indicates no annihilation
-#     tBH: SMBH age, years
-#     profile: str, 'MW' or 'LMC'
-#     alpha: Slope of the spike, str type, '3/2' or '7/3'
-#     gamma: Slope of the initial profile
-#     **kwargs: If you wish to have DM profile other than 'MW' or 'LMC',
-#         specify the desired rhos, rs, n, mBH and rh here. Those not
-#         specified will be replaced by the values belong to the 'profile'
-    
-#     Out
-#     ------
-#     number density: 1/cm^3
-
-#     See the docstrings in class haloSpike and function rhox for more detail
-#     """
-#     if profile == 'MW':
-#         rhos,rs,n,mBH,rh = 184,24.42,2,constant.M_SgrA,2e-3
-#     elif profile == 'LMC':
-#         rhos,rs,n,mBH,rh = 68,31.9,3,1e6,0.84e-3
-#     else:
-#         raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
-
-#     if is_spike is True:
-#         nx = HaloSpike(mBH,tBH,alpha,gamma)
-#         if rh is None:
-#             return nx(r,mx,sigv,rhos,rs,n)
-#         else:
-#             nx.rh = rh
-#             return nx(r,mx,sigv,rhos,rs,n)
-#     elif is_spike is False:       
-#         return rhox(r,rhos,rs,n)/mx
-#     else:
-#         raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
-
-
-# def dmNumberDensity_general(r,mx,rhos,rs,n,mBH,is_spike=True,rh=None,sigv=None,tBH=1e10,alpha='3/2',gamma=1) -> float:
-#     """
-#     Obtain the DM number density at given r for user-defined DM halo profile
-    
-#     In
-#     ------
-#     r: distance to GC, kpc
-#     mx: DM mass, MeV
-#     rhos: The characteristic density, MeV/cm^3
-#     rs: The characteristic radius, kpc
-#     n: Slope of the DM profile
-#     mBH: SMBH mass, Msun
-#         if is_spike = False, mBH has no effect
-#     is_spike: Turn on/off spike feature, bool
-#     rh: SMBH influence radius, kpc
-#         None indicates automatically calculated using the given mBH
-#     sigv: DM annihilation cross section in the unit of 1e-26 cm^3/s, float
-#         None indicates no annihilation
-#     tBH: SMBH age, years
-#     alpha: Slope of the spike, str type, '3/2' or '7/3'
-#     gamma: Slope of the initial profile, float
-    
-#     Out
-#     ------
-#     number density: 1/cm^3
-
-#     See the docstrings in class haloSpike and function rhox for more detail
-#     """
-#     if rh is None:
-#         rh = radiusInfluence(mBH)
-
-#     if is_spike is True:
-#         nx = HaloSpike(mBH,tBH,alpha,gamma)
-#         if rh is None:  # auto-calculated SMBH influence radius
-#             return nx(r,mx,sigv,rhos,rs,n)
-#         else:  # user-defined SMBH influence radius
-#             nx.rh = rh
-#             return nx(r,mx,sigv,rhos,rs,n)
-#     elif is_spike is False:       
-#         return rhox(r,rhos,rs,n)/mx
-#     else:
-#         raise FlagError('Keyword argument \'is_spike\' must be a boolean.')
-
-

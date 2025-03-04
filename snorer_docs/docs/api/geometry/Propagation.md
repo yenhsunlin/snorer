@@ -6,27 +6,31 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.Propagation
 
 
-### *`class`* snorer.Propagation(*t*, *vx*, *theta*, *phi*, *Rs*, *Re*, *beta*)
+### *`class`* <span class="mono">snorer.Propagation(*t*,*vx*,*theta*,*phi*,*Rs*,*Re*,*beta*)</span>
 
 Superclass: `snorer.Geometry`
 
 The class constructs the dynamical geomatrical relations for $d$, $r^\prime$ and $\cos\psi$
 when $(l,\theta,\phi)$ and $(R_s,R_e,\beta)$ are specified.
 
-Unlike its superclass Geometry, the class parameter $l$ is now replaced by a specific
-time $t$ and dimensionless BDM velocity $v_\chi$. This allows it to incorporate time-dependent feature when evaluating the geometrical quantities during propagation.  
+Unlike its superclass Geometry, the class parameter `l` is now replaced by a specific
+time `t` and dimensionless BDM velocity `vx`. This allows it to incorporate time-dependent feature when evaluating the geometrical quantities during propagation.  
 
 This class is also not exclusively for SN in MW or LMC, it can be generalized to SN
 in arbitrary distant galaxy as long as the aforementioned inputs are determined.
 The BDM emissivity along the line-of-sight then can be determined when calculate
 the BDM flux and event at Earth associated to that particular SN.
 
-See [API/Propagation/Positioning <i class="fa-regular fa-bookmark"></i>](Positioning.md){:target="_blank"} for more detail.
+See [Positioning](Positioning.md){:target="_blank"} for more detail.
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
 > `t` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The BDM at specific time $t$, seconds. Time-zero is set to be the arrival of SN$\nu$ at Earth

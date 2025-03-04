@@ -6,15 +6,19 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.get_tvan
 
 
-###  snorer.get_tvan(*Tx*, *mx*, *Rs*)
+###  <span class="mono">snorer.get_tvan(*Tx*,*mx*,*Rs*)</span>
 
 Get the BDM vanishing time. The time-zero is set as the arrival of SN$\nu$ at Earth.
-See Eqs. (22) and (23) in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#time-dependent-feature){:target="_blank"}.
+See Eqs. (22) and (23) in [BDM Physics](../../manual/overview.md#time-dependent-feature){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
@@ -46,7 +50,7 @@ mx_vals = np.logspace(-6,3,100) # mx values
 # Setup meshgrid for (mx,Tx) plane
 MX,TX = np.meshgrid(mx_vals,Tx_vals,indexing='ij')
 # Evaluating tvan and convert it to years
-TVAN = get_tvan(TX,MX,Rs)/sn.constant.year2Seconds
+TVAN = sn.get_tvan(TX,MX,Rs)/sn.constant.year2Seconds
 
 # Plot
 fig, ax = plt.subplots()

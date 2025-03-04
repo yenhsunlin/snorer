@@ -6,12 +6,16 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.Constants
 
 
-### *`class`* snorer.Constants() <!-- omit in toc -->
+### *`class`* <span class="mono">snorer.Constants()</span>
 
 A data class stores many physical constants and coversion factors for convenient use.
 

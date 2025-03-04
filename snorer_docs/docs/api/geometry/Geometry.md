@@ -5,17 +5,22 @@ window.MathJax = {
   }
 };
 </script>
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 
 # snorer.Geometry
 
 
-### *`class`* snorer.Geometry(*l*, *theta*, *phi*, *Rs*, *Re*, *beta*)
+### *`class`* <span class="mono">snorer.Geometry(*l*,*theta*,*phi*,*Rs*,*Re*,*beta*)</span>
 
 The class constructs the static geomatrical relations for $d$, $r^\prime$ and $\cos\psi$
 when $(l,\theta,\phi)$ and $(R_s,R_e,\beta)$ are specified. 
-See [API/Propagation/Positioning <i class="fa-regular fa-bookmark"></i>](Positioning.md){:target="_blank"} for more detail.
+See [Positioning](Positioning.md){:target="_blank"} for more detail.
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
 > `l` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The line-of-sight distance $\ell$, kpc

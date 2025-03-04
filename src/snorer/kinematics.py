@@ -18,16 +18,18 @@ __all__ = ['Kinematics',
            'get_psiMax',
            'get_gx',
            'get_thetaMax',
-           'get_tof',
+           '_get_tof',
            'KallenLambda',
-           'get_tBound',]
+           'get_tBound',
+           'get_tvan',]
 
 
 #---------- Import required utilities ----------#
 
 from numpy import sin,cos,tan,arccos,sqrt,pi,abs,clip,atleast_1d,broadcast_arrays,zeros_like,nditer
 from scipy.optimize import root_scalar
-from .constants import constant
+from constants import constant
+
 
 ##########################################################################
 #                                                                        #
@@ -397,38 +399,6 @@ def get_vx(Tx,mx) -> float:
     """
     return sqrt(Tx*(Tx + 2*mx))/(Tx + mx)
     
-
-# def fx_lab(Ev,mx,psi) -> float:
-#     """
-#     Calculate the angular distribution for cross section
-#     in lab frame with scattering angle psi. This is for
-#     model-independent case where the total cross section
-#     is independent of energy. If a particular model is
-#     introduced, one may obtain the angular distribution
-#     via the scattering amplitude instead of this.
-
-#     Input
-#     ------
-#     Tx: BDM kinetic energy, MeV
-#     mx: DM mass, MeV
-#     psi: Lab frame scattering angle, rad
-    
-#     Output
-#     ------
-#     prob. dist.: differential distribution at psi
-#     """
-#     if 0 <= psi <= pi/2 and Ev > 0:
-#         # evaluate Lorentz factor in CM frame
-#         s = mx**2 + 2*Ev*mx
-#         Ecm = 0.5*(s + mx**2)/sqrt(s)
-#         gamma = Ecm/mx
-#         # evaluate the angular distribution
-#         sec = 1/cos(psi)
-#         fx = gamma**2*sec**3/pi/(1 + gamma**2*tan(psi)**2)**2
-#     else:
-#         fx = 0
-#     return fx
-
 
 def _gx_lab(Ev,mx,psi) -> float:
     """

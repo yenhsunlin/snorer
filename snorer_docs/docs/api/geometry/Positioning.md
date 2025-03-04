@@ -8,12 +8,12 @@ window.MathJax = {
 
 # Positioning
 
-To position the BDM signals, cf. [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#general-picture){:target="_blank"}, we have to analyze the geometry of propagation in order to get how large the emissivity is at B.
+To position the BDM signals, cf. [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} in [BDM Physics](../../manual/overview.md#general-picture){:target="_blank"}, we have to analyze the geometry of propagation in order to get how large the emissivity is at B.
 Once the geometrical relations are understood, we can proceed to construct a class that solve this matter on-the-fly. See also Ref. [[1](#yhl_prd)] and note that we slightly modify the notations in this document for transparency.
 
 ## Geometry
 
-We replot [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#general-picture){:target="_blank"} and leaves only relevant information in the following [Fig. 1](#geometry1). Three coplanar points S, G and E remained the same. Repeated quantities are the same while we also mark addditional auxiliary terms which their purposes will be clear soon.
+We replot [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} in [BDM Physics](../../manual/overview.md#general-picture){:target="_blank"} and leaves only relevant information in the following [Fig. 1](#geometry1). Three coplanar points S, G and E remained the same. Repeated quantities are the same while we also mark addditional auxiliary terms which their purposes will be clear soon.
 
 <figure id="geometry1">
 <center><img src="../../../figs/geometry1.svg" alt="geometry1" style="width: 60%;">
@@ -117,7 +117,7 @@ This indicates that $d$ is not an independent quantity but subject to $\ell$ and
 
 ## Static to time-dependent
 
-From  Eq. (15) in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#from-line-of-sight-to-time-dependency){:target="_blank"} and offseting it by $t_\nu=R_s/c$, we have
+From  Eq. (15) in [BDM Physics](../../manual/overview.md#from-line-of-sight-to-time-dependency){:target="_blank"} and offseting it by $t_\nu=R_s/c$, we have
 
 $$
 t = \frac{d}{c} + \frac{\ell}{v_\chi}- t_\nu

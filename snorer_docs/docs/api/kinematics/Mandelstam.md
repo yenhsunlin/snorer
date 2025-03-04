@@ -6,17 +6,21 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.Mandelstam
 
 
-### *`class`* snorer.Mandelstam(*T2*, *m1*, *m2*, *psi*)
+### *`class`* <span class="mono">snorer.Mandelstam(*T2*,*m1*,*m2*,*psi*)</span>
 
 Superclass: `snorer.Kinematics`
 
 This class constructs the associated Mandelstam variables $s$, $t$ and $u$ associated with the
-scattering process depicted in [Fig. 1](22scat.md/#22scat){:target="_blank"} in [API/Particle kinematics/2-2 elastic scattering <i class="fa-regular fa-bookmark"></i>](22scat.md){:target="_blank"}.
+scattering process depicted in [Fig. 1](22scat.md/#22scat){:target="_blank"} in [2-2 elastic scattering <i class="fa-regular fa-bookmark"></i>](22scat.md){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
@@ -47,7 +51,7 @@ scattering process depicted in [Fig. 1](22scat.md/#22scat){:target="_blank"} in 
 
 > `x` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;$x:=\cos\psi \in [1,-1]$
 
-> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? **True** for plausible and **False** for physically impossible.
+> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? `True` for plausible and `False` for physically impossible.
 
 > `dLips` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space
 

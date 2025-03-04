@@ -8,8 +8,8 @@ window.MathJax = {
 
 # 2-2 elastic scattering
 
-In [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#particle-kinematics){:target="_blank"} we have reviewed the 2-2 elastic scattering with one is massless neutrino.
-In order to facilitate a broader case, we relax the massless assumption and do not distinguish them as any particle species.
+We have reviewed the 2-2 elastic scattering with one is massless neutrino in [BDM Physics](../../manual/overview.md#particle-kinematics){:target="_blank"}.
+In order to facilitate a broader case, we relax the massless assumption and do not identitfy them as any particle species.
 This aids us to build an independent class that is suitable for any 2-2 scattering with non-zero masses.
 
 ## General expressions
@@ -146,7 +146,7 @@ $$
 \vartheta =\sin^{-1}\left( \frac{|\mathbf{p}_2^\prime|}{|\mathbf{p}_1^\prime|}\sin\psi\right)
 \end{equation}
 $$
-where $|\mathbf{p_1^\prime}|=\sqrt{E_1^{\prime 2}-m_1^2}$ and $E_1^\prime = E_1-T2$.
+where $|\mathbf{p_1^\prime}|=\sqrt{E_1^{\prime 2}-m_1^2}$ and $E_1^\prime = E_1-T_2$.
 
 ## Validation
 
@@ -199,7 +199,7 @@ m_\chi x^2\frac{\alpha+\beta+\gamma}{\eta}=\left(\frac{m_\chi}{|\mathbf{p}_\chi|
 $$
 
 
-We discover that Eqs. $\eqref{eq:Ev}$ and $\eqref{eq:dEv/dTx}$ are exactly Eqs. (5) and (8) in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#constraint-by-positive-definite-e_nu){:target="_blank"} respectively.
+We discover that Eqs. $\eqref{eq:Ev}$ and $\eqref{eq:dEv/dTx}$ are exactly Eqs. (5) and (8) in [BDM Physics](../../manual/overview.md#constraint-by-positive-definite-e_nu){:target="_blank"} respectively.
 Thus conclude that
 Eqs. $\eqref{eq:E1}$ and $\eqref{eq:dE1/dT2}$ are the general expressions for massive 2-2 elastic scattering.
 

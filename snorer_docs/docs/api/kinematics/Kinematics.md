@@ -6,16 +6,20 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.Kinematics
 
 
-### *`class`* snorer.Kinematics(*T2*, *m1*, *m2*, *psi*)
+### *`class`* <span class="mono">snorer.Kinematics(*T2*,*m1*,*m2*,*psi*)</span>
 
 This class constructs the required kinetic energy $T_1$ of incoming particle with
 mass $m_1$ to boost the target with mass $m_2$ to kinetic energy $T_2$ along the direction
-$\psi$. See [Fig. 1](22scat.md/#22scat){:target="_blank"} in  [API/Particle kinematics/2-2 elastic scattering <i class="fa-regular fa-bookmark"></i>](22scat.md){:target="_blank"}.
+$\psi$. See [Fig. 1](22scat.md/#22scat){:target="_blank"} in  [2-2 elastic scattering](22scat.md){:target="_blank"}.
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
 > `T2` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Kinetic energy $T_2$ received by the particle 2, MeV
@@ -38,7 +42,7 @@ $\psi$. See [Fig. 1](22scat.md/#22scat){:target="_blank"} in  [API/Particle kine
 
 > `x` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;$x:=\cos\psi \in [1,-1]$
 
-> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? **True** for plausible and **False** for physically impossible.
+> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? `True` for plausible and `False` for physically impossible.
 
 > `dLips` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space
 
@@ -59,4 +63,4 @@ Import `snorer` and do
 False
 ```
 It is clear that massless particle 1 is no way to upscatter particle 2 with $m_2=10^{-3}$ MeV to $T_2=15$ MeV at angular direction $\psi$. Becasue the required $T_1$ (`snv.T1`) is negative. 
-The attribute `snv.sanity` is **False**, which implies this reaction is physically impossible.
+The attribute `snv.sanity` is `False`, which implies this reaction is physically impossible.

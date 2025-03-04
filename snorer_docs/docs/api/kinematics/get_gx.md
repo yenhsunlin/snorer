@@ -6,17 +6,22 @@ window.MathJax = {
 };
 </script>
 
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 # snorer.get_gx
 
 
-###  snorer.get_gx(*Ev*, *mx*, *psi*)
+###  <span class="mono">snorer.get_gx(*Ev*,*mx*,*psi*)</span>
 
 Calculate the probability density for cross section at scattering
 angle psi and averaged over azimuthal angle in lab frame. This is
 for energy-independent cross section.
-See Eq. (3) in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md#particle-kinematics){:target="_blank"}.
+See Eq. (3) in [BDM Physics](../../manual/overview.md#particle-kinematics){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 

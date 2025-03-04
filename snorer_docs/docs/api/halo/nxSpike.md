@@ -8,7 +8,7 @@ window.MathJax = {
 
 
 
-# snorer.nx
+# snorer.nxSpike
 
 
 ###  snorer.nxSpike(*r*, *mx*, *profile = 'MW'*, *sigv = None*, *tBH = 1e+10*, *alpha = '3/2'*)
@@ -24,7 +24,7 @@ Dark matter number density of Milky Way of Large Magellanic Cloud at
 
 > `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;`'MW'` or `'LMC'`, stands for MW halo or LMC halo
 
-> `sigv` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;DM annihilation cross section, in the unit of $10^{26}$ cm<sup>3</sup> s<sup>−1</sup>. `None` indicates no annihilation
+> `sigv` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;DM annihilation cross section, in the unit of $10^{-26}$ cm<sup>3</sup> s<sup>−1</sup>. `None` indicates no annihilation
 
 > `tBH` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Supermassive black hole age, years
 

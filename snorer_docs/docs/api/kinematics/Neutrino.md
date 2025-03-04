@@ -5,18 +5,22 @@ window.MathJax = {
   }
 };
 </script>
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 
 # snorer.Neutrino
 
 
-### *`class`* snorer.Neutrino(*Tx*, *mx*, *psi*)
+### *`class`* <span class="mono">snorer.Neutrino(*Tx*,*mx*,*psi*)</span>
 
 Superclass: `snorer.Kinematics`
 
 This class constructs the required neturino energy to have BDM with
-$(T_\chi,m_\chi,\psi)$. See [Fig. 2](../../manual/overview.md#lab_scatt){:target="_blank"} in [User Manual/Physics Overview <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md).
+$(T_\chi,m_\chi,\psi)$. See [Fig. 2](../../manual/overview.md#lab_scatt){:target="_blank"} in [BDM Physics <i class="fa-regular fa-bookmark"></i>](../../manual/overview.md).
 We have assumed neutrino mass $m_\nu=0$.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
@@ -36,7 +40,7 @@ We have assumed neutrino mass $m_\nu=0$.
 
 > `x` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;$x:=\cos\psi \in [1,-1]$
 
-> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is the reaction physically plausible? **True** for plausible and **False** for physically impossible.
+> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is the reaction physically plausible? `True` for plausible and `False` for physically impossible.
 
 > `dLips` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space
 
