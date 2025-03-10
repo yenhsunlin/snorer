@@ -34,3 +34,5 @@ tests/
 test.*
 .virtual_documents/
 .DS_Store
+
+snorer_docs/
