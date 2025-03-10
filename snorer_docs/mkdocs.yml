@@ -46,15 +46,16 @@ nav:
       - Classes:
         - Geometry: api/geometry/Geometry.md
         - Propagation: api/geometry/Propagation.md
-    - Constants:
-      - Classes:
-        - api/constants/Constants.md
     - Utilities:
+      - Coordinate Transformations: api/utils/coord_transf.md
       - Classes:
         - BoostedDarkMatter: api/utils/BDM.md
       - Functions:
-        - icrs_to_betaRs: api/utils/icrs_to_betaRs.md
-        - galactic_to_betaRs: api/utils/galactic_to_betaRs.md
+        - galactic_to_beta: api/utils/gal_to_beta.md
+        - equatorial_to_beta: api/utils/equa_to_beta.md
+    - Constants:
+      - Classes:
+        - Constants: api/constants/Constants.md
 
 theme:
   name: readthedocs
@@ -65,9 +66,10 @@ theme:
     - rust
 
 markdown_extensions:
+#  - pymdownx.highlight:
+#      use_pygments: true
   - pymdownx.arithmatex:
       generic: true
-  #- pymdownx.superfences
   - attr_list
   - toc:
       permalink: true

@@ -31,6 +31,7 @@ n_\chi(r)=\frac{\rho_s}{m_\chi}\frac{1}{\frac{r}{r_s}(1+\frac{r}{r_s})^2}
 $$
 where $\rho_s=184$ MeV cm<sup>−3</sup> and $r_s=24.4$ kpc.
 Due to its spherical symmetric nature, one does not need to know where the galactic plane lies. Unless S lies on the axis $\overline{\mathsf{GE}}$, BDM is not azimuthally symmetric around $\varphi$.
+We refer $\beta$ as the off-center angle. It characterizes how SN deviates from GC in angular direction. It will be elaborated more in the API documents: [Positioning](../api/geometry/Positioning.md){:target="_blank"} and [Coordinate Transformations](../api/utils/coord_transf.md){:target="_blank"}.
 
 ### Particle kinematics 
 

@@ -21,7 +21,7 @@ __all__ = ['sn_nu_spectrum',
 
 #---------- Import required utilities ----------#
 
-from numpy import pi,exp,arccos,cos,sin,broadcast_arrays,atleast_1d,clip
+from numpy import pi,exp,arccos,cos,sin,broadcast_arrays,atleast_1d,clip,where
 import vegas
 from halo import nx,nxSpike
 from kinematics import Neutrino,get_gx,get_vx,get_thetaMax,_get_tof
@@ -57,7 +57,7 @@ The docstrings should be sufficient for their self-explanations
 """
 
 
-def sn_nu_spectrum(Ev,d,d_trunct=3.24e-15,is_density=False):
+def sn_nu_spectrum(Ev,d,d_cut=3.24e-15,is_density=False):
     """
     Supernova neutrino spectrum at distance d to supernova.
     
@@ -67,9 +67,10 @@ def sn_nu_spectrum(Ev,d,d_trunct=3.24e-15,is_density=False):
         Supernova neutrino energy, MeV
     d : array_like
         Distance from supernova to the boost point, kpc
-    d_trunct: float
-        Truncation point for d to prevent divergence when d approaches 0.
-        Default is 3.24e-15 kpc, approximating 100 km
+    d_cut: float
+        Terminating point for d. Below the value will return 0.
+        Default is 3.24e-15 kpc, approximating 100 km, the size of
+        neutrino sphere.
     is_density : bool
         Should convert the output to the unit of number density. Default
         is False and output has the unit of flux.
@@ -86,28 +87,28 @@ def sn_nu_spectrum(Ev,d,d_trunct=3.24e-15,is_density=False):
     # --- Preparing for vectorization --- #
     Ev = atleast_1d(Ev) # at least 1d Ev
     Ev,d = broadcast_arrays(Ev,d)
-    # Truncate d at d_trunct to avoid divergence because 1/d^2
-    d = clip(d,d_trunct,None)
+    # Truncate d at d_cut to avoid divergence because 1/d^2
+    #d = clip(d,d_cut,None)
     
     # --- Evaluating flux --- #
     Lv = constant.Lv * constant.erg2MeV # convert erg/s to MeV/s
-    d = d * constant.kpc2cm # convert kpc to cm
     
     def _fv(Ev,Tv):
         """
         Fermi-Dirac distribution
         """
-        # clip exponent to avoid overflow, by clip we mean exponent must < 500
-        exponent = clip(Ev/Tv - 3,None,500)
-        fv = (1/18.9686) * Tv**(-3) * (Ev**2 / (exp(exponent) + 1))
-        return fv
+        # clip exponent to avoid overflow, by clip we mean exponent must < 300
+        exponent = clip(Ev/Tv - 3,None,300)
+        fv = lambda exponent: (1/18.9686) * Tv**(-3) * (Ev**2 / (exp(exponent) + 1))
+        return where(exponent < 300, fv(exponent), 0)
     
     # PDF for all neutrino species
     nue_dist = _fv(Ev,2.76) / 11  # Nu_e
     nueb_dist = _fv(Ev,4.01) / 16 # Nu_e bar
     nux_dist = _fv(Ev,6.26) / 25  # Rest of the 4 species
     # Evaluate the total flux
-    luminosity = Lv / (4 * pi * d**2)
+    lum = lambda d: Lv / (4 * pi * d**2)
+    luminosity = where(d > d_cut, lum(d * constant.kpc2cm), 0)
     flux = luminosity * (nue_dist + nueb_dist + 4 * nux_dist)
 
     # Should the output be flux or number density    
@@ -146,7 +147,7 @@ def dsigma_xv(Ev,mx,psi,sigxv0=1e-45):
 
 
 def emissivity_jx(Ev,dEv,mx,d,r,psi,
-                  sigxv0=1e-45,profile='MW',d_trunct=3.24e-15,
+                  sigxv0=1e-45,profile='MW',d_cut=3.24e-15,
                   is_spike=False,sigv=None,tBH=1e10,alpha='3/2') -> float:
     """
     Emissivity jx of supernova-neutrino-boost dark matter at boost point.
@@ -171,9 +172,9 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
         to account for the angular distribution and makes it cm^2/sr.
     profile : str
         'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile in use.
-    d_trunct: scalar
-        Truncation point for d to prevent supernova neutrino flux diverges at d
-        approaching 0. Default is 3.24e-15 kpc, approximating 100 km.
+    d_cut: scalar
+        Terminating point for d. Below the value will return 0.
+        Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
     is_spike : bool
         Is halo spike included? Default is False.
     sigv : float
@@ -192,7 +193,7 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
 
     See Eq. (13) in BDM Physics for detail.
     """
-    dfv = sn_nu_spectrum(Ev,d,d_trunct,is_density=False)   # SNv flux
+    dfv = sn_nu_spectrum(Ev,d,d_cut,is_density=False)   # SNv flux
     dsigma = dsigma_xv(Ev,mx,psi,sigxv0)   # DM-v diff. cross section, cm^2/sr
     
     # Incorporating spike feature?
@@ -208,7 +209,7 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
 
 
 def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
-                      sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_trunct=3.24e-15,r_trunct=1e-5,
+                      sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_cut=3.24e-15,r_cut=1e-8,
                       is_spike=False,sigv=None,tBH=1e10,alpha='3/2') -> float:
     """
     The differential supernova-neutrin-boosted dark matter flux at Earth at specific time t 
@@ -238,11 +239,13 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
     tau : float
         The duration of SN explosion, seconds. Default is 10 s.
-    d_trunct: scalar
-        Truncation point for d to prevent divergence when d approaches 0.
-        Default is 3.24e-15 kpc, approximating 100 km.
-    r_trunct : float
-        Truncating nx when r' < r_cut, kpc. Default is 1e-5 kpc.
+    d_cut : scalar
+        Terminating point for d. Below the value will return 0.
+        Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
+    r_cut : float
+        Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
+        in the central region, r_cut cannot be too large. Otherwise, the spike effect will
+        be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
     sigv : float 
@@ -269,7 +272,7 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
     bdmProgagation = Propagation(t,vx,theta,phi,Rs,Re,beta)
     l = bdmProgagation.l  # l.o.s, to evaluate Jacobian J
     d = bdmProgagation.d  # Distance from SN to B, to evaluate neutrino flux
-    r = max(bdmProgagation.rprime,r_trunct)  # Distance from GC to B, to evaluate nx, truncated at r_trunct
+    r = bdmProgagation.rprime  # Distance from GC to B, to evaluate nx
     psi = arccos(bdmProgagation.cos_psi)  # Scattering angle that points Earth direction
 
     # Initializing Neutrino class to get required SNv properties
@@ -279,9 +282,9 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
     sanity = snNu.sanity  # is this scattring process allowed?
    
     # Evaluate differential flux, integrand of Eq. (18) in BDM Physics
-    if sanity: # if energy conservation holds
+    if sanity and r > r_cut: # if energy conservation holds
         # Evaluate the BDM emissivity
-        jx = emissivity_jx(Ev,dEv,mx,d,r,psi,sigxv0,profile,d_trunct,is_spike,sigv,tBH,alpha)
+        jx = emissivity_jx(Ev,dEv,mx,d,r,psi,sigxv0,profile,d_cut,is_spike,sigv,tBH,alpha)
         # Jacobian, it should not diverge as we already require d > d_trunct
         J = d * vx / (vx * (l - Rs * cos(theta)) + d) * constant.c
         # Differential flux 
@@ -292,7 +295,7 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
 
 
 def flux(t,Tx,mx,Rs,beta,
-         sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_trunct=3.24e-15,r_trunct=1e-5,
+         sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_cut=3.24e-15,r_cut=1e-5,
          is_spike=False,sigv=None,tBH=1e10,alpha='3/2',
          nitn=10,neval=30000) -> float:
     """
@@ -320,11 +323,13 @@ def flux(t,Tx,mx,Rs,beta,
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
     tau : float
         The duration of SN explosion, seconds. Default is 10 s.
-    d_trunct: scalar
-        Truncation point for d to prevent divergence when d approaches 0.
-        Default is 3.24e-15 kpc, approximating 100 km
-    r_trunct : float
-        Truncating nx when r' < r_cut, kpc. Default is 1e-5 kpc.
+    d_cut: scalar
+        Terminating point for d. Below the value will return 0.
+        Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
+    r_cut : float
+        Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
+        in the central region, r_cut cannot be too large. Otherwise, the spike effect will
+        be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
     sigv : float 
@@ -356,7 +361,7 @@ def flux(t,Tx,mx,Rs,beta,
         """
         theta, phi = x[0], x[1]
         df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta,
-                               sigxv0=sigxv0, profile=profile, Re=Re, tau=tau, d_trunct=d_trunct, r_trunct=r_trunct,
+                               sigxv0=sigxv0, profile=profile, Re=Re, tau=tau, d_trunct=d_cut, r_trunct=r_cut,
                                is_spike=is_spike, sigv=sigv, tBH=tBH, alpha=alpha)
         return df
 
@@ -375,7 +380,7 @@ def flux(t,Tx,mx,Rs,beta,
 
 def event(mx,Rs,beta,
           Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],
-          sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_trunct=3.24e-15,r_trunct=1e-5,
+          sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_cut=3.24e-15,r_cut=1e-5,
           is_spike=False,sigv=None,tBH=1e10,alpha='3/2',
           nitn=10,neval=30000) -> float:
     """
@@ -417,11 +422,14 @@ def event(mx,Rs,beta,
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
     tau : float
         The duration of SN explosion, seconds. Default is 10 s.
-    d_trunct: scalar
-        Truncation point for d to prevent divergence when d approaches 0.
-        Default is 3.24e-15 kpc, approximating 100 km
+    d_cut: scalar
+        Terminating point for d. Below the value will return 0.
+        Default is 3.24e-15 kpc, approximating 100 km, the size of
+        neutrino sphere.
     r_cut : float
-        Truncating nx when r' < r_cut, kpc. Default is 1e-5 kpc.
+        Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
+        in the central region, r_cut cannot be too large. Otherwise, the spike effect will
+        be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
     sigv : float 
@@ -447,7 +455,7 @@ def event(mx,Rs,beta,
         """
         t, Tx, theta, phi = x
         df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta,
-                               sigxv0=sigxv0, profile=profile, Re=Re, tau=tau, d_trunct=d_trunct, r_trunct=r_trunct,
+                               sigxv0=sigxv0, profile=profile, Re=Re, tau=tau, d_trunct=d_cut, r_trunct=r_cut,
                                is_spike=is_spike, sigv=sigv, tBH=tBH, alpha=alpha)
         return df
 

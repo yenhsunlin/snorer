@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.flux
 
 
-###  <span class="mono">snorer.flux(*t*,*Tx*,*mx*,*Rs*,*beta*,*sigxv0=1e-45*,*profile='MW'*,*d_trunct=3.24e-15*,*r_trunct=1e-5*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*,*nitn=10*,*neval=30000*)</span>
+###  <span class="mono">snorer.flux(*t*,*Tx*,*mx*,*Rs*,*beta*,*sigxv0=1e-45*,*profile='MW'*,*d_cut=3.24e-15*,*r_cut=1e-5*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*,*nitn=10*,*neval=30000*)</span>
 
 The supernova-neutrino-boosted dark matter flux at time $t$ on Earth after integrated over
 a field-of-view $d\Omega$. Note that zenith angle $\theta$ is integrated up to $\theta^*_M$ and azimuthal angle $\varphi$ from $0$ to $2\pi$.
@@ -37,9 +37,9 @@ See Eqs. (18) and (24) in [BDM Physics](../../manual/overview.md#snnu-bdm-flux){
 
 > `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;`'MW'` or `'LMC'` stands for Milky Way or Large Magellanic Cloud profile in use.
 
-> `d_trunct` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Truncation point for $d$ to prevent supernova neutrino flux diverges at $d\to 0$. Default is $3.24\times10^{-15}$ kpc, approximating 100 km.
+> `d_cut` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for $d$. Below the value will return 0. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km, the size of neutrino sphere.
 
-> `r_trunct` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Truncating $n_\chi$ when $r < r_{\rm trunct}$, kpc. Default is $10^{-5}$ kpc.
+> `r_cut` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating $n_\chi$ when $r^\prime <$ `r_cut`, kpc. If one needs to incorporate dark matter spike in the central region, `r_cut` cannot be too large. Otherwise, the spike effect will be chopped off before it has any noticeble consequence. Default is $10^{-8}$ kpc.
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
 
@@ -49,9 +49,9 @@ See Eqs. (18) and (24) in [BDM Physics](../../manual/overview.md#snnu-bdm-flux){
 
 > `alpha` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike, `'3/2'` or `'7/3'`. It is disregarded if `is_spike = False`.
 
-> `nitn` : *int* <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of chains for vegas to evaluate the integral. Default is 10.
+> `nitn` : *int* <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of chains in [**vegas**](https://github.com/gplepage/vegas){:target="_blank"}  to evaluate the integral. Default is 10.
 
-> `neval` : *int* <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of evaluation number in each chain in vegas. Default is 30000.
+> `neval` : *int* <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of evaluation number in each chain in [**vegas**](https://github.com/gplepage/vegas){:target="_blank"} . Default is 30000.
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**
@@ -60,5 +60,5 @@ See Eqs. (18) and (24) in [BDM Physics](../../manual/overview.md#snnu-bdm-flux){
 
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Notes</div>**
 
-We use `vegas` to evaluate the integral Eq. (18). This explains why we incorporate `nitn` and `neval` as the parameters. Increasing these values will improve the accuracy but the computation time enhances too.
+We use [**vegas**](https://github.com/gplepage/vegas){:target="_blank"} to evaluate the integral Eq. (18). This explains why we incorporate `nitn` and `neval` as the parameters. Increasing these values will improve the accuracy but the computation time enhances too.
 One may need to find a balance between acceptable accuracy and evaluation time.

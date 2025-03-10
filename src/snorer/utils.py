@@ -16,16 +16,17 @@ __all__ = ['GeneralInterface',]
 
 #---------- Import required utilities ----------#
 
-from numpy import pi,sin,cos,arccos,isclose,clip,broadcast_arrays,asarray,ndarray
+from numpy import pi,sin,cos,arccos,isclose,clip,broadcast_arrays,asarray,ndarray,radians,degrees
 from scipy.integrate import quad
 import vegas
 from astropy import units as u
 from astropy.coordinates import SkyCoord
-from .snorerMain import snNuSpectrum
+from .snorerMain import sn_nu_spectrum
 from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaMax,get_tvan,get_tBound,get_gx
 from .geometry import Geometry
-from .halo import dmNumberDensity
+from .halo import rhox,HaloSpike
 from .constants import Constants,constant
+from .sysmsg import FlagError
 
 
 ##########################################################################
@@ -254,16 +255,12 @@ class BoostedDarkMatter(Constants):
     The inputs SN_coord and CG_coord are explained previously. The outputs are beta, rad, and separation
     distance, kpc.
     """
-    def __init__(self,SN_coord,GC_coord,amp2_xv,amp2_xe,/,dsigma0_xv=None,sigma0_xe=None,**kwargs): 
-        self.SN_coord = SN_coord
-        self.GC_coord = GC_coord
+    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,/,**kwargs): 
+        self.Rs = Rs
+        self.Rg = Rg
+        self.beta = beta
         self.amp2_xv = amp2_xv
         self.amp2_xe = amp2_xe
-        self.dsigma0_xv = dsigma0_xv
-        self.sigma0_xe = sigma0_xe
-        # Get seperation 3d and beta
-        self._sep3d, self._beta = self.__class__.get_geometry_3d(self.SN_coord,self.GC_coord)
-        # keyword arguments that will be passed to dmNumberDensity()
         self.__dict__.update(kwargs)
         
         # Default is to turn off spike unless user specified otherwise
@@ -273,27 +270,27 @@ class BoostedDarkMatter(Constants):
         #self.snNuSpectrum = lambda Ev,D: snNuSpectrum(Ev,D)                       # default SN nu spectrum, flux unit
         #self.dmNumberDensity = lambda r,mx: dmNumberDensity(r,mx,is_spike=False)  # default DM halo profile
     
-    def __repr__(self):
-        return '{:>18s}'.format('Dist to GC:') + ' {:>.3e} kpc'.format(self.Re) + '\n' +                 \
-               '{:>18s}'.format('Dist to SN:') + ' {:>.3e} kpc'.format(self.Rstar) + '\n' +              \
-               '{:>18s}'.format('Seperation dist:') + ' {:<.3e} kpc'.format(self.separation_3d) + '\n' + \
-               '{:>18s}'.format('Off-center angle:') + ' {:<.3e} rad'.format(self.beta) 
+    # def __repr__(self):
+    #     return '{:>18s}'.format('Dist to GC:') + ' {:>.3e} kpc'.format(self.Re) + '\n' +                 \
+    #            '{:>18s}'.format('Dist to SN:') + ' {:>.3e} kpc'.format(self.Rstar) + '\n' +              \
+    #            '{:>18s}'.format('Seperation dist:') + ' {:<.3e} kpc'.format(self.separation_3d) + '\n' + \
+    #            '{:>18s}'.format('Off-center angle:') + ' {:<.3e} rad'.format(self.beta) 
 
-    @property
-    def separation_3d(self):
-        return self._sep3d
+    # @property
+    # def separation_3d(self):
+    #     return self._sep3d
 
-    @property
-    def beta(self):
-        return self._beta
+    # @property
+    # def beta(self):
+    #     return self._beta
 
-    @property
-    def Rstar(self):
-        return self.SN_coord[2]
+    # @property
+    # def Rstar(self):
+    #     return self.SN_coord[2]
 
-    @property
-    def Re(self):
-        return self.GC_coord[2]
+    # @property
+    # def Re(self):
+    #     return self.GC_coord[2]
     
     @property
     def __kwargs_nx(self):
@@ -301,22 +298,22 @@ class BoostedDarkMatter(Constants):
         newDict = list(self.__dict__.items())[8:]  # the 1st 8 are class inputs
         return dict(newDict)
 
-    @classmethod
-    def get_geometry_3d(cls,SN_coord,GC_coord) -> float:
-        """Get the celestial geometry of SN and GC from user-input"""
-        snRA,snDEC,snDist = SN_coord  # right ascension, declination, distance in kpc
-        gcRA,gcDEC,gcDist = GC_coord  # right ascension, declination, distance in kpc
+    # @classmethod
+    # def get_geometry_3d(cls,SN_coord,GC_coord) -> float:
+    #     """Get the celestial geometry of SN and GC from user-input"""
+    #     snRA,snDEC,snDist = SN_coord  # right ascension, declination, distance in kpc
+    #     gcRA,gcDEC,gcDist = GC_coord  # right ascension, declination, distance in kpc
         
-        # Call SkyCoord in Astropy to tackle the celestial coordinates of these objects
-        sn = SkyCoord(snRA,snDEC,distance=snDist*u.kpc)
-        gc = SkyCoord(gcRA,gcDEC,distance=gcDist*u.kpc)
-        # Get the 3d seperation of these two stellar objects, kpc
-        sepDist = sn.separation_3d(gc).value
-        # Get beta, law of cosine
-        cos_beta = (snDist**2 + gcDist**2 - sepDist**2)/2/snDist/gcDist
-        cos_beta = clip(cos_beta,-1,1)
-        beta = arccos(cos_beta)
-        return beta,sepDist
+    #     # Call SkyCoord in Astropy to tackle the celestial coordinates of these objects
+    #     sn = SkyCoord(snRA,snDEC,distance=snDist*u.kpc)
+    #     gc = SkyCoord(gcRA,gcDEC,distance=gcDist*u.kpc)
+    #     # Get the 3d seperation of these two stellar objects, kpc
+    #     sepDist = sn.separation_3d(gc).value
+    #     # Get beta, law of cosine
+    #     cos_beta = (snDist**2 + gcDist**2 - sepDist**2)/2/snDist/gcDist
+    #     cos_beta = clip(cos_beta,-1,1)
+    #     beta = arccos(cos_beta)
+    #     return beta,sepDist
         
     def nx(self,r,mx) -> float:
         return dmNumberDensity(r,mx,**self.__kwargs_nx)
@@ -458,3 +455,70 @@ class BoostedDarkMatter(Constants):
             return event
         else:
             return 0    
+
+
+def galactic_to_beta(l,b,GC_coord=[0,0]):
+    """
+    Transform galactic coordinate to off-center angle beta
+
+    Parameters
+    ----------
+    l : array_like
+        Galactic longitude, rad
+    b : array_like
+        Galactic latitude, rad
+    GC_coord : list
+        Galactic coordinate for arbitrary galactic center [lg,bg].
+        Default is Milky Way center [lg,bg] = [0,0]
+
+    Returns
+    -------
+    out : scalar/ndarray
+        Off-center angle beta. The result is scalar if all
+        inputs are scalars.
+    """
+    lg,bg = GC_coord
+    l,b = asarray((l,b))
+    beta = cos(b) * cos(bg) * cos(l - lg) + sin(b) * sin(bg)
+    return beta
+
+
+def equatorial_to_beta(ra,dec,GC_coord=None):
+    """
+    Transform equatorial coordinate to off-center angle and
+    galactic coordinate (beta,l,b)
+
+    Parameters
+    ----------
+    ra : array_like
+        Right ascension, hms in string type. Eg. '5h6.7m4.4s'.
+    dec : array_like
+        Declination, dms in string type.  Eg. '6d10.7m9.4s'.
+    GC_coord : None/list
+        The equatorial coordinate for arbitrary galactic center.
+        Default is None, which automatically implements our
+        Milky Way center. For a specific GC coordinate, it should
+        have GC_coord = [RA,DEC] where RA and DEC are, similar to 
+        'ra' and 'dec', in hms and dms units respectively. Additionally,
+        they should be subject to ICRS J2000.0.
+
+    Returns
+    -------
+    out : tuple
+        Tuple of (beta,l,b). Each component is scalar if all
+        inputs are scalars
+    """
+    # Galactic coordinate for GC
+    if GC_coord is not None:
+        ra_g, dec_g = GC_coord
+        gc_coord = SkyCoord(ra = ra_g,dec = dec_g)
+        lg = gc_coord.galactic.l.radian
+        bg = gc_coord.galactic.b.radian
+    else:
+        lg,bg = 0,0
+    # Galactic coordinate for SN
+    eq_coords = SkyCoord(ra = ra,dec = dec)
+    # Get galactic coordinate
+    l,b = eq_coords.galactic.l.radian,eq_coords.galactic.b.radian
+    beta = galactic_to_beta(l,b,GC_coord = [lg,bg])
+    return beta,l,b

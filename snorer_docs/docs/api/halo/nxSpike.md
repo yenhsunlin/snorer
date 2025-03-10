@@ -6,12 +6,16 @@ window.MathJax = {
 };
 </script>
 
-
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
 
 # snorer.nxSpike
 
 
-###  snorer.nxSpike(*r*, *mx*, *profile = 'MW'*, *sigv = None*, *tBH = 1e+10*, *alpha = '3/2'*)
+###  <span class="mono">snorer.nxSpike(*r*,*mx*,*profile='MW'*,*sigv=None*,*tBH=1e+10*,*alpha='3/2'*)</span>
 
 Dark matter number density of Milky Way of Large Magellanic Cloud at
     distance $r$ to the galactic center. Spike feature is included.

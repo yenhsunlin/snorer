@@ -15,7 +15,7 @@ window.MathJax = {
 # snorer.emissivity_jx
 
 
-###   <span class="mono">snorer.emissivity_jx(*Ev*,*dEv*,*mx*,*d*,*r*,*psi*,*sigxv0=1e-45*,*profile='MW'*,*d_trunct=3.24e-15*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*)</span>
+###   <span class="mono">snorer.emissivity_jx(*Ev*,*dEv*,*mx*,*d*,*r*,*psi*,*sigxv0=1e-45*,*profile='MW'*,*d_cut=3.24e-15*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*)</span>
 
 Emissivity $j_\chi$ of supernova-neutrino-boost dark matter at boost point.
 See Eq. (13) in [BDM Physics](../../manual/overview.md#emissivity-on-the-shell){:target="_blank"}.
@@ -34,11 +34,11 @@ See Eq. (13) in [BDM Physics](../../manual/overview.md#emissivity-on-the-shell){
 
 > `psi` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;The scattering angle in lab frame at boost point, rad. 
 
-> `sigxv0` : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-$\nu$ cross section, cm<sup>2</sup>. It will be multiplied by **snorer.get_gx** to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.
+> `sigxv0` : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-$\nu$ cross section, cm<sup>2</sup>. It will be multiplied by `snorer.get_gx` to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.
 
 > `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;`'MW'` or `'LMC'` stands for Milky Way or Large Magellanic Cloud profile in use.
 
-> `d_trunct` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Truncation point for $d$ to prevent supernova neutrino flux diverges at $d\to 0$. Default is $3.24\times10^{-15}$ kpc, approximating 100 km.
+> `d_cut` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for $d$. Below the value will return 0. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km, the size of neutrino sphere.
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
 

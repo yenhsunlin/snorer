@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.sn_nu_spectrum
 
 
-###  <span class="mono">snorer.sn_nu_spectrum(*Ev*,*d*,*d_trunct=3.24e-15*,*is_density=False*)</span>
+###  <span class="mono">snorer.sn_nu_spectrum(*Ev*,*d*,*d_cut=3.24e-15*,*is_density=False*)</span>
 
 Supernova neutrino spectrum at distance $d$ to supernova,
 $$
@@ -29,7 +29,7 @@ See Eqs. (9-12) in [BDM Physics](../../manual/overview.md#snnu-spectrum){:target
 
 > `d` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from supernova to the boost point, kpc.
 
-> `d_trunct` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Truncation point for $d$ to prevent divergence when $d \to 0$. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km.
+> `d_cut` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for $d$. Below the value will return 0. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km, the size of neutrino sphere.
 
 > `is_density` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Should convert the output to the unit of number density. Default is `False` and output has the unit of flux.
 
@@ -41,7 +41,7 @@ See Eqs. (9-12) in [BDM Physics](../../manual/overview.md#snnu-spectrum){:target
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div>**
 
 In this example, we show $dN_\nu/dE_\nu$ over $(E_\nu,d)$ plane. One can clearly see
-that below $d=$ `d_trunct` the flux is truncated.
+that $d<$ `d_cut` the flux is 0.
 
 ```python
 import numpy as np
@@ -60,7 +60,7 @@ DNvDEv = sn.sn_nu_spectrum(Ev,D)
 # Plot
 fig, ax = plt.subplots()
 # log-scaler color
-norm = mcolors.LogNorm(vmin=DNvDEv.min(), vmax=DNvDEv.max())
+norm = mcolors.LogNorm(vmin=DNvDEv.min() + 1, vmax=DNvDEv.max())
 # Contour plot
 contour = ax.contourf(Ev, D, DNvDEv, levels=20, cmap="viridis", norm=norm)
 ax.set_xscale('log')

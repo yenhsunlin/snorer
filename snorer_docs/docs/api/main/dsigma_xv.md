@@ -25,7 +25,7 @@ See Eqs. (2) and (3) in [BDM Physics](../../manual/overview.md#particle-kinemati
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
-> `Ev` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Neutrino energy, MeV.
+> `Ev` : *array_like*  <br>&nbsp;&nbsp;&nbsp;&nbsp;Neutrino energy, MeV.</pre>
 
 > `mx` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV.
 

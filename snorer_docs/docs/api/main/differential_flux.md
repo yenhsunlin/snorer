@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.differential_flux
 
 
-###  <span class="mono">snorer.differential_flux(*t*,*Tx*,*mx*,*theta*,*phi*,*Rs*,*beta*,*sigxv0=1e-45*,*profile='MW'*,*d_trunct=3.24e-15*,*r_trunct=1e-5*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*)</span>
+###  <span class="mono">snorer.differential_flux(*t*,*Tx*,*mx*,*theta*,*phi*,*Rs*,*beta*,*sigxv0=1e-45*,*profile='MW'*,*d_cut=3.24e-15*,*r_cut=1e-5*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*)</span>
 
 The differential supernova-neutrin-boosted dark matter flux at Earth at specific time $t$ and angular direction $(\theta,\varphi)$
 
@@ -46,9 +46,9 @@ This is the integrand of Eq. (18) in [BDM Physics](../../manual/overview.md#from
 
 > `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;**'MW'** or **'LMC'** stands for Milky Way or Large Magellanic Cloud profile in use.
 
-> `d_trunct` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Truncation point for $d$ to prevent supernova neutrino flux diverges at $d\to 0$. Default is $3.24\times10^{-15}$ kpc, approximating 100 km.
+> `d_cut` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;>Terminating point for $d$. Below the value will return 0. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km, the size of neutrino sphere.
 
-> `r_trunct` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Truncating $n_\chi$ when $r < r_{\rm trunct}$, kpc. Default is $10^{-5}$ kpc.
+> `r_cut` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating $n_\chi$ when $r^\prime <$ `r_cut`, kpc. If one needs to incorporate dark matter spike in the central region, `r_cut` cannot be too large. Otherwise, the spike effect will be chopped off before it has any noticeble consequence. Default is $10^{-8}$ kpc.
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
 
