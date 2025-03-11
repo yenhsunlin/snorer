@@ -45,7 +45,7 @@ The versions of these dependencies are not strict, but are recommended to update
 
 ## Documentation
 
-See the ***snorer*** documentation: https://yenhsunlin.github.io/snorer for more details.
+See the ***snorer*** documentation: [https://yenhsunlin.github.io/snorer](https://yenhsunlin.github.io/snorer){:target="_blank"}  for more details.
 
 ## Known Issue
 
