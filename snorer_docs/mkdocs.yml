@@ -54,9 +54,7 @@ nav:
       - Functions:
         - galactic_to_beta: api/utils/gal_to_beta.md
         - equatorial_to_beta: api/utils/equa_to_beta.md
-    - Constants:
-      - Classes:
-        - Constants: api/constants/Constants.md
+    - Constants: api/constants/Constants.md
 
 theme:
   name: readthedocs
