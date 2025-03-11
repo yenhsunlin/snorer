@@ -36,5 +36,5 @@ test.*
 .virtual_documents/
 .DS_Store
 
-docs/
+
 src/snorer/debug.ipynb

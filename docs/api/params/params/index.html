@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Parameters - snorer</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/output/chtml/fonts/woff-v2.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Parameters";
+        var mkdocs_page_input_path = "api/params/params.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> snorer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Overview</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../manual/overview/">BDM Physics</a>
+                </li>
+                <li class="toctree-l2"><a class="" href="../../../manual/emissivity.md">Emissivity</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="" href="../../../tutorial.md">Tutorial</a>
+                  </li>
+                  <li class="toctree-l1"><a class="" href="../../../advanced.md">Advanced</a>
+                  </li>
+                  <li class="toctree-l1"><a class="" href="../../../misc.md">Miscellaneous</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Parameters</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Main</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/sn_nu_spectrum/">sn_nu_spectrum</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/dsigma_xv/">dsigma_xv</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/emissivity_jx/">emissivity_jx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/differential_flux/">differential_flux</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/flux/">flux</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/event/">event</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Halo</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/HaloSpike/">HaloSpike</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/M_sigma/">M_sigma</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/nx/">nx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/nxSpike/">nxSpike</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/radiusInfluence/">radiusInfluence</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/radiusSchwarzschild/">radiusSchwarzschild</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/rhox/">rhox</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Kinematics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../kinematics/22scat/">2-2 elastic scattering</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/Kinematics/">Kinematics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/Mandelstam/">Mandelstam</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/Neutrino/">Neutrino</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_gx/">get_gx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_thetaMax/">get_thetaMax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_tvan/">get_tvan</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_psiMax/">get_psiMax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_vx/">get_vx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/KallenLambda/">KallenLambda</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Propagation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../geometry/Positioning/">Positioning</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../geometry/Geometry/">Geometry</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../geometry/Propagation/">Propagation</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Utilities</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../utils/coord_transf/">Coordinate Transformations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="" href="../../utils/BDM.md">BoostedDarkMatter</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/gal_to_beta/">galactic_to_beta</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/equa_to_beta/">equatorial_to_beta</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../constants/Constants/">Constants</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">snorer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API</li>
+      <li class="breadcrumb-item active">Parameters</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <script>
+window.MathJax = {
+  tex: {
+    tags: "ams"  // Auto-numbering, AMS based
+  }
+};
+</script>
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
+
+<h1 id="snorerparams">snorer.params<a class="headerlink" href="#snorerparams" title="Permanent link">&para;</a></h1>
+<h3 id="class-snorerparams"><em><code>class</code></em> <span class="mono">snorer.params</span><a class="headerlink" href="#class-snorerparams" title="Permanent link">&para;</a></h3>
+<p>This class contains default parameters that will be used in many functions as keyword arguments (<code>**kwargs</code>).
+Four classes of parameters are predefined and incorporated as attributes in this class. We illustrate them in the followings.</p>
+<h4 id="__attr__-snorerparamsmin_distance"><em><code>__attr__</code></em> <span class="mono">snorer.params.min_distance</span><a class="headerlink" href="#__attr__-snorerparamsmin_distance" title="Permanent link">&para;</a></h4>
+<p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
+<blockquote>
+<p><code>d_cut</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for <span class="arithmatex">\(d\)</span>. Below this value <code>snorer.sn_nu_spectrum</code> will return 0. Default is <span class="arithmatex">\(3.24\times 10^{-15}\)</span> kpc, approximating 100 km, the size of neutrino sphere. </p>
+<p><code>r_cut</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for <span class="arithmatex">\(r^\prime\)</span>. Below this value <code>snorer.differential_flux</code> will return 0. Default is <span class="arithmatex">\(3.24\times 10^{-15}\)</span> kpc. </p>
+</blockquote>
+<h4 id="__attr__-snorerparamshalo"><em><code>__attr__</code></em> <span class="mono">snorer.params.halo</span><a class="headerlink" href="#__attr__-snorerparamshalo" title="Permanent link">&para;</a></h4>
+<p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
+<blockquote>
+<p><code>rhos</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Characteristic density, MeV cm<sup>−3</sup>. Default is 184.</p>
+<p><code>rs</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Characteristic length, kpc. Default is 24.4.</p>
+<p><code>n</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Index for the halo. Default is 2.</p>
+</blockquote>
+<h4 id="__attr__-snorerparamsspike"><em><code>__attr__</code></em> <span class="mono">snorer.params.spike</span><a class="headerlink" href="#__attr__-snorerparamsspike" title="Permanent link">&para;</a></h4>
+<p>The following will be used as keyword arguments when <code>is_spike = True</code>. When having <code>is_spike = False</code>, typing any of the following arguments into function input will result in ValueError.</p>
+<p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
+<blockquote>
+<p><code>mBH</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Supermassive black hole (SMBH) mass, <span class="arithmatex">\(M_\odot\)</span>. Default is <span class="arithmatex">\(4.29\times 10^6\)</span>.</p>
+<p><code>tBH</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;SMBH age, years. Default is <span class="arithmatex">\(10^9\)</span>.</p>
+<p><code>rh</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;SMBH influence radius, kpc. Defaut is 0.002.</p>
+<p><code>alpha</code> : <em>str</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Profile slope for halo spike, <code>'3/2'</code> or <code>'7/3'</code>. Default is <code>'3/2'</code>.</p>
+<p><code>sigv</code> : <em>None or float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;DM annihilation cross section, in the unit of <span class="arithmatex">\(10^{-26}\)</span> cm<sup>3</sup> s<sup>−1</sup>. <strong>None</strong> indicates no annihilation and 5.9 as <span class="arithmatex">\(5.9\times 10^{-26}\)</span>.</p>
+</blockquote>
+<h4 id="__attr__-snorerparamsvegas"><em><code>__attr__</code></em> <span class="mono">snorer.params.vegas</span><a class="headerlink" href="#__attr__-snorerparamsvegas" title="Permanent link">&para;</a></h4>
+<p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
+<blockquote>
+<p><code>nitn</code> : <em>int</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of chains in <strong>vegas</strong> for each integration. Default is 10.</p>
+<p><code>neval</code> : <em>int</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of evaluationg points in each chain in <strong>vegas</strong>. Default is 10000.</p>
+</blockquote>
+<p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Notes</div></strong></p>
+<p>What type or types of parameters are contained in <code>**kwargs</code>
+of that function will be documented in its docstrings.
+Suppose the docstrings says the keywaord arguments containing the values in <strong>min_distance</strong>, <strong>halo</strong> and <strong>spike</strong>, it means all the attributes in the above theree categories can be used as keyword arguments in that function.
+We illustrate this in the following example.</p>
+<p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div></strong></p>
+<p>Let's take <a href="#../main/flux.md" target="_blank"><code>snorer.event</code></a> as an example. By looking at its doc page, the necessary <code>**kwargs</code> at least contains: <code>rhos</code>, <code>rs</code>, <code>n</code>, <code>d_cut</code>, <code>r_cut</code>, <code>nitn</code> and <code>neval</code>. However if one sets <code>is_spike = True</code>, then the followings: <code>mBH</code>, <code>tBH</code>, <code>rh</code>, <code>alpha</code> and <code>sigv</code> are also mandatory. If user didn't specify any of them above, they <strong>snorer</strong> will use default values listed above.</p>
+<p>For instance, without any keyword argument specification</p>
+<pre><code class="language-python">&gt;&gt;&gt; import snorer as sn # import snorer
+&gt;&gt;&gt; mx,Rs,beta = 1e-2,8.5,0.3
+&gt;&gt;&gt; event = sn.event(mx,Rs,beta) # none of the kwargs is specified.
+&gt;&gt;&gt; print(event)
+1.4301996553521633e-06
+</code></pre>
+<p>If we want to specify <code>rhos</code> and <code>mBH</code>, we can do</p>
+<pre><code class="language-python">&gt;&gt;&gt; event_spike = sn.event(mx,Rs,beta,is_spike=True,rhos=500,mBH=1e7) 
+&gt;&gt;&gt; print(event_spike)
+3.883407626493457e-06
+</code></pre>
+<p>Note that <code>event_spike</code> is slightly larger than <code>event</code> due to we turn on spike feature. However, the enhancement is not drastically due to supernova is not exactly located at the center as seen from <code>beta</code> does not equal 0. </p>
+<p>If we remove <code>is_spike</code>, then the program uses default <code>is_spike = False</code>.
+This will result in ValueError due to <code>mBH</code> only valid when spike feature turns on.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../../manual/overview/" class="btn btn-neutral float-left" title="BDM Physics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../main/sn_nu_spectrum/" class="btn btn-neutral float-right" title="sn_nu_spectrum">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../../manual/overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../main/sn_nu_spectrum/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
