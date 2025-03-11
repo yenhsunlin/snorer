@@ -10,6 +10,7 @@ nav:
     - Advanced: advanced.md
     - Miscellaneous: misc.md
   - API:
+    - Parameters: api/params/params.md
     - Main:
       - Functions:
         - sn_nu_spectrum: api/main/sn_nu_spectrum.md
