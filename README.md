@@ -3,7 +3,7 @@
 <a href = "https://arxiv.org/abs/2206.06864"  target = "_blank">![ArXiv](https://img.shields.io/badge/arXiv-2206.06864-yellowgreen.svg)</a>
 <a href = "https://arxiv.org/abs/2307.03522"  target = "_blank">![ArXiv](https://img.shields.io/badge/arXiv-2307.03522-yellowgreen.svg)</a>
 
-# snorer: *S*upernova-*N*eutrino-b*O*osted da*R*k matt*ER*
+# ***snorer***: *S*upernova-*N*eutrino-b*O*osted da*R*k matt*ER*
 
 
 `snorer` is a package for evaluating time-of-flight signatures of supernova-neutrino-boosted dark matter (SN*ν* BDM) from our Milky Way (MW), SN1987a in Large Magellanic Cloud (LMC) and SN in arbitrary distant galaxy based on
@@ -18,7 +18,7 @@ If you use this package or part of the code in your research, please cite the fo
 
 1. Y.-H. Lin *et al.*, *Phys. Rev. Lett.* **130**, 111002 (2023), arXiv:2206.06864
 2. Y.-H. Lin *et al.*, *Phys. Rev. D* **108**, 083013 (2023), arXiv:2307.03522
-3. `snorer`: https://github.com/yenhsunlin/snorer/
+3. **snorer**: https://github.com/yenhsunlin/snorer/
 
 
 ## Installation
@@ -31,14 +31,14 @@ and everything should be processed on-the-fly.
 
 ### Dependency
 
-`snorer` requires python >= 3.8 and the following external packages
+**snorer** requires python >= 3.8 and the following external packages
 
-- `numpy` >= 1.20.0
-- `scipy` >= 1.10.0
-- `vegas` >= 6.0.1
-- `astropy` >= 6.0.0
+- **numpy** >= 1.20.0
+- **scipy** >= 1.10.0
+- **vegas** >= 6.0.1
+- **astropy** >= 6.0.0
 
-where `vegas` is a the backend engine for evaluating multidimensional integrals based on adaptive Monte Carlo vegas algorithm, see its homepage: <a heref = "https://pypi.org/project/vegas/" target = "_blank">https://pypi.org/project/vegas/</a>.
+where **vegas** is a the backend engine for evaluating multidimensional integrals based on adaptive Monte Carlo vegas algorithm, see its homepage: <a heref = "https://pypi.org/project/vegas/" target = "_blank">https://pypi.org/project/vegas/</a>.
 
 Other packages maybe required by these dependencies during the installation, see `requirements.txt` for details.
 The versions of these dependencies are not strict, but are recommended to update to the latest ones to avoid incompatibility.
