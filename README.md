@@ -49,8 +49,8 @@ See the ***snorer*** documentation: <a heref = "https://yenhsunlin.github.io/sno
 
 ## Known Issue
 
-To evaluate BDM event, `snorer` uses `vegas` to handle the multidimensional integration.
-The sampling method of `vegas` cannot manipulate event calculation, e.g. `snorer.event` and the method in the instance of `snorer.BoostedDarkMatter`, properly, when SN is exactly at GC with spike and no DM self-annihilation.
+To evaluate BDM event, **snorer** uses **vegas** to handle the multidimensional integration.
+The sampling method of **vegas** cannot manipulate event calculation, e.g. `snorer.event` and the method in the instance of `snorer.BoostedDarkMatter`, properly, when SN is exactly at GC with spike and no DM self-annihilation.
 
 Since the spike is a highly singular behavior, the sampling method may miss the substantial DM contribution from the inner galactic region and causes underestimate of $N_{\rm BDM}$ plus unstable results. 
 To avoid this, users may try to displace the SN from GC a little bit when evaluating $N_{\rm BDM}$ with DM sipke and no DM annihilation.
