@@ -22,11 +22,13 @@ __all__ = ['sn_nu_spectrum',
 #---------- Import required utilities ----------#
 
 from numpy import pi,exp,arccos,cos,sin,broadcast_arrays,atleast_1d,clip,where
+from itertools import islice
 import vegas
-from .halo import nx,nxSpike
+from .halo import nx
 from .kinematics import Neutrino,get_gx,get_vx,get_thetaMax,_get_tof
 from .geometry import Propagation
 from .constants import constant
+from .params import params
 from .sysmsg import FlagError
 
 
@@ -148,9 +150,7 @@ def dsigma_xv(Ev,mx,psi,sigxv0=1e-45):
     return dsigma_dOmega
 
 
-def emissivity_jx(Ev,dEv,mx,d,r,psi,
-                  sigxv0=1e-45,profile='MW',d_cut=3.24e-15,
-                  is_spike=False,sigv=None,tBH=1e10,alpha='3/2') -> float:
+def emissivity_jx(Ev,dEv,mx,d,r,psi,sigxv0=1e-45,d_cut=3.24e-15,is_spike=False,**kwargs) -> float:
     """
     Emissivity jx of supernova-neutrino-boost dark matter at boost point.
     
@@ -172,21 +172,13 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
     sigxv0 : float
         Total DM-nu cross section, cm^2. It will be multiplied by snorer.get_gx
         to account for the angular distribution and makes it cm^2/sr.
-    profile : str
-        'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile in use.
     d_cut: scalar
         Terminating point for d. Below the value will return 0.
         Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
-    is_spike : bool
-        Is halo spike included? Default is False.
-    sigv : float
-        Dark matter annihilation cross section, in the unit of 1e-26 cm^3/s.
-        None indicates no annihilation. It is disregarded if 'is_spike' = False.
-    tBH : float
-        Age of supermassive black hole in the galactic center, years.
-        It is disregarded if 'is_spike' = False.
-    alpha : str
-        Slope of the spike, '3/2' or '7/3'. It is disregarded if 'is_spike' = False.
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile and
+        spike halo. If 'is_spike = False', the parameters for configuring
+        spiky halo will be deactivated. Default values assume Milky Way.
     
     Returns
     -------
@@ -200,22 +192,12 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
     # shell, we should multply it back. See BDM Physics for discussion.
     dfv = 10*sn_nu_spectrum(Ev,d,d_cut,is_density=False)   # SNv flux
     dsigma = dsigma_xv(Ev,mx,psi,sigxv0)   # DM-v diff. cross section, cm^2/sr
-    
-    # Incorporating spike feature?
-    if is_spike is True:
-        ndx = nxSpike(r,mx,profile,sigv,tBH,alpha)
-    elif is_spike is False:
-        ndx = nx(r,mx,profile)
-    else:
-        raise FlagError('\'is_spike\' must be either True or False.')
-    
+    ndx = nx(r,mx,is_spike = is_spike,**kwargs)
     # Evaluate BDM emissivity
     return ndx * dfv * dsigma * dEv
 
 
-def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
-                      sigxv0=1e-45,profile='MW',Re=8.5,d_cut=3.24e-15,r_cut=1e-8,
-                      is_spike=False,sigv=None,tBH=1e10,alpha='3/2') -> float:
+def differential_flux(t,Tx,mx,theta,phi,Rs,beta,Re=8.5,sigxv0=1e-45,is_spike=False,**kwargs) -> float:
     """
     The differential supernova-neutrin-boosted dark matter flux at Earth at specific time t 
     and angular direction (theta,phi).
@@ -236,30 +218,17 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
         Distance from supernova to Earth, kpc.
     beta : float
         The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad.
-    sigxv0 : float
-        Total DM-neutrino cross section, cm^2. Default is 1e-45 cm^2.
-    profile : str
-        'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile is used.
     Re : float
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
-    d_cut : scalar
-        Terminating point for d. Below the value will return 0.
-        Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
-    r_cut : float
-        Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
-        in the central region, r_cut cannot be too large. Otherwise, the spike effect will
-        be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+    sigxv0 : float
+        Total DM-neutrino cross section, cm^2. Default is 1e-45 cm^2.
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
-    sigv : float 
-        DM annihilation cross section, in the unit of 1e-26 cm^3/s.
-        None stands for no annihilation. Default is None. It is disregarded if 'is_spike' = False.
-    tBH : float
-        Age of supermassive black hole, years. Default is 1e+10 years. It is disregarded if
-        'is_spike' = False.
-    alpha : str
-        Slope of the DM spike. Default is '3/2'. It is disregarded if 'is_spike' = False.
-    
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile, spike halo, and cut
+        distances. If 'is_spike = False', the parameters for configuring spiky halo will be
+        deactivated. Default values assume Milky Way.
+
     Returns
     -------
     out : scalar
@@ -267,6 +236,12 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
 
     See the integrand of Eq. (18) in BDM Physics.
     """
+    # Retrieve min_distance parameters and delete them from kwargs
+    # Pass the rest to the next function
+    mindist_default = params.min_distance
+    d_cut = kwargs.pop('d_cut',mindist_default.d_cut)
+    r_cut = kwargs.pop('r_cut',mindist_default.r_cut)
+    
     # Dimensionless BDM velocity, vx/c
     vx = get_vx(Tx,mx)
     
@@ -287,7 +262,7 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
     # Evaluate differential flux, integrand of Eq. (18) in BDM Physics
     if sanity and r > r_cut: # if energy conservation holds
         # Evaluate the BDM emissivity
-        jx = emissivity_jx(Ev,dEv,mx,d,r,psi,sigxv0,profile,d_cut,is_spike,sigv,tBH,alpha)
+        jx = emissivity_jx(Ev,dEv,mx,d,r,psi,sigxv0,d_cut=d_cut,is_spike=is_spike,**kwargs)
         # Jacobian, it should not diverge as we already require d > d_trunct
         J = d * vx / (vx * (l - Rs * cos(theta)) + d) * constant.c
         # Differential flux 
@@ -297,10 +272,7 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
     return diff_flux
 
 
-def flux(t,Tx,mx,Rs,beta,
-         sigxv0=1e-45,profile='MW',Re=8.5,d_cut=3.24e-15,r_cut=1e-5,
-         is_spike=False,sigv=None,tBH=1e10,alpha='3/2',
-         nitn=10,neval=30000) -> float:
+def flux(t,Tx,mx,Rs,beta,Re=8.5,sigxv0=1e-45,is_spike=False,**kwargs) -> float:
     """
     The supernova-neutrino-boosted dark matter flux at time t on Earth after integrated over
     a field-of-view dOmega. Note that zenith angle theta is integrated up to thetaMax
@@ -309,42 +281,25 @@ def flux(t,Tx,mx,Rs,beta,
     Parameters
     ----------
     t : float
-        The BDM ToF, relative to the first SN neutrino's arrival
+        The BDM ToF, relative to the first SN neutrino's arrival.
     Tx : float
-        BDM kinetic energy, MeV
+        BDM kinetic energy, MeV.
     mx : float
-        DM mass, MeV
+        DM mass, MeV.
     Rs : float
-        Distance from supernova to Earth, kpc
+        Distance from supernova to Earth, kpc.
     beta : float
-        The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad
-    sigxv0 : float
-        Total DM-neutrino cross section, cm^2. Default is 1e-45 cm^2
-    profile : str
-        'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile is used.
+        The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad.
     Re : float
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
-    d_cut: scalar
-        Terminating point for d. Below the value will return 0.
-        Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
-    r_cut : float
-        Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
-        in the central region, r_cut cannot be too large. Otherwise, the spike effect will
-        be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+    sigxv0 : float
+        Total DM-neutrino cross section, cm^2. Default is 1e-45 cm^2
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
-    sigv : float 
-        DM annihilation cross section, in the unit of 1e-26 cm^3/s.
-        None stands for no annihilation. Default is None. It is disregarded if 'is_spike' = False.
-    tBH : float
-        Age of supermassive black hole, years. Default is 1e+10 years. It is disregarded if
-        'is_spike' = False.
-    alpha : str
-        Slope of the DM spike. Default is '3/2'. It is disregarded if 'is_spike' = False.
-    nitn : int
-        Number of chains for vegas to evaluate the integral. Default is 10.
-    neval : int
-        Number of evaluation number in each chain in vegas. Default is 30000.
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile, spike halo, min distances
+        and vegas. If 'is_spike = False', the parameters for configuring spiky halo will be
+        deactivated. Default values assume Milky Way.
     
     Returns
     -------
@@ -353,7 +308,12 @@ def flux(t,Tx,mx,Rs,beta,
 
     See Eq. (18) in BDM Physics 
     """
-    
+    # Retrieve vegas parameters and delete them from kwargs
+    # Pass the rest to the next function
+    vegas_default = params.vegas
+    nitn = kwargs.pop('nitn',vegas_default.nitn)
+    neval = kwargs.pop('neval',vegas_default.neval)
+    # Target function
     def diff_flux(x):
         """
         The integrand in (18) with only theta and phi are left as inputs.
@@ -361,9 +321,8 @@ def flux(t,Tx,mx,Rs,beta,
         inputs.
         """
         theta, phi = x[0], x[1]
-        df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta,
-                               sigxv0=sigxv0, profile=profile, Re=Re, d_cut=d_cut, r_cut=r_cut,
-                               is_spike=is_spike, sigv=sigv, tBH=tBH, alpha=alpha)
+        df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta, Re=Re,
+                               sigxv0=sigxv0, is_spike=is_spike, **kwargs)
         return df
 
     # Get vanishing time
@@ -379,11 +338,7 @@ def flux(t,Tx,mx,Rs,beta,
        return 0.0
 
 
-def event(mx,Rs,beta,
-          Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],
-          sigxv0=1e-45,profile='MW',Re=8.5,d_cut=3.24e-15,r_cut=1e-5,
-          is_spike=False,sigv=None,tBH=1e10,alpha='3/2',
-          nitn=10,neval=30000) -> float:
+def event(mx,Rs,beta,Re=8.5,Tx_range=[5,30],t_range=[10,1.1045e+09],sigxv0=1e-45,is_spike=False,**kwargs) -> float:
     """
     The supernova-neutrino-boosted dark matter evnet per electron with DM-e cross section
     normalized to 1 cm^2 at Earth. The field-of-view (dOmega) is integrated over entirely
@@ -408,44 +363,36 @@ def event(mx,Rs,beta,
     mx : float
         DM mass, MeV
     Rs : float
-        Distance from supernova to Earth, kpc
+        Distance from supernova to Earth, kpc.
     beta : float
-        The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad
-    Tx_range : list
-        Integration range for BDM kinetic energy [Tx_min,Tx_max], MeV
-    t_range : list
-        Integration range for exposure time [t_min,t_max], seconds
-    sigxv0 : float
-        Total DM-neutrino cross section, cm^2. Default is 1e-45 cm^2
-    profile : str
-        'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile is used.
+        The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad.
     Re : float
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
-    d_cut: scalar
-        Terminating point for d. Below the value will return 0.
-        Default is 3.24e-15 kpc, approximating 100 km, the size of
-        neutrino sphere.
-    r_cut : float
-        Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
-        in the central region, r_cut cannot be too large. Otherwise, the spike effect will
-        be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+    Tx_range : list
+        Integration range for BDM kinetic energy [Tx_min,Tx_max], MeV.
+        Default is [5,30] MeV.
+    t_range : list
+        Integration range for exposure time [t_min,t_max], seconds
+        Defalut is [10,1.1045e+09] s. t_max value indicates 35 yrs.
+    sigxv0 : float
+        Total DM-neutrino cross section, cm^2. Default is 1e-45 cm^2
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
-    sigv : float 
-        DM annihilation cross section, in the unit of 1e-26 cm^3/s.
-        None stands for no annihilation. Default is None. It is disregarded if 'is_spike' = False.
-    tBH : float
-        Age of supermassive black hole, years. Default is 1e+10 years. It is disregarded if
-        'is_spike' = False.
-    alpha : str
-        Slope of the DM spike. Default is '3/2'. It is disregarded if 'is_spike' = False.
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile, spike halo, min distances
+        and vegas. If 'is_spike = False', the parameters for configuring spiky halo will be
+        deactivated. Default values assume Milky Way.
     
     Returns
     -------
     out : scalar
         Event number of supernova-neutrino-boosted dark matter per electron.
     """
-
+    # Retrieve vegas parameters and pass the rest to snorer.differential_flux
+    vegas_default = params.vegas
+    nitn = kwargs.pop('nitn',vegas_default.nitn)
+    neval = kwargs.pop('neval',vegas_default.neval)
+    # Target function
     def diff_flux(x):
         """
         The integrand in (18) with t, Tx, theta and phi are left as inputs.
@@ -453,9 +400,8 @@ def event(mx,Rs,beta,
         matches the vegas inputs.
         """
         t, Tx, theta, phi = x
-        df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta,
-                               sigxv0=sigxv0, profile=profile, Re=Re, d_cut=d_cut, r_cut=r_cut,
-                               is_spike=is_spike, sigv=sigv, tBH=tBH, alpha=alpha)
+        df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta, Re=Re,
+                               sigxv0=sigxv0, is_spike=is_spike, **kwargs)
         return df
 
     # Integration range for Tx
@@ -476,29 +422,29 @@ def event(mx,Rs,beta,
     else:
         return 0.0
 
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors    
-if __name__ == "__main()__":
-    Ev_vals = np.logspace(-3,2,100) # Ev values
-    d_vals = np.logspace(-6,2,100) # d values
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import matplotlib.colors as mcolors    
+# if __name__ == "__main()__":
+#     Ev_vals = np.logspace(-3,2,100) # Ev values
+#     d_vals = np.logspace(-6,2,100) # d values
 
-    # Setup meshgrid for (mx,Tx) plane
-    Ev,D = np.meshgrid(Ev_vals,d_vals,indexing='ij')
-    # Evaluating tvan and convert it to years
-    DNvDEv = sn_nu_spectrum(Ev,D)
+#     # Setup meshgrid for (mx,Tx) plane
+#     Ev,D = np.meshgrid(Ev_vals,d_vals,indexing='ij')
+#     # Evaluating tvan and convert it to years
+#     DNvDEv = sn_nu_spectrum(Ev,D)
 
-    # Plot
-    fig, ax = plt.subplots()
-    # log-scaler color
-    norm = mcolors.LogNorm(vmin=DNvDEv.min(), vmax=DNvDEv.max())
-    # Contour plot
-    contour = ax.contourf(Ev, D, DNvDEv, levels=20, cmap="viridis", norm=norm)
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-    ax.set_xlabel(r'$E_\nu$ [MeV]')
-    ax.set_ylabel(r'$d$ [kpc]')
-    # Color bar
-    cbar = fig.colorbar(contour, ax=ax)
-    cbar.set_label(r"$dN_\nu/dE_\nu$ [MeV$^{-1}$ cm$^{-2}$ s$^{-1}$]")
-    plt.savefig('dNvdEv.svg',bbox_inches='tight')
+#     # Plot
+#     fig, ax = plt.subplots()
+#     # log-scaler color
+#     norm = mcolors.LogNorm(vmin=DNvDEv.min(), vmax=DNvDEv.max())
+#     # Contour plot
+#     contour = ax.contourf(Ev, D, DNvDEv, levels=20, cmap="viridis", norm=norm)
+#     ax.set_xscale('log')
+#     ax.set_yscale('log')
+#     ax.set_xlabel(r'$E_\nu$ [MeV]')
+#     ax.set_ylabel(r'$d$ [kpc]')
+#     # Color bar
+#     cbar = fig.colorbar(contour, ax=ax)
+#     cbar.set_label(r"$dN_\nu/dE_\nu$ [MeV$^{-1}$ cm$^{-2}$ s$^{-1}$]")
+#     plt.savefig('dNvdEv.svg',bbox_inches='tight')

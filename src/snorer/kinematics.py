@@ -63,7 +63,7 @@ The docstrings should be sufficient for their self-explanations
 
 
 class Kinematics:
-    """
+    r"""
     This class constructs the required kinetic energy T1 of incoming particle with
     mass m1 to boost the target with mass m2 to kinetic energy T2 along the direction
     psi. See the following scheme
@@ -216,7 +216,7 @@ class Kinematics:
 
 
 class Mandelstam(Kinematics):
-    """
+    r"""
     Superclass: Kinematics
 
     This class constructs the associated Mandelstam variables associated with the

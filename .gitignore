@@ -37,3 +37,4 @@ test.*
 .DS_Store
 
 snorer_docs/
+src/snorer/debug.ipynb

@@ -25,18 +25,20 @@ __email__        = 'yenhsun@phys.ncku.edu.tw'
 __url__          = 'https://github.com/yenhsunlin/snorer'
 __license__      = 'GNU GPL-3.0'
 __all__          = ['sn_nu_spectrum','dsigma_xv','emissivity_jx','differential_flux','flux','event',
-                    'HaloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','nx','nxSpike',
+                    'HaloSpike','rhox','M_sigma','radiusInfluence','radiusSchwarzschild','nx',
                     'Geometry','Propagation',
                     'Kinematics','Mandelstam','Neutrino','get_vx','get_psiMax','get_thetaMax','_get_tof','get_gx','KallenLambda','get_tBound','get_tvan',
                     'Constants','constant',
+                    'params',
                     'BoostedDarkMatter','galactic_to_beta','equatorial_to_beta',]
 
 
 #---------- Useful utilities for user ----------#
 
 from .snorerMain import sn_nu_spectrum,dsigma_xv,emissivity_jx,differential_flux,flux,event
-from .halo import HaloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,nx,nxSpike
+from .halo import HaloSpike,rhox,M_sigma,radiusInfluence,radiusSchwarzschild,nx
 from .geometry import Geometry,Propagation
 from .kinematics import Kinematics,Mandelstam,Neutrino,get_vx,get_psiMax,get_thetaMax,_get_tof,get_gx,get_tvan,get_tBound,KallenLambda
 from .constants import Constants,constant
+from .params import params
 from .utils import BoostedDarkMatter,galactic_to_beta,equatorial_to_beta

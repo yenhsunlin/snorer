@@ -13,7 +13,7 @@
 
 __all__ = ['BoostedDarkMatter',
            'galactic_to_beta',
-           'equatorial_to_beta,']
+           'equatorial_to_beta',]
 
 
 #---------- Import required utilities ----------#
@@ -27,6 +27,7 @@ from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaMax,_get_tof,get_tBo
 from .geometry import Propagation
 from .halo import rhox,HaloSpike
 from .constants import Constants,constant
+from .params import params
 from .sysmsg import FlagError
 
 
@@ -69,19 +70,22 @@ class BoostedDarkMatter(Constants):
     *                  *
     ********************
     
-            Rs: Distance from Earth to SN, kpc
-            Rg: Distance from Earth to the center of a distant galaxy, kpc
-       amp2_xv: Func type, amplitude squared for DM-v interaction, 4 positioning
-                arguments.
-                amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
-                and the last one is the DM mass.
-       amp2_xe: Identical to amp2_xv, but is for DM-e interaction
-      **kwargs: Keyword arguments that will be used to determine halo profile. Leave them
-                blank will use Milky Way profile without spike by default. These arguments
-                are rhos, rs, n, is_spike, mBH, tBH, rh, sigv, 'alpha', The last five
-                parameters are related to halo with spike and only work when
-                is_spike = True.
-
+    Rs : float
+        Distance from Earth to SN, kpc.
+    Rg : float
+        Distance from Earth to the center of a distant galaxy, kpc.
+    amp2_xv : func
+        Amplitude squared for DM-v interaction, 4 positioning arguments.
+        amp2_xv = some_func(s,t,u,mx): the first 3 are Mandelstam variables and the last
+        one is the DM mass.
+    amp2_xe : func
+        Identical to amp2_xv, but is for DM-e interaction.
+    is_spike : bool
+        Is spike feature included? Default is False.
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile and spike halo. If
+        'is_spike = False', the parameters for configuring spiky halo will not be used.
+        Default values assume Milky Way.
 
     ********************
     *                  *
@@ -170,38 +174,25 @@ class BoostedDarkMatter(Constants):
     before its vanishing, SK can accumulate around 7.34e+33*1.1068e-32 ~ 81 event before SNv BDM
     vanished.
     """
-    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,**kwargs): 
+    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,is_spike=False,**kwargs): 
         self.Rs = Rs
         self.Rg = Rg
         self.beta = beta
         self.amp2_xv = amp2_xv
         self.amp2_xe = amp2_xe
-
-        # Default arguments for halo profile
-        default_attributes = {
-            'is_spike': False,
-            'rhos': 184,
-            'rs': 24.42,
-            'n': 2,
-            'mBH': 4290000.0,
-            'tBH':1e10,
-            'rh': 0.002,
-            'alpha': '3/2',
-            'sigv': None,
-        }
-
-        # Update default_attributes if 
-        default_attributes.update(kwargs)
-
-        # Convert into class attributes
-        for key, value in default_attributes.items():
-            setattr(self, key, value)
+        self.is_spike = is_spike
 
         # Setup internal function _nx for DM number density calculation
         if self.is_spike is True:  # turn on spike
+            # Extract parameters
+            self.rhos,self.rs,self.n,self.mBH,self.tBH,self.rh,self.alpha,self.sigv = params.merge('halo','spike',**kwargs).values()
+            # Setup profile
             self._nxsp = HaloSpike(self.mBH,self.tBH,self.alpha)
             self._nx = lambda r,mx: self._nxsp(r,mx,self.sigv,self.rhos,self.rs,self.n)
         elif self.is_spike is False:  # turn off spike
+            # Extract parameters
+            self.rhos,self.rs,self.n = params.merge('halo',**kwargs).values()
+            # Setup profile
             self._nx = lambda r,mx: rhox(r,self.rhos,self.rs,self.n)/mx
         else:
             raise FlagError('Argument \'is_spike\' must be a bool.')
@@ -297,6 +288,10 @@ class BoostedDarkMatter(Constants):
             Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
             in the central region, r_cut cannot be too large. Otherwise, the spike effect will
             be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+        **kwargs
+            Keyword arguments for characteristic parameters of NFW profile and
+            spike halo. If 'is_spike = False', the parameters for configuring
+            spiky halo will be deactivated. Default values assume Milky Way.
         
         Returns
         -------
@@ -335,7 +330,7 @@ class BoostedDarkMatter(Constants):
             diff_flux = 0
         return diff_flux
         
-    def flux(self,t,Tx,mx,d_cut=3.24e-15,r_cut=1e-8,nitn=10,neval=30000) -> float:
+    def flux(self,t,Tx,mx,**kwargs) -> float:
         """
         The supernova-neutrino-boosted dark matter flux at time t on Earth after integrated over
         a field-of-view dOmega. Note that zenith angle theta is integrated up to thetaMax
@@ -349,17 +344,8 @@ class BoostedDarkMatter(Constants):
             BDM kinetic energy, MeV
         mx : float
             DM mass, MeV
-        d_cut: scalar
-            Terminating point for d. Below the value will return 0.
-            Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
-        r_cut : float
-            Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
-            in the central region, r_cut cannot be too large. Otherwise, the spike effect will
-            be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
-        nitn : int
-            Number of chains for vegas to evaluate the integral. Default is 10.
-        neval : int
-            Number of evaluation number in each chain in vegas. Default is 30000.
+        **kwargs
+            Optional parameters for mimimum distances and vegas
         
         Returns
         -------
@@ -368,6 +354,7 @@ class BoostedDarkMatter(Constants):
     
         See Eq. (18) in BDM Physics 
         """     
+        d_cut,r_cut,nitn,neval = params.merge('min_distance','vegas',**kwargs).values()
         Rs = self.Rs
         def diff_flux(x):
             """
@@ -391,7 +378,7 @@ class BoostedDarkMatter(Constants):
            # t > t_van will yield zero BDM
            return 0.0
     
-    def event(self,mx,Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],d_cut=3.24e-15,r_cut=1e-8,nitn=10,neval=30000) -> float:
+    def event(self,mx,Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],**kwargs) -> float:
         """
         The supernova-neutrino-boosted dark matter evnet per electron. To retrieve the correct
         event number, one should mutiply the total electron number Ne.
@@ -409,20 +396,15 @@ class BoostedDarkMatter(Constants):
             Integration range for BDM kinetic energy [Tx_min,Tx_max], MeV
         t_range : list
             Integration range for exposure time [t_min,t_max], seconds
-        d_cut: scalar
-            Terminating point for d. Below the value will return 0.
-            Default is 3.24e-15 kpc, approximating 100 km, the size of
-            neutrino sphere.
-        r_cut : float
-            Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
-            in the central region, r_cut cannot be too large. Otherwise, the spike effect will
-            be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+        **kwargs
+            Optional parameters for mimimum distances and vegas
         
         Returns
         -------
         out : scalar
             Event number of supernova-neutrino-boosted dark matter per electron.
         """
+        d_cut,r_cut,nitn,neval = params.merge('min_distance','vegas',**kwargs).values()
         Rs = self.Rs
         def diff_event(x):
             """

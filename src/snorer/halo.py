@@ -17,8 +17,7 @@ __all__ = ['HaloSpike',
            'M_sigma',
            'radiusInfluence',
            'radiusSchwarzschild',
-           'nx',
-           'nxSpike',]
+           'nx',]
 
 
 #---------- Import required utilities ----------#
@@ -26,6 +25,7 @@ __all__ = ['HaloSpike',
 from numpy import pi,broadcast_arrays,atleast_1d,zeros_like,nditer
 from fractions import Fraction
 from .constants import Constants,constant
+from .params import params
 from .sysmsg import FlagError
 
 
@@ -485,10 +485,10 @@ def radiusSchwarzschild(mBH) -> float:
     return Rs
 
 
-def nx(r,mx,profile='MW'):
+def _nx(r,mx,**kwargs):
     """
-    Dark matter number density of Milky Way of Large Magellanic Cloud at
-    distance r to the galactic center. Spike feature is not included.
+    Dark matter number density at distance r to the galactic center.
+    Spike feature is not included.
 
     Parameters
     ----------
@@ -496,32 +496,23 @@ def nx(r,mx,profile='MW'):
         Distance to galactic center, kpc
     mx : array_like
         Dark matter mass, MeV
-    profile : str
-        'MW' or 'LMC', stands for MW halo or LMC halo
+    **kwargs
+        Keyword arguments for characteristic parameters
+        of NFW profile.
     
     Returns
     -------
     out : scalar/ndarray
         Dark matter number density at r, 1/cm^3
     """
-    # Which profile to be used
-    if profile == 'MW':
-        params_dict = constant.MW_profile
-    elif profile == 'LMC':
-        params_dict = constant.LMC_profile
-    else:
-        # Invalid profile name
-        raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
-    # Extract parameter values
-    rhos,rs,n,_,_ = params_dict.values()
-    # Return number density
+    rhos,rs,n = params.merge('halo',**kwargs).values()
     return rhox(r,rhos,rs,n)/mx
 
 
-def nxSpike(r,mx,profile='MW',sigv=None,tBH=1e+10,alpha='3/2') -> float: #,**kwargs) -> float:
+def _nxSpike(r,mx,**kwargs) -> float:
     """
-    Dark matter number density of Milky Way of Large Magellanic Cloud at
-    distance r to the galactic center. Spike feature is included.
+    Dark matter number density at distance r to the galactic center.
+    Spike feature is included.
     
     Parameters
     ----------
@@ -529,15 +520,9 @@ def nxSpike(r,mx,profile='MW',sigv=None,tBH=1e+10,alpha='3/2') -> float: #,**kwa
         Distance to galactic center, kpc
     mx : array_like
         Dark matter mass, MeV
-    profile : str
-        'MW' or 'LMC', stands for MW halo or LMC halo
-    sigv : scalar 
-        DM annihilation cross section, in the unit of 1e-26 cm^3/s
-        None indicates no annihilation
-    tBH : scalar
-        Supermassive black hole age, years
-    alpha : str
-        Slope of the spike, str type, '3/2' or '7/3'
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile and
+        spike halo.
     
     Returns
     -------
@@ -545,17 +530,8 @@ def nxSpike(r,mx,profile='MW',sigv=None,tBH=1e+10,alpha='3/2') -> float: #,**kwa
         Dark matter number density at r with spike in the center, 1/cm^3
     """
     # --- Setup halo instance --- #
-    # Which profile to be used
-    if profile == 'MW':
-        params_dict = constant.MW_profile
-    elif profile == 'LMC':
-        params_dict = constant.LMC_profile
-    else:
-        # Invalid profile name
-        raise FlagError('Keyword argument \'profile\' must be either \'MW\' or \'LMC\'.')
-    # Extract parameter values
-    rhos,rs,n,mBH,rh = params_dict.values()
-    # Initializing HaloSpike instance
+    # Get default configuration and update it with user inputs if exist
+    rhos,rs,n,mBH,tBH,rh,alpha,sigv = params.merge('halo','spike',**kwargs).values()
     nx_spike = HaloSpike(mBH,tBH,alpha)
     # Use recorded rh instead of auto generated
     nx_spike.rh = rh
@@ -568,7 +544,35 @@ def nxSpike(r,mx,profile='MW',sigv=None,tBH=1e+10,alpha='3/2') -> float: #,**kwa
     # Use nditer to mimic vectorization and retrieve nx
     with nditer([R,MX,NX],op_flags=[['readonly'],['readonly'],['writeonly']]) as it:
         for r,m,nd in it:
-            nd[...] = nx_spike(r,mx,sigv,rhos,rs,n)
+            nd[...] = nx_spike(r,m,sigv,rhos,rs,n)
     # Return the result with dimension as the input
     return NX if NX.size > 1 else NX.item()
+
+def nx(r,mx,is_spike=False,**kwargs):
+    """
+    Dark matter number density at distance r to the galactic center.
     
+    Parameters
+    ----------
+    r : array_like
+        Distance to galactic center, kpc
+    mx : array_like
+        Dark matter mass, MeV
+    is_spike : bool
+        Is spike feature included? Default is False.
+    **kwargs
+        Keyword arguments for characteristic parameters of NFW profile and
+        spike halo. If 'is_spike = False', the parameters for configuring
+        spiky halo will be deactivated. Default values assume Milky Way.
+    
+    Returns
+    -------
+    out : scalar/ndarray
+        Dark matter number density at r with spike in the center, 1/cm^3
+    """
+    if is_spike is True:
+        return _nxSpike(r,mx,**kwargs)
+    elif is_spike is False:
+        return _nx(r,mx,**kwargs)
+    else:
+        raise FlagError('\'is_spike\' must be a bool.')
