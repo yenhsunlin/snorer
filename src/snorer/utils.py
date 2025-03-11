@@ -11,19 +11,20 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-__all__ = ['GeneralInterface',]
+__all__ = ['BoostedDarkMatter',
+           'galactic_to_beta',
+           'equatorial_to_beta,']
 
 
 #---------- Import required utilities ----------#
 
-from numpy import pi,sin,cos,arccos,isclose,clip,broadcast_arrays,asarray,ndarray,radians,degrees
+from numpy import pi,sin,cos,arccos,asarray,clip
 from scipy.integrate import quad
 import vegas
-from astropy import units as u
 from astropy.coordinates import SkyCoord
 from .snorerMain import sn_nu_spectrum
-from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaMax,get_tvan,get_tBound,get_gx
-from .geometry import Geometry
+from .kinematics import Mandelstam,Neutrino,get_vx,get_thetaMax,_get_tof,get_tBound
+from .geometry import Propagation
 from .halo import rhox,HaloSpike
 from .constants import Constants,constant
 from .sysmsg import FlagError
@@ -41,11 +42,12 @@ This script contains following classes and functions
 
 Classes
 ------
-1. GeneralInterface
+1. BoostedDarkMatter
 
 Functions
 ------
-None
+1. galactic_to_beta
+2. equatorial_to_beta
 
 The docstrings should be sufficient for their self-explanations
 """
@@ -55,11 +57,9 @@ class BoostedDarkMatter(Constants):
     """
     Superclass: Constants
     
-    Class with medoths that evaluate SNv BDM coming from SN in arbitrary distant galaxy
-    with DM-v and DM-e interaction cross sections descrbied by a specific particle model
-    or energy-independent cross section. This class has an dependency on Astropy for
-    handling SN/GC coordinates expressed in ICRS J2000.0 system.
-
+    Class with medoths that evaluate SNv BDM coming from supernova in arbitrary distant
+    galaxy with DM-v and DM-e interaction cross sections descrbied by a specific particle
+    model.
 
     /*-----------------------------------------------------------------------------*/
 
@@ -69,27 +69,18 @@ class BoostedDarkMatter(Constants):
     *                  *
     ********************
     
-      SN_coord: SN coordinate list, [RA,DEC,dist]: the first two are right ascension
-                and declination of the celestial object respectively, both in string
-                type. The last one is the distance to the object in kpc
-      GC_coord: Identical to SN_coord, but is for the galactic center
+            Rs: Distance from Earth to SN, kpc
+            Rg: Distance from Earth to the center of a distant galaxy, kpc
        amp2_xv: Func type, amplitude squared for DM-v interaction, 4 positioning
                 arguments.
                 amp2_xv := some_func(s,t,u,mx): the first 3 are Mandelstam variables
                 and the last one is the DM mass.
        amp2_xe: Identical to amp2_xv, but is for DM-e interaction
-    dsigma0_xv: Default is None. If you want to use differential DM-nu cross section
-                given by particle model, leave this None. Otherwise, it will disregard
-                amp2_xv.
-     sigma0_xe: Total DM-electron cross section. Default is None. If not None, it will
-                disregard amp2_xe.
-      **kwargs: Keyword arguments that will be passed to dmNumberDensity(), see the
-                following explanation
-
-
-    /*-------------------------------IMPORTANT NOTE--------------------------------*/
-
-    The first FOUR inputs are POSITIONING-ONLY arguments, so their ORDER matters.
+      **kwargs: Keyword arguments that will be used to determine halo profile. Leave them
+                blank will use Milky Way profile without spike by default. These arguments
+                are rhos, rs, n, is_spike, mBH, tBH, rh, sigv, 'alpha', The last five
+                parameters are related to halo with spike and only work when
+                is_spike = True.
 
 
     ********************
@@ -98,82 +89,16 @@ class BoostedDarkMatter(Constants):
     *                  *
     ********************
 
-    When an instance is initialized, the following attributes will be assigned,
+    Suppose, we want to know the SN1987a in LMC, we can extract the equatorial coordinates
+    by constant.LMC_coord and constant.SN1987a_coord. They documents [RA,DEC,dist] of the
+    stellar objects. One can further use 'snorer.equatorial_to_beta' to get the off-cetner
+    angle beta. Thus, we have
 
-            Rstar: Distance to SN, kpc
-               Re: Distance to GC, kpc
-             beta: Off-center angle, rad
-    separation_3d: Separation distance between the two celestial objects, kpc
+    >>> Rs, Rg, beta = 49.97, 51.4, 0.02004
+    >>> sn1987a = snorer.BoostedDarkMatter(Rs,Rg,beta,amp2_xv,amp2_xe)
+
+    When an instance is initialized, it also automatically assigns DM halo profile. 
     
-    None of these attributes can be reassigned manually as they are completely
-    determined when SN_coord and GC_coord are specified. If you want to have different
-    attributes, you can only do by updating SN_coord/GC_coord.
-
-    Suppose, we want to know the SN1987a in LMC, we already documented the coordinates
-    of these two in constant, thus
-
-    >>> SN_coord = constant.SN1987a_coord
-    >>> GC_coord = constant.LMC_coord
-    >>> sn1987a = snoreGeneralInterface(SN_coord,GC_coord,amp2_xv,amp2_xe)
-
-    We explain the amplitude-square later. Now we can view the intrinsic properties
-    of this instance by
-
-    >>> sn1987a
-          Dist to GC: 4.997e+01 kpc
-          Dist to SN: 5.170e+01 kpc
-     Seperation dist: 2.008e+00 kpc
-    Off-center angle: 2.004e-02 rad
-
-    They can be retrieved by, eg.,
-    
-    >>> sn1987a.beta     # off-center angle
-    0.02004146106280973
-
-
-    /*------------------------SNv Spectrum and DM Profile--------------------------*/
-
-    When an instance is initialized, it also automatically assigns a SNv spectrum and
-    a DM halo profile by snNuSpectrum() and dmNumberDensity().
-
-    Note that SNv spectrum will have flux unit and DM spike is turn off by default in
-    the halo profile. Legal keyword arguments in dmNumberDensity() can be passed by
-    **kwargs durning instance's initialization.
-
-    The associated SNv flux can be viewed by, eg. Ev = 15 MeV and D = 10 kpc
-    
-    >>> sn1987a.snNuFlux(Ev=15,D=10)      # MeV, kpc
-    3351680277.5754733
-
-    For the DM number density, if you passed keyword arguments durning the initialization
-    such as: (is_spike=True, sigv=3, tBH=1e9, mBH=1e8, rhos=107, rs=33.9), then it is
-    equivalent to have the DM number density
-
-    dmNumberDensity(r,mx,is_spike=True,sigv=3,tBH=1e9,mBH=1e8,rhos=107,rs=33.9)
-
-    Only those keyword arguments contained in dmNumberDensity() will be accepted or
-    exception will be raised.
-
-    Given these, we can viewed the DM number density in this instance by
-
-    >>> sn1987a.nx(r=5,mx=1e-2)
-    55092.31392649719
-
-    You can compare the result with dmNumberDensity by having
-
-    >>> dmNumberDensity(5,1e-2,is_spike=True,sigv=3,tBH=1e9,mBH=1e8,rhos=107,rs=33.9)
-    55092.31392649719
-
-    The two matched as expected!
-
-    The keyword arguments are stored in __dict__, you may update the value(s) or added
-    new keys by
-
-    >>> sn1987a.tBH=5e8
-
-    However, adding non-existent key(s) will trigger error during the calculation.
-    
-
     /*---------------------------Constructing Amplitudes---------------------------*/
     
     We take the model discussed in Phys. Rev. D 108, 083013 (2023) for instance. Both
@@ -214,24 +139,23 @@ class BoostedDarkMatter(Constants):
 
     This class has the following methods
 
-          snNuFlux(Ev,D): SNv flux after propagating D, 1/cm^2/MeV/s
-                nx(r,mx): DM number density at place distant r to GC, 1/cm^3
-         sigma_xe(Tx,mx): Yields the total DM-e cross section for a given (Tx,mx), cm^2
-    dsigma_xv(Tx,mx,psi): Yields the differential DM-v cross section at given (Tx,mx,psi), cm^2/sr
-           flux(t,Tx,mx): Yields the SNv BDM flux at Earth given (t,Tx,mx), #/MeV/cm^2/s
-               event(mx): Yields the SNv BDM event in a given period at Earth given mx, # per electron
+                nx(r,mx): Yields DM number density at place distant r to GC, 1/cm^3
+         sigma_xe(Tx,mx): Yields total DM-e cross section for a given (Tx,mx), cm^2
+    dsigma_xv(Tx,mx,psi): Yields differential DM-v cross section at given (Tx,mx,psi), cm^2/sr
+           flux(t,Tx,mx): Yields SNv BDM flux at Earth given (t,Tx,mx), #/MeV/cm^2/s
+               event(mx): Yields SNv BDM event in a given period at Earth given mx, # per electron
 
-    The cross section parts are easy to understand as they are generated by the amplitude-squares
-    inputed by user.
+    The cross sections are easy to understand as they are generated by the amplitude-squared inputed
+    by the user.
 
     >>> snv1987a.sigma_xe(Tx=15,mx=1e-3)             # cm^2
     3.5462696696305866e-36
     >>> snv1987a.dsigma_xv(Tx=15,mx=1e-3,psi=0.01)   # cm^2/sr
     1.541723841734109e-33
 
-    To generate SNv BDM flux at Earth, the `flux` method requires the BDM ToF t in seconds, BDM
-    kinetic energy Tx in MeV and DM mass mx in MeV. Other optional keyword arguments can be checked
-    via the associated docstring.
+    To generate SNv BDM flux at Earth, the 'flux' method requires the a particular time t in seconds,
+    BDM kinetic energy Tx in MeV and DM mass mx in MeV. Other optional keyword arguments can be
+    checked via the associated docstring.
 
     >>>snv1987a.flux(t=100,Tx=15,mx=1e-3)            # 1/cm^2/MeV/s
     2.4216253535745897e-09
@@ -243,218 +167,290 @@ class BoostedDarkMatter(Constants):
     
     Note that to convert event into a real case, we have to multiply the total electron number in the
     detector. For Super-Kamionkande, its total electron number is about 7.4e+33. Thus the total event
-    before its vanishing, SK can accumulate around 7.34e+33*1.1068e-32 ~ 81.2 events before SNv BDM
+    before its vanishing, SK can accumulate around 7.34e+33*1.1068e-32 ~ 81 event before SNv BDM
     vanished.
-
-    There is one addiitonal class method that can be called without initialization of the instance.
-    This method can assist user to get the off-center angle beta and separation distance between the
-    two celestial objects.
-    
-    get_geometry_3d(SN_coord,GC_coord)
-
-    The inputs SN_coord and CG_coord are explained previously. The outputs are beta, rad, and separation
-    distance, kpc.
     """
-    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,/,**kwargs): 
+    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,**kwargs): 
         self.Rs = Rs
         self.Rg = Rg
         self.beta = beta
         self.amp2_xv = amp2_xv
         self.amp2_xe = amp2_xe
-        self.__dict__.update(kwargs)
-        
-        # Default is to turn off spike unless user specified otherwise
-        if self.__dict__.get('is_spike') is None:
-            self.__dict__['is_spike'] = False
 
-        #self.snNuSpectrum = lambda Ev,D: snNuSpectrum(Ev,D)                       # default SN nu spectrum, flux unit
-        #self.dmNumberDensity = lambda r,mx: dmNumberDensity(r,mx,is_spike=False)  # default DM halo profile
-    
-    # def __repr__(self):
-    #     return '{:>18s}'.format('Dist to GC:') + ' {:>.3e} kpc'.format(self.Re) + '\n' +                 \
-    #            '{:>18s}'.format('Dist to SN:') + ' {:>.3e} kpc'.format(self.Rstar) + '\n' +              \
-    #            '{:>18s}'.format('Seperation dist:') + ' {:<.3e} kpc'.format(self.separation_3d) + '\n' + \
-    #            '{:>18s}'.format('Off-center angle:') + ' {:<.3e} rad'.format(self.beta) 
+        # Default arguments for halo profile
+        default_attributes = {
+            'is_spike': False,
+            'rhos': 184,
+            'rs': 24.42,
+            'n': 2,
+            'mBH': 4290000.0,
+            'tBH':1e10,
+            'rh': 0.002,
+            'alpha': '3/2',
+            'sigv': None,
+        }
 
-    # @property
-    # def separation_3d(self):
-    #     return self._sep3d
+        # Update default_attributes if 
+        default_attributes.update(kwargs)
 
-    # @property
-    # def beta(self):
-    #     return self._beta
+        # Convert into class attributes
+        for key, value in default_attributes.items():
+            setattr(self, key, value)
 
-    # @property
-    # def Rstar(self):
-    #     return self.SN_coord[2]
-
-    # @property
-    # def Re(self):
-    #     return self.GC_coord[2]
-    
-    @property
-    def __kwargs_nx(self):
-        """Remove the unnecessary kwargs for dmNumberDensity()"""
-        newDict = list(self.__dict__.items())[8:]  # the 1st 8 are class inputs
-        return dict(newDict)
-
-    # @classmethod
-    # def get_geometry_3d(cls,SN_coord,GC_coord) -> float:
-    #     """Get the celestial geometry of SN and GC from user-input"""
-    #     snRA,snDEC,snDist = SN_coord  # right ascension, declination, distance in kpc
-    #     gcRA,gcDEC,gcDist = GC_coord  # right ascension, declination, distance in kpc
-        
-    #     # Call SkyCoord in Astropy to tackle the celestial coordinates of these objects
-    #     sn = SkyCoord(snRA,snDEC,distance=snDist*u.kpc)
-    #     gc = SkyCoord(gcRA,gcDEC,distance=gcDist*u.kpc)
-    #     # Get the 3d seperation of these two stellar objects, kpc
-    #     sepDist = sn.separation_3d(gc).value
-    #     # Get beta, law of cosine
-    #     cos_beta = (snDist**2 + gcDist**2 - sepDist**2)/2/snDist/gcDist
-    #     cos_beta = clip(cos_beta,-1,1)
-    #     beta = arccos(cos_beta)
-    #     return beta,sepDist
+        # Setup internal function _nx for DM number density calculation
+        if self.is_spike is True:  # turn on spike
+            self._nxsp = HaloSpike(self.mBH,self.tBH,self.alpha)
+            self._nx = lambda r,mx: self._nxsp(r,mx,self.sigv,self.rhos,self.rs,self.n)
+        elif self.is_spike is False:  # turn off spike
+            self._nx = lambda r,mx: rhox(r,self.rhos,self.rs,self.n)/mx
+        else:
+            raise FlagError('Argument \'is_spike\' must be a bool.')
         
     def nx(self,r,mx) -> float:
-        return dmNumberDensity(r,mx,**self.__kwargs_nx)
-    
-    def snNuFlux(self,Ev,D) -> float:
-        return snNuSpectrum(Ev,D)
+        """
+        DM number density
+        """
+        return self._nx(r,mx)
     
     def sigma_xe(self,Tx,mx) -> float:
         """Obtain total sigma_xe for a given (Tx,mx), cm^2"""
         me = self.me
         Ex = Tx + mx                             # Total BDM energy, kinetic + mass
         s = 2*me*Ex + mx**2 + me**2
-        p_squared = (s - (me+mx)**2)*(s-(me-mx)**2)/4/s
-        t_min,t_max = get_tBound(mx,me,Tx) # Allowed t range for dsigma/dt integration
-        sigma = quad(lambda t: self.amp2_xe(s,t,2*(mx**2+me**2)-s-t,mx),t_min,t_max)[0]
+        p_squared = (s - (me + mx)**2) * (s - (me - mx)**2)/4/s
+        t_min,t_max = get_tBound(Tx,mx,me) # Allowed t range for dsigma/dt integration
+        sigma = quad(lambda t: self.amp2_xe(s,t,2 * (mx**2 + me**2) - s - t,mx),t_min,t_max)[0]
         sigma = sigma/32/s/p_squared             # integration over azimuthal angle 2pi is incoporated
         sigma = sigma*self.perMeV2cm**2          # convert 1/MeV^2 to cm^2
         return sigma
 
     def dsigma_xv(self,Tx,mx,psi) -> float:
         """Obtain diff sigma_xv for a given (Tx,mx,psi), cm^2"""
-        varMandelstam = Mandelstam(0,mx,Tx,psi)  # Get the Mandelstam variables and dLips at psi for (Tx,mx,psi)
-        s,t,u,dLips = varMandelstam.s,varMandelstam.t,varMandelstam.u,varMandelstam.get_dLips()
+        varMandelstam = Mandelstam(Tx,0,mx,psi)  # Get the Mandelstam variables and dLips at psi for (Tx,mx,psi)
+        s,t,u,dLips = varMandelstam.s,varMandelstam.t,varMandelstam.u,varMandelstam.dLips
         sigma = self.amp2_xv(s,t,u,mx)*dLips     # Evaluate the differential cross section at psi
         sigma = sigma*self.perMeV2cm**2          # convert 1/MeV^2 to cm^2
         return sigma
             
-    def _emissivity(self,Ev,dEv,Tx,mx,psi,r,D) -> float:
-        """Obtaing the emissivity at boost point, 1/cm^3/MeV/s"""
-        dfv = self.snNuFlux(Ev,D)                # Get the SNv flux at D
-        # Get the diff. DM-v cross section at psi
-        if self.dsigma0_xv is None:
-            # Using model amplitude
-            dsigma = self.dsigma_xv(Tx,mx,psi)
-        else:
-            # Constant xv differential cross section
-            dsigma = fx_lab(Ev,mx,psi)*self.sigma0_const 
-        jx = dfv*dsigma*dEv*self.nx(r,mx)        # Compute the emissivity at boost point
-        return jx
+    def _emissivity_jx(self,Tx,Ev,dEv,mx,d,r,psi,d_cut=3.24e-15) -> float:
+        """
+        Emissivity jx of supernova-neutrino-boost dark matter at boost point.
+    
+        Parameters
+        ----------
+        Tx : float
+            BDM kinetic energy, MeV.
+        Ev : float
+            The supernova neutrino energy, MeV.
+        dEv : float
+            The Jacobian (dEv/dTx)*(vx/c) that converts per netrino energy width, dEv,
+            to per BDM kinetic energy width, dTx.
+        mx : float
+            Dark matter mass, MeV.
+        d : float
+            Distance from supernova to boost point, kpc.
+        r : float
+            Distance from galactic center to boost point, kpc.
+        psi : float
+            The scattering angle in lab frame at boost point, rad. 
+        d_cut: scalar
+            Terminating point for d. Below the value will return 0.
+            Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
 
-    def _diff_flux(self,t,Tx,mx,theta,phi,tau,r_cut=1e-3) -> float:
-        """Get the BDM differential flux"""
-        Rstar,Re,beta = self.Rstar,self.Re,self.beta
+        Returns
+        -------
+        out : scalar
+            BDM emissivity at boost point along the direction psi, 1/MeV/cm^3/s/sr
+    
+        See Eq. (13) in BDM Physics for detail.
+        """
+        # Mutiplied by 10 is becasue we assume total energy released in 10 seconds
+        # thus L_tot = E_tot/10. Given we integrate all the contribution within neutrino
+        # shell, we should multply it back. See BDM Physics for discussion.
+        dfv = 10*sn_nu_spectrum(Ev,d,d_cut,is_density=False)   # SNv flux
+        dsigma = self.dsigma_xv(Tx,mx,psi)   # DM-v diff. cross section, cm^2/sr
+        ndx = self.nx(r,mx) # DM number density
+        # Evaluate BDM emissivity
+        return ndx * dfv * dsigma * dEv
+
+    def _differential_flux(self,t,Tx,mx,theta,phi,d_cut=3.24e-15,r_cut=1e-8) -> float:
+        """
+        The differential supernova-neutrin-boosted dark matter flux at Earth at specific time t 
+        and angular direction (theta,phi).
+        
+        Parameters
+        ----------
+        t : float
+            Time t, relative to the SN neutrino's arrival.
+        Tx : float
+            BDM kinetic energy, MeV.
+        mx : float
+            DM mass, MeV.
+        theta : float
+            The zenith angle theta, rad.
+        phi : float
+            The azimuthal angle that centers SN, rad.
+        d_cut : scalar
+            Terminating point for d. Below the value will return 0.
+            Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
+        r_cut : float
+            Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
+            in the central region, r_cut cannot be too large. Otherwise, the spike effect will
+            be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+        
+        Returns
+        -------
+        out : scalar
+            The differential BDM flux at Earth, 1/MeV/cm^2/s/sr
+    
+        See the integrand of Eq. (18) in BDM Physics.
+        """
+        Rs,Rg,beta = self.Rs,self.Rg,self.beta
+        # Dimensionless BDM velocity, vx/c
         vx = get_vx(Tx,mx)
         
-        # propagation geometry
-        bdmGeometry = Geometry(t,theta,phi,vx,Rstar,Re,beta)
-        d = bdmGeometry.d
-        D = bdmGeometry.D 
-        rprime = bdmGeometry.rprime
-        psi = arccos(bdmGeometry.cosPsi)
+        # Initializing Propagation class to account time-dependency
+        # in propagation geometry
+        bdmProgagation = Propagation(t,vx,theta,phi,Rs,Rg,beta)
+        l = bdmProgagation.l  # l.o.s, to evaluate Jacobian J
+        d = bdmProgagation.d  # Distance from SN to B, to evaluate neutrino flux
+        r = bdmProgagation.rprime  # Distance from GC to B, to evaluate nx
+        psi = arccos(bdmProgagation.cos_psi)  # Scattering angle that points Earth direction
         
-        # Required SNv energy
-        snv = Neutrino(Tx,mx,psi)
-        Ev = snv.Ev 
-        dEv = snv.dEv 
-        is_sanity = snv.is_sanity
-        
-        if rprime >= r_cut and is_sanity:
-            jx = self._emissivity(Ev,dEv,Tx,mx,psi,rprime,D)
-            # Jacobian
-            if ~isclose(0,D,atol=1e-100):
-                J = self.c/((d - Rstar*cos(theta))/D + 1/vx)
-            else:
-                J = self.c*vx
-            # BDM flux
-            return J*jx*vx*sin(theta)*tau
+        # Initializing Neutrino class to get required SNv properties
+        snNu = Neutrino(Tx,mx,psi)
+        Ev = snNu.Ev  # required SNv energy
+        dEv = snNu.dEv * vx  # the Jacobian (dEv/dTx)*(vx/c)
+        sanity = snNu.sanity  # is this scattring process allowed?
+
+        # Evaluate differential flux, integrand of Eq. (18) in BDM Physics
+        if sanity and r > r_cut: # if energy conservation holds
+            # Evaluate the BDM emissivity
+            jx = self._emissivity_jx(Tx,Ev,dEv,mx,d,r,psi,d_cut)
+            # # Jacobian, it should not diverge as we already require d > d_trunct
+            J = d * vx / (vx * (l - Rs * cos(theta)) + d) * constant.c
+            # Differential flux 
+            diff_flux = J * jx * sin(theta)
         else:
-            return 0
+            diff_flux = 0
+        return diff_flux
         
-    def flux(self,t,Tx,mx,tau=10,nitn=10,neval=30000) -> float:
+    def flux(self,t,Tx,mx,d_cut=3.24e-15,r_cut=1e-8,nitn=10,neval=30000) -> float:
         """
-        The SNv BDM flux at Earth after integrated over zenith angle theta and
-        azimuthal angle phi
+        The supernova-neutrino-boosted dark matter flux at time t on Earth after integrated over
+        a field-of-view dOmega. Note that zenith angle theta is integrated up to thetaMax
+        and azimuthal angle phi from 0 to 2pi.
     
-        Input
-        ------
-        t: The BDM ToF, relative to the first SN neutrino's arrival
-        Tx: BDM kinetic energy, MeV
-        mx: DM mass, MeV
-        tau: The duration of SN explosion, default 10 s
-        nitn: Numer of chains in for iterations, vegas variable, unsigned int
-        neval: Number of evaluations in each chain, vegas variable, unsigned int
+        Parameters
+        ----------
+        t : float
+            The BDM ToF, relative to the first SN neutrino's arrival
+        Tx : float
+            BDM kinetic energy, MeV
+        mx : float
+            DM mass, MeV
+        d_cut: scalar
+            Terminating point for d. Below the value will return 0.
+            Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
+        r_cut : float
+            Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
+            in the central region, r_cut cannot be too large. Otherwise, the spike effect will
+            be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+        nitn : int
+            Number of chains for vegas to evaluate the integral. Default is 10.
+        neval : int
+            Number of evaluation number in each chain in vegas. Default is 30000.
         
-        Output
-        ------
-        scalar: The diff. BDM flux at Earth, # per MeV per cm^2 per second
+        Returns
+        -------
+        out : scalar
+            The time-depenent boosted dark matter flux at Earth, 1/MeV/cm^2/s
     
-        See Eq. (6) in Phys. Rev. D 108, 083013 (2023) 
-        """
-        Rstar = self.Rstar
-        # _,t_van = get_tof(Tx,mx,Rstar)                           # get the vanishing time t_van 
-        # if t <= t_van:
-        theta_min,theta_max = get_thetaRange(t,Tx,mx,Rstar)  # get the zenith angle range that contains non-zero BDM flux
-        integ = vegas.Integrator([[theta_min,theta_max],[0,2*pi]])  # (theta,phi)
-        flux = integ(lambda x: self._diff_flux(t=t,Tx=Tx,mx=mx,theta=x[0],phi=x[1],tau=tau),
-                        nitn=nitn,neval=neval).mean
-        return flux
-        # else:                                                    # t > t_van will yield zero BDM
-        #     return 0
-    
-    def event(self,mx,TxRange=[5,30],tRange=[10,35*constant.year2Seconds],tau=10,
-              nitn=10,neval=30000) -> float:
-        """
-        The SNv BDM evnet at Earth after integrated over exposure time t, BDM
-        kinetic energy Tx, zenith angle theta and azimuthal angle phi
-    
-        Input
-        ------
-        mx: DM mass, MeV
-        TxRange: BDM kinetic energy range of interest, [Tx_min,Tx_max], MeV
-        tRange: Detector exposure time, [t_min,t_max], seconds
-        tau: The duration of SN explosion, default 10 s
-        nitn: Numer of chains in for iterations, vegas variable, unsigned int
-        neval: Number of evaluations in each chain, vegas variable, unsigned int
+        See Eq. (18) in BDM Physics 
+        """     
+        Rs = self.Rs
+        def diff_flux(x):
+            """
+            The integrand in (18) with only theta and phi are left as inputs.
+            Note that theta = x[0] and phi = x[1]. This matches the vegas
+            inputs.
+            """
+            theta, phi = x
+            df = self._differential_flux(t=t,Tx=Tx,mx=mx,theta=theta,phi=phi,d_cut=d_cut,r_cut=r_cut)
+            return df
         
-        Output
-        ------
-        scalar: Total SNv BDM event in the given period and energy range
+        # Get vanishing time
+        _,t_van = _get_tof(Tx,mx,Rs)
+        # Evaluate flux
+        if t <= t_van:
+            theta_max = get_thetaMax(t,Tx,mx,Rs)  # get the thetaMax
+            integ = vegas.Integrator([[0,theta_max],[0,2*pi]])  # (theta,phi)
+            flux = integ(diff_flux,nitn=nitn,neval=neval).mean
+            return flux
+        else:
+           # t > t_van will yield zero BDM
+           return 0.0
     
-        See Eq. (16) in Phys. Rev. D 108, 083013 (2023) and the discussion in
-        the maintext.
+    def event(self,mx,Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],d_cut=3.24e-15,r_cut=1e-8,nitn=10,neval=30000) -> float:
         """
-        Rstar = self.Rstar
-        Tx_min,Tx_max = TxRange
-        t_min,t_max = tRange
-        
-        _,t_van = get_tof(Tx_min,mx,Rstar)                             # get ToF
-        theta_min,theta_max = get_thetaRange(t_min,Tx_min,mx,Rstar)    # get the theta range with non-zero BDM flux
+        The supernova-neutrino-boosted dark matter evnet per electron. To retrieve the correct
+        event number, one should mutiply the total electron number Ne.
+
+        For instance, if the BDM event rate obtained from this function is Nx0, then the total
+        BDM event in a detector with electron number is
+
+            Nx = Ne * Nx0
     
+        Parameters
+        ----------
+        mx : float
+            DM mass, MeV
+        Tx_range : list
+            Integration range for BDM kinetic energy [Tx_min,Tx_max], MeV
+        t_range : list
+            Integration range for exposure time [t_min,t_max], seconds
+        d_cut: scalar
+            Terminating point for d. Below the value will return 0.
+            Default is 3.24e-15 kpc, approximating 100 km, the size of
+            neutrino sphere.
+        r_cut : float
+            Terminating nx when r' < r_cut, kpc. If one needs to incorporate dark matter spike
+            in the central region, r_cut cannot be too large. Otherwise, the spike effect will
+            be chopped off before it has any noticeble consequence. Default is 1e-8 kpc.
+        
+        Returns
+        -------
+        out : scalar
+            Event number of supernova-neutrino-boosted dark matter per electron.
+        """
+        Rs = self.Rs
+        def diff_event(x):
+            """
+            The integrand in (18) with t, Tx, theta and phi are left as inputs.
+            Note that t = x[0], Tx = [1], theta = x[2] and phi = x[3]. This
+            matches the vegas inputs.
+            """
+            t, Tx, theta, phi = x
+            df = self._differential_flux(t=t,Tx=Tx,mx=mx,theta=theta,phi=phi,d_cut=d_cut,r_cut=r_cut)
+            return df * self.sigma_xe(Tx,mx)
+
+        # Integration range for Tx
+        Tx_min,Tx_max = Tx_range
+        # Integration range for t
+        t_min,t_max = t_range
+        
+        _,t_van = _get_tof(Tx_min,mx,Rs)   # get vanishing time
+        theta_max = get_thetaMax(t_min,Tx_min,mx,Rs)   # get the thetaMax
         
         if t_van <= t_max: # check if user-input maximum exposure time t_max is smaller than the vanishing time
             t_max = t_van  # if so, reset t_max as t_van
         
         if t_min < t_max:  # sometimes the user-input beginning time could be larger than the vanishing time if DM mass is very light 
-            integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[theta_min,theta_max],[0,2*pi]])  #(t,Tx,theta,phi)
-            event = integ(lambda x: self._diff_flux(t=x[0],Tx=x[1],mx=mx,theta=x[2],phi=x[3],tau=tau)*self.sigma_xe(Tx=x[1],mx=mx),
-                          nitn=nitn,neval=neval).mean
+            integ = vegas.Integrator([[t_min,t_max],[Tx_min,Tx_max],[0,theta_max],[0,2*pi]])  #(t,Tx,theta,phi)
+            event = integ(diff_event,nitn=nitn,neval=neval).mean
             return event
         else:
-            return 0    
+            return 0.0
 
 
 def galactic_to_beta(l,b,GC_coord=[0,0]):
@@ -479,8 +475,9 @@ def galactic_to_beta(l,b,GC_coord=[0,0]):
     """
     lg,bg = GC_coord
     l,b = asarray((l,b))
-    beta = cos(b) * cos(bg) * cos(l - lg) + sin(b) * sin(bg)
-    return beta
+    cos_beta = cos(b) * cos(bg) * cos(l - lg) + sin(b) * sin(bg)
+    cos_beta = clip(cos_beta,-1,1)
+    return arccos(cos_beta)
 
 
 def equatorial_to_beta(ra,dec,GC_coord=None):

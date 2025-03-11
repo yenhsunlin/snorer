@@ -28,7 +28,7 @@ __all__ = ['Kinematics',
 
 from numpy import sin,cos,tan,arccos,sqrt,pi,abs,clip,atleast_1d,broadcast_arrays,zeros_like,nditer
 from scipy.optimize import root_scalar
-from constants import constant
+from .constants import constant
 
 
 ##########################################################################
@@ -50,12 +50,13 @@ Classes
 Functions
 ------
 1. get_vx
-2. get_maxPsi
-3. fx_lab
-4. get_thetaRange
-5. get_tof
-6. KallenLambda
+2. get_psiMax
+3. get_gx
+4. get_thetaMax
+5. _get_tof
+6. get_tvan
 7. get_tBound
+8. KallenLambda
 
 The docstrings should be sufficient for their self-explanations
 """
@@ -143,9 +144,9 @@ class Kinematics:
 
         # Evaluated quantities
         self._x = cos(self.psi) # cos(psi)
-        self._p2squared = T2*(T2 + 2*m2) # momentum squared of particle 2
-        self._p2 = sqrt(T2*(T2 + 2*m2)) # momentum of particle 2
-        self._sanity = (self.T2 < self._p2 * self.x) # does energy conservation hold?
+        self._p2squared = T2 * (T2 + 2 * m2) # momentum squared of particle 2
+        self._p2 = sqrt(T2 * (T2 + 2 * m2)) # momentum of particle 2
+        self._sanity = (self.T2 < (self._p2 * self.x)) # does energy conservation hold?
         self._T1 = self.get_T1() # required kinetic energy of particle 1
         self._dT1 = self.get_dT1() # Jacobian dT1/dT2
         self._dLips = self.get_dLips() # differential Lorentz invariant phase space
@@ -180,20 +181,6 @@ class Kinematics:
         E1 = numerator/denominator # total energy of particle 1
         T1 = E1 - m1 # kinetic energy of particle 1
         return T1
-        # -- Following are the old expressions in v1
-        # # Mathematica generated expression
-        # p2sq = T2*(T2+2*m2)
-        # # Mathematica generated expression
-        # numerator = sqrt(m1**2*p2sq**2*x**4 + p2sq*T2**2*x**2*(m2**2-m1**2)) + m2*T2**2
-        # denominator = p2sq*x**2 - T2**2
-        # return numerator/denominator - m1
-        
-        # following expressions may yield invalid value in sqrt
-        # numerator = (2*m1*T2+2*m2*T2-4*m1*m2*x**2-2*m1*T2*x**2+sqrt(-4*(-m1**2*T2-2*m1*m2*T2  \
-        #              -m2**2*T2)*(-T2+2*m2*x**2+T2*x**2)+(-2*m1*T2-2*m2*T2+4*m1*m2*x**2        \
-        #              +2*m1*T2*x**2)**2))
-        # denominator = (2*(-T2+2*m2*x**2+T2*x**2))
-        # return numerator/denominator
 
     def get_dT1(self) -> float:
         """
@@ -208,18 +195,11 @@ class Kinematics:
         eta = delta**2 * x * kappa
         dT1 = m2 * x**2 * (alpha + beta + gamma)/eta
         return dT1
-        # -- Following are the old expressions in v1
-        # # Mathematica generated expression
-        # numerator = (m2*x**2*(m1**2*T2*(-T2+(2*m2+T2)*x**2)+m2*(m2*T2*(T2+(2*m2+T2)*x**2)+    \
-        #              2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2*(-T2+(2*m2+T2)*x**2)))))) 
-        # denominator = ((T2-(2*m2+T2)*x**2)**2*sqrt(T2**2*(2*m2+T2)*x**2*(m2**2*T2+m1**2       \
-        #               *(-T2+(2*m2+T2)*x**2))))
-        # return numerator/denominator
 
     def get_dLips(self) -> float:
         T1,m1,m2 = self.T1,self.m1,self.m2
         s = m1**2 + m2**2 + 2*m2*(T1 + m1)
-        psq = (s - (m1+m2)**2)*(s-(m1-m2)**2)/4/s
+        psq = (s - (m1 + m2)**2)*(s - (m1 - m2)**2)/4/s
         return abs(self._du_dx()/64/pi/s/psq/2/pi)
 
     def _du_dx(self) -> float:
@@ -232,7 +212,7 @@ class Kinematics:
         num = (p2sq*T2**2*x*((m1-m2)*(m1+m2)*T2**2-(m1**2+m2**2)*p2sq*x**2-2*m2*sqrt((-m1**2  \
                +m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4)))
         den = ((T2-p2*x)**2*(T2+p2*x)**2*sqrt((-m1**2+m2**2)*p2sq*T2**2*x**2+m1**2*p2sq**2*x**4))
-        return -2*(num/den)*(E2 - p2*x) + 2*E1*p2
+        return -2*(num/den) * (E2 - p2 * x) + 2 * E1 * p2
 
 
 class Mandelstam(Kinematics):
@@ -465,7 +445,7 @@ def get_psiMax(Tx,mx) -> float:
     return arccos(maxCosValue)
 
 
-def get_thetaMax(t,Tx,mx,Rstar) -> float:
+def get_thetaMax(t,Tx,mx,Rs) -> float:
     """
     Find the maximum BDM field-of-view that centers SN at particular time t
     
@@ -489,7 +469,7 @@ def get_thetaMax(t,Tx,mx,Rstar) -> float:
     See Eq. (24) in "User Manual/Physics Overview" for detail.
     """
     vx = get_vx(Tx,mx)
-    tv = Rstar*constant.kpc2cm/constant.c
+    tv = Rs*constant.kpc2cm/constant.c
     # find a_min
     psiM = get_psiMax(Tx,mx)
     
@@ -521,7 +501,7 @@ def _get_tof(Tx,mx,Rs) -> tuple:
     out : tuple
         (t_peak,t_van), seconds
 
-    See Eqs. (22-23) in "User Manual/Physics Overview" for detail.
+    See Eqs. (22-23) in BDM Physics" for detail.
     """
     # Get maximum psi and BDM velocity
     psiM = get_psiMax(Tx,mx)

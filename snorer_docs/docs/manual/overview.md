@@ -350,6 +350,20 @@ $$
 \end{equation}
 $$
 
+Note that $\tau_s$ in front is actually redundant.
+Becasue we have set
+$$
+L_{\rm tot} = \frac{\mathcal{E}_{\rm tot}}{\tau_s}
+$$
+where $\mathcal{E}\approx 3\times 10^{53}$ erg is the total
+energy released in the form of neutrino, see [Tab. 1](#numerical_values). Hence
+
+$$
+\tau_s \times L_{\rm tot} = \mathcal{E}_{\rm tot}.
+$$
+
+In numerics, we can dismiss $\tau_s$ and simply replace $L_{\rm tot}$ by $\mathcal{E}_{\rm tot}$ in Eq. $\eqref{eq:snv_spectrum}$.
+
 ### Time-dependent feature
 
 Judging by Eq. $\eqref{eq:BDM_flux_earth}$, it is easy to realize that the BDM flux from an individual SN is not everlasting.

@@ -23,11 +23,11 @@ __all__ = ['sn_nu_spectrum',
 
 from numpy import pi,exp,arccos,cos,sin,broadcast_arrays,atleast_1d,clip,where
 import vegas
-from halo import nx,nxSpike
-from kinematics import Neutrino,get_gx,get_vx,get_thetaMax,_get_tof
-from geometry import Propagation
-from constants import constant
-from sysmsg import FlagError
+from .halo import nx,nxSpike
+from .kinematics import Neutrino,get_gx,get_vx,get_thetaMax,_get_tof
+from .geometry import Propagation
+from .constants import constant
+from .sysmsg import FlagError
 
 
 ##########################################################################
@@ -60,6 +60,8 @@ The docstrings should be sufficient for their self-explanations
 def sn_nu_spectrum(Ev,d,d_cut=3.24e-15,is_density=False):
     """
     Supernova neutrino spectrum at distance d to supernova.
+    Assumed all energy released into neutrino is equally distributed
+    in 10 seconds.
     
     Parameters
     ----------
@@ -193,7 +195,10 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
 
     See Eq. (13) in BDM Physics for detail.
     """
-    dfv = sn_nu_spectrum(Ev,d,d_cut,is_density=False)   # SNv flux
+    # Mutiplied by 10 is becasue we assume total energy released in 10 seconds
+    # thus L_tot = E_tot/10. Given we integrate all the contribution within neutrino
+    # shell, we should multply it back. See BDM Physics for discussion.
+    dfv = 10*sn_nu_spectrum(Ev,d,d_cut,is_density=False)   # SNv flux
     dsigma = dsigma_xv(Ev,mx,psi,sigxv0)   # DM-v diff. cross section, cm^2/sr
     
     # Incorporating spike feature?
@@ -209,7 +214,7 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,
 
 
 def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
-                      sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_cut=3.24e-15,r_cut=1e-8,
+                      sigxv0=1e-45,profile='MW',Re=8.5,d_cut=3.24e-15,r_cut=1e-8,
                       is_spike=False,sigv=None,tBH=1e10,alpha='3/2') -> float:
     """
     The differential supernova-neutrin-boosted dark matter flux at Earth at specific time t 
@@ -237,8 +242,6 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
         'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile is used.
     Re : float
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
-    tau : float
-        The duration of SN explosion, seconds. Default is 10 s.
     d_cut : scalar
         Terminating point for d. Below the value will return 0.
         Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
@@ -288,14 +291,14 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,
         # Jacobian, it should not diverge as we already require d > d_trunct
         J = d * vx / (vx * (l - Rs * cos(theta)) + d) * constant.c
         # Differential flux 
-        diff_flux = tau * J * jx * sin(theta)
+        diff_flux = J * jx * sin(theta)
     else:
         diff_flux = 0
     return diff_flux
 
 
 def flux(t,Tx,mx,Rs,beta,
-         sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_cut=3.24e-15,r_cut=1e-5,
+         sigxv0=1e-45,profile='MW',Re=8.5,d_cut=3.24e-15,r_cut=1e-5,
          is_spike=False,sigv=None,tBH=1e10,alpha='3/2',
          nitn=10,neval=30000) -> float:
     """
@@ -321,8 +324,6 @@ def flux(t,Tx,mx,Rs,beta,
         'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile is used.
     Re : float
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
-    tau : float
-        The duration of SN explosion, seconds. Default is 10 s.
     d_cut: scalar
         Terminating point for d. Below the value will return 0.
         Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
@@ -361,7 +362,7 @@ def flux(t,Tx,mx,Rs,beta,
         """
         theta, phi = x[0], x[1]
         df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta,
-                               sigxv0=sigxv0, profile=profile, Re=Re, tau=tau, d_trunct=d_cut, r_trunct=r_cut,
+                               sigxv0=sigxv0, profile=profile, Re=Re, d_cut=d_cut, r_cut=r_cut,
                                is_spike=is_spike, sigv=sigv, tBH=tBH, alpha=alpha)
         return df
 
@@ -380,7 +381,7 @@ def flux(t,Tx,mx,Rs,beta,
 
 def event(mx,Rs,beta,
           Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],
-          sigxv0=1e-45,profile='MW',Re=8.5,tau=10,d_cut=3.24e-15,r_cut=1e-5,
+          sigxv0=1e-45,profile='MW',Re=8.5,d_cut=3.24e-15,r_cut=1e-5,
           is_spike=False,sigv=None,tBH=1e10,alpha='3/2',
           nitn=10,neval=30000) -> float:
     """
@@ -420,8 +421,6 @@ def event(mx,Rs,beta,
         'MW' or 'LMC' stands for Milky Way or Large Magellanic Cloud profile is used.
     Re : float
         The distance from GC to Earth, kpc. Default is 8.5 kpc.
-    tau : float
-        The duration of SN explosion, seconds. Default is 10 s.
     d_cut: scalar
         Terminating point for d. Below the value will return 0.
         Default is 3.24e-15 kpc, approximating 100 km, the size of
@@ -455,7 +454,7 @@ def event(mx,Rs,beta,
         """
         t, Tx, theta, phi = x
         df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta,
-                               sigxv0=sigxv0, profile=profile, Re=Re, tau=tau, d_trunct=d_cut, r_trunct=r_cut,
+                               sigxv0=sigxv0, profile=profile, Re=Re, d_cut=d_cut, r_cut=r_cut,
                                is_spike=is_spike, sigv=sigv, tBH=tBH, alpha=alpha)
         return df
 

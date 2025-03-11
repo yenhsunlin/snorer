@@ -17,8 +17,8 @@ __all__ = ['Geometry',
 
 #---------- Import required utilities ----------#
 
-from numpy import sqrt,cos,sin,clip,finfo
-from constants import constant
+from numpy import sqrt,cos,sin,clip
+from .constants import constant
 
 
 
@@ -134,7 +134,7 @@ class Geometry:
         Get rho-squared, see Eq. (5) in document
         """
         Re, beta = self.Re, self.beta
-        rho2 = b**2 + Re**2 - 2 * b * cos(beta)
+        rho2 = b**2 + Re**2 - 2 * b * Re * cos(beta)
         rho2 = clip(rho2,0,None) # restricts rho-squared to be positive
         return rho2
     
@@ -157,7 +157,7 @@ class Geometry:
         cos_delta = self._cos_delta
         sin_delta = sqrt(1 - cos_delta**2)
         sin_phi = sin(self.phi)
-        a2 = rho2 + h**2 * sin_phi**2 - 2 * rho * h * sin_delta * sin_phi
+        a2 = rho2 + (h * sin_phi)**2 - 2 * rho * h * sin_delta * sin_phi
         return clip(a2,0,None) # restricts rho-squared to be positive
     
     def get_rprime2(self):

@@ -25,8 +25,8 @@ __all__ = ['HaloSpike',
 
 from numpy import pi,broadcast_arrays,atleast_1d,zeros_like,nditer
 from fractions import Fraction
-from constants import Constants,constant
-from sysmsg import FlagError
+from .constants import Constants,constant
+from .sysmsg import FlagError
 
 
 ##########################################################################
@@ -49,8 +49,8 @@ Functions
 2. M_sigma
 3. radiusInfluence
 4. radiusSchwarzschild
-5. dmNumberDensity
-6. dmNumberDensity_general
+5. nx
+6. nxSpike
 
 The docstrings should be sufficient for their self-explanations
 """
