@@ -229,16 +229,16 @@ window.MathJax = {
 <h3 id="class-snorerboosteddarkmatterrsrgbetaamp2_xvamp2_xeis_spikefalsekwargs"><em><code>class</code></em> <span class="mono">snorer.BoostedDarkMatter(<em>Rs</em>,<em>Rg</em>,<em>beta</em>,<em>amp2_xv</em>,<em>amp2_xe</em>,<br><em>is_spike=False</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#class-snorerboosteddarkmatterrsrgbetaamp2_xvamp2_xeis_spikefalsekwargs" title="Permanent link">&para;</a></h3>
 <p>Superclass: <code>Constants</code></p>
 <p>Class with medoths that evaluate supernova-neutrino-boosted dark matter (SN<span class="arithmatex">\(\nu\)</span> BDM) coming from SN in arbitrary distant
-galaxy with DM-<span class="arithmatex">\(\nu\)</span> and DM-<span class="arithmatex">\(e\)</span> interaction cross sections descrbied by a specific particle model. This class integrates functions like <code>snorer.flux</code>, <code>snorer.event</code>
+galaxy with DM-<span class="arithmatex">\(\nu\)</span> and DM-<span class="arithmatex">\(e\)</span> interaction cross sections descrbied by a specific particle model. This class integrates functions like <code>snorer.flux</code> and <code>snorer.event</code>
 as methods for user to calculate the SN<span class="arithmatex">\(\nu\)</span> BDM flux and event associated to any models.</p>
-<p>To construct the scattering amplitude from the specific model, we take the model discussed in Ref. [<a href="#bib_Lin2023PRD">1</a>] for instance. Both
-DM-<span class="arithmatex">\(\nu\)</span> and DM-<span class="arithmatex">\(e\)</span> have the same amplitude square show by Eq. (3) in Ref. [<a href="#bib_Lin2023PRD">1</a>] in terms of Mandelstam variables <span class="arithmatex">\(s\)</span>, <span class="arithmatex">\(t\)</span>, and <span class="arithmatex">\(u\)</span>,</p>
+<p>To construct the scattering amplitude <span class="arithmatex">\(\mathcal{M}\)</span> from the specific model, we take the model discussed in Ref. [<a href="#bib_Lin2023PRD">1</a>] for instance. Both
+DM-<span class="arithmatex">\(\nu\)</span> and DM-<span class="arithmatex">\(e\)</span> have the same amplitude square <span class="arithmatex">\(|\mathcal{M}|^2\)</span> shown by Eq. (3) of Ref. [<a href="#bib_Lin2023PRD">1</a>] in terms of Mandelstam variables <span class="arithmatex">\(s\)</span>, <span class="arithmatex">\(t\)</span>, and <span class="arithmatex">\(u\)</span>,</p>
 <div class="arithmatex">\[
 |\mathcal{M}|^2 = 2 \left(\frac{\mathcal{Q}}{t} - m_V^2\right)^2 (s^2 + u^2 + 4t (m_1^2 + m_2^2) - 2 (m_1^2 + m_2^2)^2)
 \]</div>
 <p>where <span class="arithmatex">\(\mathcal{Q}\)</span> is the multiplication of coupling constants, <span class="arithmatex">\(m_1\)</span> and <span class="arithmatex">\(m_2\)</span> are the masses of
 incident and target particles respectively and <span class="arithmatex">\(m_V\)</span> the mediator mass.</p>
-<p>Thus we can construct DM-v amplitude square by letting, <span class="arithmatex">\(m_1 = 0\)</span> and assume <span class="arithmatex">\(m_V = m_\chi/3\)</span>, <span class="arithmatex">\(g_V = 10^{-6}\)</span> and <span class="arithmatex">\(g_\chi = 10^{-2}\)</span>,</p>
+<p>Thus we can construct DM-<span class="arithmatex">\(\nu\)</span> amplitude square by letting, <span class="arithmatex">\(m_1 = 0\)</span> and assume <span class="arithmatex">\(m_V = m_\chi/3\)</span>, <span class="arithmatex">\(g_V = 10^{-6}\)</span> and <span class="arithmatex">\(g_\chi = 10^{-2}\)</span>,</p>
 <pre><code class="language-python">def amp2_xv(s,t,u,mx) -&gt; float:
     mV = mx/3
     gV,gx = 1e-06,1e-02

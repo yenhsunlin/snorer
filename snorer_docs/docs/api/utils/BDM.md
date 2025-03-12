@@ -20,11 +20,11 @@ window.MathJax = {
 Superclass: `Constants`
     
 Class with medoths that evaluate supernova-neutrino-boosted dark matter (SN$\nu$ BDM) coming from SN in arbitrary distant
-galaxy with DM-$\nu$ and DM-$e$ interaction cross sections descrbied by a specific particle model. This class integrates functions like `snorer.flux`, `snorer.event`
+galaxy with DM-$\nu$ and DM-$e$ interaction cross sections descrbied by a specific particle model. This class integrates functions like `snorer.flux` and `snorer.event`
 as methods for user to calculate the SN$\nu$ BDM flux and event associated to any models.
 
-To construct the scattering amplitude from the specific model, we take the model discussed in Ref. [[1](#bib_Lin2023PRD)] for instance. Both
-DM-$\nu$ and DM-$e$ have the same amplitude square show by Eq. (3) in Ref. [[1](#bib_Lin2023PRD)] in terms of Mandelstam variables $s$, $t$, and $u$,
+To construct the scattering amplitude $\mathcal{M}$ from the specific model, we take the model discussed in Ref. [[1](#bib_Lin2023PRD)] for instance. Both
+DM-$\nu$ and DM-$e$ have the same amplitude square $|\mathcal{M}|^2$ shown by Eq. (3) of Ref. [[1](#bib_Lin2023PRD)] in terms of Mandelstam variables $s$, $t$, and $u$,
 
 $$
 |\mathcal{M}|^2 = 2 \left(\frac{\mathcal{Q}}{t} - m_V^2\right)^2 (s^2 + u^2 + 4t (m_1^2 + m_2^2) - 2 (m_1^2 + m_2^2)^2)
@@ -33,7 +33,7 @@ $$
 where $\mathcal{Q}$ is the multiplication of coupling constants, $m_1$ and $m_2$ are the masses of
 incident and target particles respectively and $m_V$ the mediator mass.
 
-Thus we can construct DM-v amplitude square by letting, $m_1 = 0$ and assume $m_V = m_\chi/3$, $g_V = 10^{-6}$ and $g_\chi = 10^{-2}$,
+Thus we can construct DM-$\nu$ amplitude square by letting, $m_1 = 0$ and assume $m_V = m_\chi/3$, $g_V = 10^{-6}$ and $g_\chi = 10^{-2}$,
 
 ```python
 def amp2_xv(s,t,u,mx) -> float:
