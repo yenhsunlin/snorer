@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.differential_flux
 
 
-###  <span class="mono">snorer.differential_flux(*t*,*Tx*,*mx*,*theta*,*phi*,*Rs*,*beta*,*sigxv0=1e-45*,*profile='MW'*,*d_cut=3.24e-15*,*r_cut=1e-5*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*)</span>
+###  <span class="mono">snorer.differential_flux(*t*,*Tx*,*mx*,*theta*,*phi*,*Rs*,*beta*,*Re=8.5*,*sigxv0=1e-45*,*is_spike=False*,*\*\*kwargs*)</span>
 
 The differential supernova-neutrin-boosted dark matter flux at Earth at specific time $t$ and angular direction $(\theta,\varphi)$
 
@@ -42,21 +42,15 @@ This is the integrand of Eq. (18) in [BDM Physics](../../manual/overview.md#from
 
 > `beta` : *floate* <br>&nbsp;&nbsp;&nbsp;&nbsp;The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad.
 
+> `Re` : *floate* <br>&nbsp;&nbsp;&nbsp;&nbsp;The distance from GC to Earth, kpc. Default is 8.5 kpc.
+
 > `sigxv0` : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-$\nu$ cross section, cm<sup>2</sup>. It will be multiplied by `snorer.get_gx` to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.
 
-> `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;**'MW'** or **'LMC'** stands for Milky Way or Large Magellanic Cloud profile in use.
-
-> `d_cut` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;>Terminating point for $d$. Below the value will return 0. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km, the size of neutrino sphere.
-
-> `r_cut` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating $n_\chi$ when $r^\prime <$ `r_cut`, kpc. If one needs to incorporate dark matter spike in the central region, `r_cut` cannot be too large. Otherwise, the spike effect will be chopped off before it has any noticeble consequence. Default is $10^{-8}$ kpc.
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
 
-> `sigv` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter annihilation cross section, in the unit of $10^{-26}$ cm<sup>3</sup> s<sup>−1</sup>. `None` indicates no annihilation. It is disregarded if `is_spike = False`.
+> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.min_distance`](../params/params.md#__attr__-snorerparamsmin_distance){:target="_blank"}, [`snorer.params.halo`](../params/params.md#__attr__-snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#__attr__-snorerparamsspike){:target="_blank"}.
 
-> `tBH` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Age of supermassive black hole in the galactic center, years. It is disregarded if `is_spike = False`.
-
-> `alpha` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike, `'3/2'` or `'7/3'`. It is disregarded if `is_spike = False`.
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**

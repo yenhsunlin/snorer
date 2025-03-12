@@ -371,7 +371,7 @@ def rhox(r,rhos,rs,n) -> float:
     Parameters
     ----------
     r : array_like
-        Distance to GC, kpc
+        Distance from Earth to GC, kpc
     rhos : array_like
         Characteristic density, MeV/cm^3
     rs : array_like 

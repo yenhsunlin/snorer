@@ -168,7 +168,7 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" >Classes</a>
     <ul>
-                <li class="toctree-l3"><a class="" href="../../utils/BDM.md">BoostedDarkMatter</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/BDM/">BoostedDarkMatter</a>
                 </li>
     </ul>
                 </li>
@@ -240,19 +240,19 @@ the BDM flux and event at Earth associated to that particular SN.</p>
 <strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
 <p><code>t</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The BDM at specific time <span class="arithmatex">\(t\)</span>, seconds. Time-zero is set to be the arrival of SN<span class="arithmatex">\(\nu\)</span> at Earth</p>
-<p><code>vx</code> : <em>float</em>  <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM dimesionless velocity <span class="arithmatex">\(v_\chi/c\)</span></p>
-<p><code>theta</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The zenith angle <span class="arithmatex">\(\theta\)</span> at Earth, centers SN, rad</p>
-<p><code>phi</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Azimuthal angle <span class="arithmatex">\(\varphi\)</span> at Earth, centers SN, rad</p>
-<p><code>Rs</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to SN <span class="arithmatex">\(R_s\)</span>, kpc</p>
-<p><code>Re</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to GC <span class="arithmatex">\(R_e\)</span>, kpc</p>
-<p><code>beta</code>: <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Off-center angle <span class="arithmatex">\(\beta\)</span>, rad</p>
+<p><code>vx</code> : <em>array_like</em>  <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM dimesionless velocity <span class="arithmatex">\(v_\chi/c\)</span></p>
+<p><code>theta</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The zenith angle <span class="arithmatex">\(\theta\)</span> at Earth, centers SN, rad</p>
+<p><code>phi</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Azimuthal angle <span class="arithmatex">\(\varphi\)</span> at Earth, centers SN, rad</p>
+<p><code>Rs</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to SN, kpc</p>
+<p><code>Re</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to GC, kpc</p>
+<p><code>beta</code>: <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Off-center angle <span class="arithmatex">\(\beta\)</span>, rad</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
 <blockquote>
-<p><code>l</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The line-of-sight distance <span class="arithmatex">\(\ell\)</span>, kpc</p>
-<p><code>d</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from SN to boost point <span class="arithmatex">\(d\)</span>, kpc</p>
-<p><code>rprime</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from GC to boost point <span class="arithmatex">\(r^\prime\)</span>, kpc</p>
-<p><code>cos_psi</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="arithmatex">\(\cos\psi\)</span> at boost point where <span class="arithmatex">\(\psi\)</span> is the direction for BDM at B pointing Earth</p>
+<p><code>l</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The line-of-sight distance <span class="arithmatex">\(\ell\)</span>, kpc</p>
+<p><code>d</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from SN to boost point <span class="arithmatex">\(d\)</span>, kpc</p>
+<p><code>rprime</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from GC to boost point <span class="arithmatex">\(r^\prime\)</span>, kpc</p>
+<p><code>cos_psi</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="arithmatex">\(\cos\psi\)</span> at boost point where <span class="arithmatex">\(\psi\)</span> is the direction for BDM at B pointing Earth</p>
 </blockquote>
 <p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div></strong></p>
 <p>Import <code>snorer</code> and do</p>

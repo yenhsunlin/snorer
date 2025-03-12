@@ -172,13 +172,16 @@ def emissivity_jx(Ev,dEv,mx,d,r,psi,sigxv0=1e-45,d_cut=3.24e-15,is_spike=False,*
     sigxv0 : float
         Total DM-nu cross section, cm^2. It will be multiplied by snorer.get_gx
         to account for the angular distribution and makes it cm^2/sr.
-    d_cut: scalar
+    d_cut : scalar
         Terminating point for d. Below the value will return 0.
         Default is 3.24e-15 kpc, approximating 100 km, the size of neutrino sphere.
+    is_spike : bool
+        Whether spike feature is included in nx. Default is False.
     **kwargs
         Keyword arguments for characteristic parameters of NFW profile and
         spike halo. If 'is_spike = False', the parameters for configuring
         spiky halo will be deactivated. Default values assume Milky Way.
+        See default arguments in 'params.halo' and 'params.spike'.
     
     Returns
     -------
@@ -225,9 +228,11 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,Re=8.5,sigxv0=1e-45,is_spike=Fal
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
     **kwargs
-        Keyword arguments for characteristic parameters of NFW profile, spike halo, and cut
-        distances. If 'is_spike = False', the parameters for configuring spiky halo will be
-        deactivated. Default values assume Milky Way.
+        Keyword arguments for characteristic parameters of NFW profile and
+        spike halo. If 'is_spike = False', the parameters for configuring
+        spiky halo will be deactivated. Default values assume Milky Way.
+        See default arguments in 'params.min_distance', 'params.halo' and
+        'params.spike'.
 
     Returns
     -------
@@ -297,9 +302,11 @@ def flux(t,Tx,mx,Rs,beta,Re=8.5,sigxv0=1e-45,is_spike=False,**kwargs) -> float:
     is_spike : bool
         Whether spike feature is included in nx. Default is False.
     **kwargs
-        Keyword arguments for characteristic parameters of NFW profile, spike halo, min distances
-        and vegas. If 'is_spike = False', the parameters for configuring spiky halo will be
-        deactivated. Default values assume Milky Way.
+        Keyword arguments for characteristic parameters of NFW profile and
+        spike halo. If 'is_spike = False', the parameters for configuring
+        spiky halo will be deactivated. Default values assume Milky Way.
+        See default arguments in 'params.min_distance', 'params.halo', 
+        'params.spike' and 'params.vegas'.
     
     Returns
     -------

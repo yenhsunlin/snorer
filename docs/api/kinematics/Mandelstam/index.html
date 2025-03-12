@@ -168,7 +168,7 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" >Classes</a>
     <ul>
-                <li class="toctree-l3"><a class="" href="../../utils/BDM.md">BoostedDarkMatter</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/BDM/">BoostedDarkMatter</a>
                 </li>
     </ul>
                 </li>
@@ -229,24 +229,24 @@ window.MathJax = {
 <h3 id="class-snorermandelstamt2m1m2psi"><em><code>class</code></em> <span class="mono">snorer.Mandelstam(<em>T2</em>,<em>m1</em>,<em>m2</em>,<em>psi</em>)</span><a class="headerlink" href="#class-snorermandelstamt2m1m2psi" title="Permanent link">&para;</a></h3>
 <p>Superclass: <code>snorer.Kinematics</code></p>
 <p>This class constructs the associated Mandelstam variables <span class="arithmatex">\(s\)</span>, <span class="arithmatex">\(t\)</span> and <span class="arithmatex">\(u\)</span> associated with the
-scattering process depicted in <a href="../22scat/#22scat" target="_blank">Fig. 1</a> in <a href="../22scat/" target="_blank">2-2 elastic scattering <i class="fa-regular fa-bookmark"></i></a>.</p>
+scattering process depicted in <a href="../22scat/#22scat" target="_blank">Fig. 1</a> in <a href="../22scat/" target="_blank">2-2 elastic scattering</a>.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
-<p><code>T2</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Kinetic energy <span class="arithmatex">\(T_2\)</span> received by the particle 2, MeV</p>
-<p><code>m1</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 1 (incident) <span class="arithmatex">\(m_1\)</span>, MeV</p>
-<p><code>m2</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 2 (target) <span class="arithmatex">\(m_2\)</span>, MeV</p>
-<p><code>psi</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Lab frame scattering angle <span class="arithmatex">\(\psi\)</span>, rad</p>
+<p><code>T2</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Kinetic energy <span class="arithmatex">\(T_2\)</span> received by the particle 2, MeV</p>
+<p><code>m1</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 1 (incident) <span class="arithmatex">\(m_1\)</span>, MeV</p>
+<p><code>m2</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 2 (target) <span class="arithmatex">\(m_2\)</span>, MeV</p>
+<p><code>psi</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Lab frame scattering angle <span class="arithmatex">\(\psi\)</span>, rad</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
 <blockquote>
-<p><code>s</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The <span class="arithmatex">\(s\)</span>-channel in this scattering process, MeV<sup>2</sup></p>
-<p><code>t</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The <span class="arithmatex">\(t\)</span>-channel in this scattering process, MeV<sup>2</sup></p>
-<p><code>u</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The <span class="arithmatex">\(u\)</span>-channel in this scattering process, MeV<sup>2</sup></p>
-<p><code>T1</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The required kinetic energy <span class="arithmatex">\(T_1\)</span> of particle 1, MeV</p>
-<p><code>dT1</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The Jacobian <span class="arithmatex">\(dT_1/dT_2\)</span>, dimensionless</p>
-<p><code>x</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="arithmatex">\(x:=\cos\psi \in [1,-1]\)</span></p>
-<p><code>sanity</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? <code>True</code> for plausible and <code>False</code> for physically impossible.</p>
-<p><code>dLips</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space</p>
+<p><code>s</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The <span class="arithmatex">\(s\)</span>-channel in this scattering process, MeV<sup>2</sup></p>
+<p><code>t</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The <span class="arithmatex">\(t\)</span>-channel in this scattering process, MeV<sup>2</sup></p>
+<p><code>u</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The <span class="arithmatex">\(u\)</span>-channel in this scattering process, MeV<sup>2</sup></p>
+<p><code>T1</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The required kinetic energy <span class="arithmatex">\(T_1\)</span> of particle 1, MeV</p>
+<p><code>dT1</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The Jacobian <span class="arithmatex">\(dT_1/dT_2\)</span>, dimensionless</p>
+<p><code>x</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="arithmatex">\(x:=\cos\psi \in [1,-1]\)</span></p>
+<p><code>sanity</code> : <em>bool/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? <code>True</code> for plausible and <code>False</code> for physically impossible.</p>
+<p><code>dLips</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space</p>
 </blockquote>
 <p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Notes</div></strong></p>
 <p>Given <span class="arithmatex">\(T_1\)</span> is obtained from its superclass <code>snorer.Kinematics</code>, we can evaluate all Mandelstam variables easily. Thus,</p>

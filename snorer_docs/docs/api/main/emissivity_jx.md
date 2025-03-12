@@ -15,7 +15,7 @@ window.MathJax = {
 # snorer.emissivity_jx
 
 
-###   <span class="mono">snorer.emissivity_jx(*Ev*,*dEv*,*mx*,*d*,*r*,*psi*,*sigxv0=1e-45*,*profile='MW'*,*d_cut=3.24e-15*,*is_spike=False*,*sigv=None*,*tBH=1e10*,*alpha='3/2'*)</span>
+###   <span class="mono">snorer.emissivity_jx(*Ev*,*dEv*,*mx*,*d*,*r*,*psi*,*sigxv0=1e-45*,*d_cut=3.24e-15*,*is_spike=False*,*\*\*kwargs*)</span>
 
 Emissivity $j_\chi$ of supernova-neutrino-boost dark matter at boost point.
 See Eq. (13) in [BDM Physics](../../manual/overview.md#emissivity-on-the-shell){:target="_blank"}.
@@ -36,17 +36,12 @@ See Eq. (13) in [BDM Physics](../../manual/overview.md#emissivity-on-the-shell){
 
 > `sigxv0` : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-$\nu$ cross section, cm<sup>2</sup>. It will be multiplied by `snorer.get_gx` to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.
 
-> `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;`'MW'` or `'LMC'` stands for Milky Way or Large Magellanic Cloud profile in use.
-
 > `d_cut` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for $d$. Below the value will return 0. Default is $3.24\times 10^{-15}$ kpc, approximating 100 km, the size of neutrino sphere.
 
-> `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
+> `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in $n_\chi$. Default is False.
 
-> `sigv` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter annihilation cross section, in the unit of $10^{-26}$ cm<sup>3</sup> s<sup>−1</sup>. `None` indicates no annihilation. It is disregarded if `is_spike = False`.
 
-> `tBH` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Age of supermassive black hole in the galactic center, years. It is disregarded if `is_spike = False`.
-
-> `alpha` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike, `'3/2'` or `'7/3'`. It is disregarded if `is_spike = False`.
+> ***`**kwargs`***  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.halo`](../params/params.md#__attr__-snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#__attr__-snorerparamsspike){:target="_blank"}.
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**

@@ -20,40 +20,40 @@ window.MathJax = {
 Superclass: `snorer.Kinematics`
 
 This class constructs the associated Mandelstam variables $s$, $t$ and $u$ associated with the
-scattering process depicted in [Fig. 1](22scat.md/#22scat){:target="_blank"} in [2-2 elastic scattering <i class="fa-regular fa-bookmark"></i>](22scat.md){:target="_blank"}.
+scattering process depicted in [Fig. 1](22scat.md/#22scat){:target="_blank"} in [2-2 elastic scattering](22scat.md){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
-> `T2` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Kinetic energy $T_2$ received by the particle 2, MeV
+> `T2` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Kinetic energy $T_2$ received by the particle 2, MeV
 
 
-> `m1` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 1 (incident) $m_1$, MeV
+> `m1` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 1 (incident) $m_1$, MeV
 
 
-> `m2` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 2 (target) $m_2$, MeV
+> `m2` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of particle 2 (target) $m_2$, MeV
 
 
-> `psi` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Lab frame scattering angle $\psi$, rad
+> `psi` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Lab frame scattering angle $\psi$, rad
 
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div>**
 
-> `s` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The $s$-channel in this scattering process, MeV<sup>2</sup>
+> `s` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;The $s$-channel in this scattering process, MeV<sup>2</sup>
 
-> `t` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The $t$-channel in this scattering process, MeV<sup>2</sup>
+> `t` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;The $t$-channel in this scattering process, MeV<sup>2</sup>
 
-> `u` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The $u$-channel in this scattering process, MeV<sup>2</sup>
+> `u` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;The $u$-channel in this scattering process, MeV<sup>2</sup>
 
-> `T1` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The required kinetic energy $T_1$ of particle 1, MeV
+> `T1` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;The required kinetic energy $T_1$ of particle 1, MeV
 
-> `dT1` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The Jacobian $dT_1/dT_2$, dimensionless
+> `dT1` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;The Jacobian $dT_1/dT_2$, dimensionless
 
-> `x` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;$x:=\cos\psi \in [1,-1]$
+> `x` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;$x:=\cos\psi \in [1,-1]$
 
-> `sanity` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? `True` for plausible and `False` for physically impossible.
+> `sanity` : *bool/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;Are the parameters physically plausible? `True` for plausible and `False` for physically impossible.
 
-> `dLips` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space
+> `dLips` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;Value for differential Lorentz invariant phase space
 
 
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Notes</div>**

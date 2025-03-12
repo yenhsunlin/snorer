@@ -35,31 +35,31 @@ See [Positioning](Positioning.md){:target="_blank"} for more detail.
 
 > `t` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The BDM at specific time $t$, seconds. Time-zero is set to be the arrival of SN$\nu$ at Earth
 
-> `vx` : *float*  <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM dimesionless velocity $v_\chi/c$
+> `vx` : *array_like*  <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM dimesionless velocity $v_\chi/c$
 
-> `theta` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The zenith angle $\theta$ at Earth, centers SN, rad
-
-
-> `phi` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Azimuthal angle $\varphi$ at Earth, centers SN, rad
+> `theta` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;The zenith angle $\theta$ at Earth, centers SN, rad
 
 
-> `Rs` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to SN $R_s$, kpc
+> `phi` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Azimuthal angle $\varphi$ at Earth, centers SN, rad
 
-> `Re` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to GC $R_e$, kpc
 
-> `beta`: *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Off-center angle $\beta$, rad
+> `Rs` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to SN, kpc
+
+> `Re` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to GC, kpc
+
+> `beta`: *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Off-center angle $\beta$, rad
 
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div>**
 
-> `l` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The line-of-sight distance $\ell$, kpc
+> `l` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;The line-of-sight distance $\ell$, kpc
 
-> `d` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from SN to boost point $d$, kpc
+> `d` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from SN to boost point $d$, kpc
 
-> `rprime` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from GC to boost point $r^\prime$, kpc
+> `rprime` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from GC to boost point $r^\prime$, kpc
 
-> `cos_psi` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;$\cos\psi$ at boost point where $\psi$ is the direction for BDM at B pointing Earth
+> `cos_psi` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;$\cos\psi$ at boost point where $\psi$ is the direction for BDM at B pointing Earth
 
 
 

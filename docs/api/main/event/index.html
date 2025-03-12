@@ -168,7 +168,7 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" >Classes</a>
     <ul>
-                <li class="toctree-l3"><a class="" href="../../utils/BDM.md">BoostedDarkMatter</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/BDM/">BoostedDarkMatter</a>
                 </li>
     </ul>
                 </li>
@@ -226,7 +226,7 @@ window.MathJax = {
 </style>
 
 <h1 id="snorerevent">snorer.event<a class="headerlink" href="#snorerevent" title="Permanent link">&para;</a></h1>
-<h3 id="snorereventmxrsbetatx_range530t_range1035snorerconstantyear2secondssigxv01e-45profilemwd_cut324e-15r_cut1e-5is_spikefalsesigvnonetbh1e10alpha32nitn10neval30000"><span class="mono">snorer.event(<em>mx</em>,<em>Rs</em>,<em>beta</em>,<em>Tx_range=[5,30]</em>,<br><em>t_range=[10,35*snorer.constant.year2Seconds]</em>,<em>sigxv0=1e-45</em>,<em>profile='MW'</em>,<em>d_cut=3.24e-15</em>,<em>r_cut=1e-5</em>,<em>is_spike=False</em>,<em>sigv=None</em>,<em>tBH=1e10</em>,<em>alpha='3/2'</em>,<em>nitn=10</em>,<em>neval=30000</em>)</span><a class="headerlink" href="#snorereventmxrsbetatx_range530t_range1035snorerconstantyear2secondssigxv01e-45profilemwd_cut324e-15r_cut1e-5is_spikefalsesigvnonetbh1e10alpha32nitn10neval30000" title="Permanent link">&para;</a></h3>
+<h3 id="snorereventmxrsbetare85tx_range530t_range1011045e09sigxv01e-45is_spikefalsekwargs"><span class="mono">snorer.event(<em>mx</em>,<em>Rs</em>,<em>beta</em>,<em>Re=8.5</em>,<em>Tx_range=[5,30]</em>,<br><em>t_range=[10,1.1045e+09]</em>,<em>sigxv0=1e-45</em>,<em>is_spike=False</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#snorereventmxrsbetare85tx_range530t_range1011045e09sigxv01e-45is_spikefalsekwargs" title="Permanent link">&para;</a></h3>
 <p>The supernova-neutrino-boosted dark matter evnet per electron with DM-<span class="arithmatex">\(e\)</span> cross section <span class="arithmatex">\(\sigma_{\chi e}\)</span>
 normalized to 1 cm<sup>2</sup> at Earth. The field-of-view <span class="arithmatex">\(d\Omega\)</span> is integrated over entirely
 and the kinetic energy <span class="arithmatex">\(T_\chi\)</span>, exposure time <span class="arithmatex">\(t\)</span> can be integrated within user-defined ranges. Precisely speaking, the event <span class="arithmatex">\(N_\chi\)</span> is, using Eqs. (18) in <a href="../../../manual/overview/#snnu-bdm-flux" target="_blank">BDM Physics</a>,</p>
@@ -244,18 +244,12 @@ N_\chi^{\rm correct} = N_\chi \times \frac{N_e}{1}\times \frac{\sigma_{\chi e}^{
 <p><code>mx</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV.</p>
 <p><code>Rs</code> : <em>floate</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from supernova to Earth, kpc.</p>
 <p><code>beta</code> : <em>floate</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The off-center angle, characterizes how SN deviates from GC-Earth axis angularly, rad.</p>
+<p><code>Re</code> : <em>floate</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The distance from GC to Earth, kpc. Default is 8.5 kpc.</p>
 <p><code>Tx_range</code> : <em>list</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Integration range for BDM kinetic energy <code>[Tx_min,Tx_max]</code>, MeV</p>
 <p><code>t_range</code> : <em>list</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Integration range for exposure time <code>[t_min,t_max]</code>, seconds</p>
 <p><code>sigxv0</code> : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-<span class="arithmatex">\(\nu\)</span> cross section, cm<sup>2</sup>. It will be multiplied by <span class="mono">snorer.get_gx</span> to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.</p>
-<p><code>profile</code> : <em>str</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<code>'MW'</code> or <code>'LMC'</code> stands for Milky Way or Large Magellanic Cloud profile in use.</p>
-<p><code>d_cut</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for <span class="arithmatex">\(d\)</span>. Below the value will return 0. Default is <span class="arithmatex">\(3.24\times 10^{-15}\)</span> kpc, approximating 100 km, the size of neutrino sphere.</p>
-<p><code>r_cut</code> : <em>scalar</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating <span class="arithmatex">\(n_\chi\)</span> when <span class="arithmatex">\(r^\prime &lt;\)</span> <code>r_cut</code>, kpc. If one needs to incorporate dark matter spike in the central region, <code>r_cut</code> cannot be too large. Otherwise, the spike effect will be chopped off before it has any noticeble consequence. Default is <span class="arithmatex">\(10^{-8}\)</span> kpc.</p>
 <p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is <code>False</code>.</p>
-<p><code>sigv</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter annihilation cross section, in the unit of <span class="arithmatex">\(10^{-26}\)</span> cm<sup>3</sup> s<sup>−1</sup>. <code>None</code> indicates no annihilation. It is disregarded if <code>is_spike = False</code>.</p>
-<p><code>tBH</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Age of supermassive black hole in the galactic center, years. It is disregarded if <code>is_spike = False</code>.</p>
-<p><code>alpha</code> : <em>str</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike, <code>'3/2'</code> or <code>'7/3'</code>. It is disregarded if <code>is_spike = False</code>.</p>
-<p><code>nitn</code> : <em>int</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of chains in <a href="https://github.com/gplepage/vegas" target="_blank"><strong>vegas</strong></a>  to evaluate the integral. Default is 10.</p>
-<p><code>neval</code> : <em>int</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of evaluation number in each chain in <a href="https://github.com/gplepage/vegas" target="_blank"><strong>vegas</strong></a> . Default is 30000.</p>
+<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#__attr__-snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a>, <a href="../../params/params/#__attr__-snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a>, <a href="../../params/params/#__attr__-snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a> and <a href="../../params/params/#__attr__-snorerparamsvegas" target="_blank"><code>snorer.params.vegas</code></a>.</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div></strong></p>
 <blockquote>

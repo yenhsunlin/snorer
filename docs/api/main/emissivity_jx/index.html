@@ -168,7 +168,7 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" >Classes</a>
     <ul>
-                <li class="toctree-l3"><a class="" href="../../utils/BDM.md">BoostedDarkMatter</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/BDM/">BoostedDarkMatter</a>
                 </li>
     </ul>
                 </li>
@@ -225,7 +225,7 @@ window.MathJax = {
 </style>
 
 <h1 id="snoreremissivity_jx">snorer.emissivity_jx<a class="headerlink" href="#snoreremissivity_jx" title="Permanent link">&para;</a></h1>
-<h3 id="snoreremissivity_jxevdevmxdrpsisigxv01e-45profilemwd_cut324e-15is_spikefalsesigvnonetbh1e10alpha32"><span class="mono">snorer.emissivity_jx(<em>Ev</em>,<em>dEv</em>,<em>mx</em>,<em>d</em>,<em>r</em>,<em>psi</em>,<em>sigxv0=1e-45</em>,<em>profile='MW'</em>,<em>d_cut=3.24e-15</em>,<em>is_spike=False</em>,<em>sigv=None</em>,<em>tBH=1e10</em>,<em>alpha='3/2'</em>)</span><a class="headerlink" href="#snoreremissivity_jxevdevmxdrpsisigxv01e-45profilemwd_cut324e-15is_spikefalsesigvnonetbh1e10alpha32" title="Permanent link">&para;</a></h3>
+<h3 id="snoreremissivity_jxevdevmxdrpsisigxv01e-45d_cut324e-15is_spikefalsekwargs"><span class="mono">snorer.emissivity_jx(<em>Ev</em>,<em>dEv</em>,<em>mx</em>,<em>d</em>,<em>r</em>,<em>psi</em>,<em>sigxv0=1e-45</em>,<em>d_cut=3.24e-15</em>,<em>is_spike=False</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#snoreremissivity_jxevdevmxdrpsisigxv01e-45d_cut324e-15is_spikefalsekwargs" title="Permanent link">&para;</a></h3>
 <p>Emissivity <span class="arithmatex">\(j_\chi\)</span> of supernova-neutrino-boost dark matter at boost point.
 See Eq. (13) in <a href="../../../manual/overview/#emissivity-on-the-shell" target="_blank">BDM Physics</a>.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
@@ -237,12 +237,9 @@ See Eq. (13) in <a href="../../../manual/overview/#emissivity-on-the-shell" targ
 <p><code>r</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from galactic center to boost point, kpc.</p>
 <p><code>psi</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The scattering angle in lab frame at boost point, rad. </p>
 <p><code>sigxv0</code> : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-<span class="arithmatex">\(\nu\)</span> cross section, cm<sup>2</sup>. It will be multiplied by <code>snorer.get_gx</code> to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.</p>
-<p><code>profile</code> : <em>str</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<code>'MW'</code> or <code>'LMC'</code> stands for Milky Way or Large Magellanic Cloud profile in use.</p>
 <p><code>d_cut</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for <span class="arithmatex">\(d\)</span>. Below the value will return 0. Default is <span class="arithmatex">\(3.24\times 10^{-15}\)</span> kpc, approximating 100 km, the size of neutrino sphere.</p>
-<p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is <code>False</code>.</p>
-<p><code>sigv</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter annihilation cross section, in the unit of <span class="arithmatex">\(10^{-26}\)</span> cm<sup>3</sup> s<sup>−1</sup>. <code>None</code> indicates no annihilation. It is disregarded if <code>is_spike = False</code>.</p>
-<p><code>tBH</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Age of supermassive black hole in the galactic center, years. It is disregarded if <code>is_spike = False</code>.</p>
-<p><code>alpha</code> : <em>str</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike, <code>'3/2'</code> or <code>'7/3'</code>. It is disregarded if <code>is_spike = False</code>.</p>
+<p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in <span class="arithmatex">\(n_\chi\)</span>. Default is False.</p>
+<p><strong><em><code>**kwargs</code></em></strong>  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#__attr__-snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#__attr__-snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div></strong></p>
 <blockquote>

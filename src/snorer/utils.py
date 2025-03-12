@@ -58,9 +58,11 @@ class BoostedDarkMatter(Constants):
     """
     Superclass: Constants
     
-    Class with medoths that evaluate SNv BDM coming from supernova in arbitrary distant
-    galaxy with DM-v and DM-e interaction cross sections descrbied by a specific particle
-    model.
+    Class with medoths that evaluate supernova-nuetrino boosted dark matter coming from
+    supernova in arbitrary distant galaxy with DM-v and DM-e interaction cross sections
+    descrbied by a specific particle model. This class integrates functions like `snorer.flux`,
+    `snorer.event` as methods for user to calculate the SN$\nu$ BDM flux and event associated
+    to any models.
 
     /*-----------------------------------------------------------------------------*/
 
@@ -74,24 +76,22 @@ class BoostedDarkMatter(Constants):
         Distance from Earth to SN, kpc.
     Rg : float
         Distance from Earth to the center of a distant galaxy, kpc.
+    beta :
+        Off-ceter angle, rad. 
     amp2_xv : func
-        Amplitude squared for DM-v interaction, 4 positioning arguments.
-        amp2_xv = some_func(s,t,u,mx): the first 3 are Mandelstam variables and the last
+        Amplitude squared for DM-v interaction with 4 positioning arguments.
+        'amp2_xv = func(s,t,u,mx)': the first 3 are Mandelstam variables and the last
         one is the DM mass.
     amp2_xe : func
         Identical to amp2_xv, but is for DM-e interaction.
     is_spike : bool
         Is spike feature included? Default is False.
     **kwargs
-        Keyword arguments for characteristic parameters of NFW profile and spike halo. If
-        'is_spike = False', the parameters for configuring spiky halo will not be used.
-        Default values assume Milky Way.
-
-    ********************
-    *                  *
-    *    Attributes    *
-    *                  *
-    ********************
+        Keyword arguments for characteristic parameters of NFW profile and spike halo.
+        If 'is_spike = False', the parameters for configuring spiky halo will be
+        deactivated. Default values assume Milky Way. See default arguments in 'params.halo'
+        and 'params.spike'.
+        
 
     Suppose, we want to know the SN1987a in LMC, we can extract the equatorial coordinates
     by constant.LMC_coord and constant.SN1987a_coord. They documents [RA,DEC,dist] of the
@@ -144,8 +144,8 @@ class BoostedDarkMatter(Constants):
     This class has the following methods
 
                 nx(r,mx): Yields DM number density at place distant r to GC, 1/cm^3
-         sigma_xe(Tx,mx): Yields total DM-e cross section for a given (Tx,mx), cm^2
     dsigma_xv(Tx,mx,psi): Yields differential DM-v cross section at given (Tx,mx,psi), cm^2/sr
+         sigma_xe(Tx,mx): Yields total DM-e cross section for a given (Tx,mx), cm^2
            flux(t,Tx,mx): Yields SNv BDM flux at Earth given (t,Tx,mx), #/MeV/cm^2/s
                event(mx): Yields SNv BDM event in a given period at Earth given mx, # per electron
 
@@ -345,7 +345,7 @@ class BoostedDarkMatter(Constants):
         mx : float
             DM mass, MeV
         **kwargs
-            Optional parameters for mimimum distances and vegas
+            Keyword arguments for min distances and vegas.
         
         Returns
         -------
@@ -378,13 +378,13 @@ class BoostedDarkMatter(Constants):
            # t > t_van will yield zero BDM
            return 0.0
     
-    def event(self,mx,Tx_range=[5,30],t_range=[10,35*constant.year2Seconds],**kwargs) -> float:
+    def event(self,mx,Tx_range=[5,30],t_range=[10,1.1045e+09],**kwargs) -> float:
         """
-        The supernova-neutrino-boosted dark matter evnet per electron. To retrieve the correct
+        The supernova-neutrino-boosted dark matter evnet per electron, Nx0. To retrieve the correct
         event number, one should mutiply the total electron number Ne.
 
         For instance, if the BDM event rate obtained from this function is Nx0, then the total
-        BDM event in a detector with electron number is
+        BDM event in a detector with electron number Ne is
 
             Nx = Ne * Nx0
     
@@ -393,11 +393,13 @@ class BoostedDarkMatter(Constants):
         mx : float
             DM mass, MeV
         Tx_range : list
-            Integration range for BDM kinetic energy [Tx_min,Tx_max], MeV
+            Integration range for BDM kinetic energy [Tx_min,Tx_max], MeV.
+            Default is [5,30].
         t_range : list
-            Integration range for exposure time [t_min,t_max], seconds
+            Integration range for exposure time [t_min,t_max], seconds.
+            Default is [10,1.1045e+09] and impiles 't_max' is 35 years.
         **kwargs
-            Optional parameters for mimimum distances and vegas
+            Keyword arguments for min distances and vegas.
         
         Returns
         -------
