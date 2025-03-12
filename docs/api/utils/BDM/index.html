@@ -262,7 +262,7 @@ incident and target particles respectively and <span class="arithmatex">\(m_V\)<
 <p><code>amp2_xv</code> : <em>func</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Amplitude squared for DM-<span class="arithmatex">\(\nu\)</span> interaction with 4 positioning arguments. <code>amp2_xv = func(s,t,u,mx)</code>: the first 3 are Mandelstam variables and the last one is the DM mass.</p>
 <p><code>amp2_xe</code> : <em>func</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Identical to <code>amp2_xv</code>, but is for DM-<span class="arithmatex">\(e\)</span> interaction.</p>
 <p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in <span class="arithmatex">\(n_\chi\)</span>. Default is False.</p>
-<p><strong><em><code>**kwargs</code></em></strong>  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#__attr__-snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#__attr__-snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
+<p><strong><em><code>**kwargs</code></em></strong>  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
 </blockquote>
 <h4 id="nxrmx"><span class="mono">nx(<em>r</em>,<em>mx</em>)</span><a class="headerlink" href="#nxrmx" title="Permanent link">&para;</a></h4>
 <p>Method.</p>
@@ -311,7 +311,7 @@ and azimuthal angle <span class="arithmatex">\(\varphi\)</span> from <span class
 <p><code>t</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The BDM ToF, relative to the first SN neutrino's arrival.</p>
 <p><code>Tx</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM kinetic energy, MeV.</p>
 <p><code>mx</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV.</p>
-<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in <a href="../../params/params/#__attr__-snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a> and <a href="../../params/params/#__attr__-snorerparamsvegas" target="_blank"><code>snorer.params.vegas</code></a>.</p>
+<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in <a href="../../params/params/#snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a> and <a href="../../params/params/#snorerparamsvegas" target="_blank"><code>snorer.params.vegas</code></a>.</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div></strong></p>
 <blockquote>
@@ -330,7 +330,7 @@ N_\chi^{\rm correct} = N_e\times N_{\chi,0}.
 <p><code>mx</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV.</p>
 <p><code>Tx_range</code> : <em>list</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Integration range for BDM kinetic energy <code>[Tx_min,Tx_max]</code>, MeV. Default is <code>[5,30]</code>.</p>
 <p><code>t_range</code> : <em>list</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Integration range for exposure time <code>[t_min,t_max]</code>, seconds. Default is <code>[10,1.1045e+09]</code> and implies <code>t_max</code> is around 35 years.</p>
-<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in <a href="../../params/params/#__attr__-snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a> and <a href="../../params/params/#__attr__-snorerparamsvegas" target="_blank"><code>snorer.params.vegas</code></a>.</p>
+<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in <a href="../../params/params/#snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a> and <a href="../../params/params/#snorerparamsvegas" target="_blank"><code>snorer.params.vegas</code></a>.</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div></strong></p>
 <blockquote>

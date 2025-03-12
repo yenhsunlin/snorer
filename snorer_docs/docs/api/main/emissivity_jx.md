@@ -41,7 +41,7 @@ See Eq. (13) in [BDM Physics](../../manual/overview.md#emissivity-on-the-shell){
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in $n_\chi$. Default is False.
 
 
-> ***`**kwargs`***  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.halo`](../params/params.md#__attr__-snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#__attr__-snorerparamsspike){:target="_blank"}.
+> ***`**kwargs`***  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.halo`](../params/params.md#snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#snorerparamsspike){:target="_blank"}.
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**

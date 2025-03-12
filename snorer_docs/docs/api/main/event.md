@@ -52,7 +52,7 @@ where we have set $\sigma_{\chi \nu}=10^{-45}$ cm<sup>2</sup> by default in the 
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
 
-> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.min_distance`](../params/params.md#__attr__-snorerparamsmin_distance){:target="_blank"}, [`snorer.params.halo`](../params/params.md#__attr__-snorerparamshalo){:target="_blank"}, [`snorer.params.spike`](../params/params.md#__attr__-snorerparamsspike){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#__attr__-snorerparamsvegas){:target="_blank"}.
+> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.min_distance`](../params/params.md#snorerparamsmin_distance){:target="_blank"}, [`snorer.params.halo`](../params/params.md#snorerparamshalo){:target="_blank"}, [`snorer.params.spike`](../params/params.md#snorerparamsspike){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#snorerparamsvegas){:target="_blank"}.
 
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**

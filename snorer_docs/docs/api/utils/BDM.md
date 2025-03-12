@@ -73,7 +73,7 @@ These are the desired amplitudes and serve as the inputs in the class.
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in $n_\chi$. Default is False.
 
-> ***`**kwargs`***  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.halo`](../params/params.md#__attr__-snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#__attr__-snorerparamsspike){:target="_blank"}.
+> ***`**kwargs`***  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.halo`](../params/params.md#snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#snorerparamsspike){:target="_blank"}.
 
 ####  <span class="mono">nx(*r*,*mx*)</span>
 
@@ -140,7 +140,7 @@ and azimuthal angle $\varphi$ from $0$ to $2\pi$.
 
 > `mx` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV.
 
-> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in [`snorer.params.min_distance`](../params/params.md#__attr__-snorerparamsmin_distance){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#__attr__-snorerparamsvegas){:target="_blank"}.
+> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in [`snorer.params.min_distance`](../params/params.md#snorerparamsmin_distance){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#snorerparamsvegas){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**
 
@@ -167,7 +167,7 @@ $$
 
 > `t_range` : *list* <br>&nbsp;&nbsp;&nbsp;&nbsp;Integration range for exposure time `[t_min,t_max]`, seconds. Default is `[10,1.1045e+09]` and implies `t_max` is around 35 years.
 
-> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in [`snorer.params.min_distance`](../params/params.md#__attr__-snorerparamsmin_distance){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#__attr__-snorerparamsvegas){:target="_blank"}.
+> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp;Keyword arguments for min distances and vegas. See default arguments in [`snorer.params.min_distance`](../params/params.md#snorerparamsmin_distance){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#snorerparamsvegas){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**
 

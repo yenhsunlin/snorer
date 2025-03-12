@@ -83,7 +83,7 @@ We illustrate this in the following example.
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div>**
 
 
-Let's take [`snorer.event`](#../main/flux.md){:target="_blank"} as an example. By looking at its doc page, the necessary `**kwargs` at least contains: `rhos`, `rs`, `n`, `d_cut`, `r_cut`, `nitn` and `neval`. However if one sets `is_spike = True`, then the followings: `mBH`, `tBH`, `rh`, `alpha` and `sigv` are also mandatory. If user didn't specify any of them above, they **snorer** will use default values listed above.
+Let's take [`snorer.event`](../main/event.md){:target="_blank"} as an example. By looking at its doc page, the necessary `**kwargs` at least contains: `rhos`, `rs`, `n`, `d_cut`, `r_cut`, `nitn` and `neval`. However if one sets `is_spike = True`, then the followings: `mBH`, `tBH`, `rh`, `alpha` and `sigv` are also mandatory. If user didn't specify any of them above, they **snorer** will use default values listed above.
 
 For instance, without any keyword argument specification
 

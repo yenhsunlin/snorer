@@ -231,7 +231,7 @@ window.MathJax = {
 <div class="arithmatex">\[
 \left.\sin\theta\mathcal{J}j_\chi(d,r,T_\chi,\psi)\right|_{t=\frac{d}{c}+\frac{\ell}{v_\chi}-t_\nu}.
 \]</div>
-<p>This is the integrand of Eq. (18) in <a href="../../../manual/overview/#from-line-of-sight-to-time-dependency" target="_blank">BDM Physics</a>, cf. <a href="../../../manual/overview/#snv_scheme" target="_blank">Fig. 1</a> too.</p>
+<p>This is the integrand of Eq. (18) in <a href="../../../manual/overview/#from-line-of-sight-to-time-dependency" target="_blank">BDM Physics</a>, cf. <a href="../../../manual/overview/#snv_bdm_scheme" target="_blank">Fig. 1</a> too.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
 <p><code>t</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Time <span class="arithmatex">\(t\)</span>, relative to the SN<span class="arithmatex">\(\nu\)</span>'s arrival</p>
@@ -244,7 +244,7 @@ window.MathJax = {
 <p><code>Re</code> : <em>floate</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The distance from GC to Earth, kpc. Default is 8.5 kpc.</p>
 <p><code>sigxv0</code> : float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-<span class="arithmatex">\(\nu\)</span> cross section, cm<sup>2</sup>. It will be multiplied by <code>snorer.get_gx</code> to account for the angular distribution and makes it cm<sup>2</sup> sr<sup>−1</sup>.</p>
 <p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is <code>False</code>.</p>
-<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#__attr__-snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a>, <a href="../../params/params/#__attr__-snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#__attr__-snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
+<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#snorerparamsmin_distance" target="_blank"><code>snorer.params.min_distance</code></a>, <a href="../../params/params/#snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div></strong></p>
 <blockquote>

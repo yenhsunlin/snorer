@@ -20,7 +20,7 @@ window.MathJax = {
 
 The supernova-neutrino-boosted dark matter flux at time $t$ on Earth after integrated over
 a field-of-view $d\Omega$. Note that zenith angle $\theta$ is integrated up to $\theta^*_M$ and azimuthal angle $\varphi$ from $0$ to $2\pi$.
-See Eqs. (18) and (24) in [BDM Physics](../../manual/overview.md#snnu-bdm-flux){:target="_blank"}, cf. [Fig. 1](../../manual/overview.md#snv_scheme){:target="_blank"} too.
+See Eqs. (18) and (24) in [BDM Physics](../../manual/overview.md#snnu-bdm-flux){:target="_blank"}, cf. [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} too.
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
 > `t` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Time $t$, relative to the SN$\nu$'s arrival
@@ -39,7 +39,7 @@ See Eqs. (18) and (24) in [BDM Physics](../../manual/overview.md#snnu-bdm-flux){
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
 
-> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.min_distance`](../params/params.md#__attr__-snorerparamsmin_distance){:target="_blank"}, [`snorer.params.halo`](../params/params.md#__attr__-snorerparamshalo){:target="_blank"}, [`snorer.params.spike`](../params/params.md#__attr__-snorerparamsspike){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#__attr__-snorerparamsvegas){:target="_blank"}.
+> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.min_distance`](../params/params.md#snorerparamsmin_distance){:target="_blank"}, [`snorer.params.halo`](../params/params.md#snorerparamshalo){:target="_blank"}, [`snorer.params.spike`](../params/params.md#snorerparamsspike){:target="_blank"} and [`snorer.params.vegas`](../params/params.md#snorerparamsvegas){:target="_blank"}.
 
 
 
