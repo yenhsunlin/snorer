@@ -102,7 +102,7 @@ If we want to specify `rhos` and `mBH`, we can do
 3.883407626493457e-06
 ```
 
-Note that `event_spike` is slightly larger than `event` due to we turn on spike feature. However, the enhancement is not drastically due to supernova is not exactly located at the center as seen from `beta` does not equal 0. 
+Note that `event_spike` is slightly larger than `event` due to we turn on spike feature. However, the enhancement is not drastic due to supernova is not exactly located at the center as `beta` is not 0. 
 
 If we remove `is_spike`, then the program uses default `is_spike = False`.
 This will result in ValueError due to `mBH` only valid when spike feature turns on.
