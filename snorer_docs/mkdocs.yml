@@ -5,10 +5,9 @@ nav:
   - User Manual:
     - Overview:
       - BDM Physics: manual/overview.md
-      - Emissivity: manual/emissivity.md
+      #- Emissivity: manual/emissivity.md
     - Tutorial: tutorial.md
     - Advanced: advanced.md
-    - Miscellaneous: misc.md
   - API:
     - Parameters: api/params/params.md
     - Main:

@@ -23,7 +23,7 @@ Class with medoths that evaluate supernova-neutrino-boosted dark matter (SN$\nu$
 galaxy with DM-$\nu$ and DM-$e$ interaction cross sections descrbied by a specific particle model. This class integrates functions like `snorer.flux` and `snorer.event`
 as methods for user to calculate the SN$\nu$ BDM flux and event associated to any models.
 
-To construct the scattering amplitude $\mathcal{M}$ from the specific model, we take the model discussed in Ref. [[1](#bib_Lin2023PRD)] for instance. Both
+To construct the scattering amplitude $\mathcal{M}$ from a specific model, we take the one discussed in Ref. [[1](#bib_Lin2023PRD)] for instance. Both
 DM-$\nu$ and DM-$e$ have the same amplitude square $|\mathcal{M}|^2$ shown by Eq. (3) of Ref. [[1](#bib_Lin2023PRD)] in terms of Mandelstam variables $s$, $t$, and $u$,
 
 $$
