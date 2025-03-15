@@ -472,10 +472,10 @@ Thus in `casA_bdm_xenon`, the method `sigma_xe` is for DM-Xenon interaction cros
 
 Under certain circumstances, issues and unstable results may occur in our algorithm for calculating `dsigma_xv` and `sigma_xe`. 
 If this happens, users may wish to override these two methods with their own functions.
-It can be done easily, given that `dsigma_xv` and `sigma_xe` take ***three*** and ***two*** *positional arguments*, respectively. See this [API page](../api/utils/BDM.md){:target="_blank"}. Users can provide their own functions and replace them, as long as the units for `dsigma_xv` and `sigma_xe` are cm<sup>2</sup> sr<sup>-1</sup> and cm<sup>2</sup>, respectively.
+It can be done easily, given that `dsigma_xv` and `sigma_xe` take ***three*** and ***two*** *positioning arguments*, respectively. See this [API page](../api/utils/BDM.md){:target="_blank"}. Users can provide their own functions and replace them, as long as the units for `dsigma_xv` and `sigma_xe` are cm<sup>2</sup> sr<sup>−1</sup> and cm<sup>2</sup>, respectively.
 
 
-For example, let `dsigma_xv` and `sigma_xe` are both constant 
+For example, let `dsigma_xv` and `sigma_xe` be constant 
 
 ```python
 # constant dsigma_xv

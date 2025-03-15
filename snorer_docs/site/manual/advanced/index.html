@@ -578,8 +578,8 @@ plt.show()
 <h3 id="override-methods-dsigma_xv-and-sigma_xe">Override methods <code>dsigma_xv</code> and <code>sigma_xe</code><a class="headerlink" href="#override-methods-dsigma_xv-and-sigma_xe" title="Permanent link">&para;</a></h3>
 <p>Under certain circumstances, issues and unstable results may occur in our algorithm for calculating <code>dsigma_xv</code> and <code>sigma_xe</code>. 
 If this happens, users may wish to override these two methods with their own functions.
-It can be done easily, given that <code>dsigma_xv</code> and <code>sigma_xe</code> take <strong><em>three</em></strong> and <strong><em>two</em></strong> <em>positional arguments</em>, respectively. See this <a href="../../api/utils/BDM/" target="_blank">API page</a>. Users can provide their own functions and replace them, as long as the units for <code>dsigma_xv</code> and <code>sigma_xe</code> are cm<sup>2</sup> sr<sup>-1</sup> and cm<sup>2</sup>, respectively.</p>
-<p>For example, let <code>dsigma_xv</code> and <code>sigma_xe</code> are both constant </p>
+It can be done easily, given that <code>dsigma_xv</code> and <code>sigma_xe</code> take <strong><em>three</em></strong> and <strong><em>two</em></strong> <em>positioning arguments</em>, respectively. See this <a href="../../api/utils/BDM/" target="_blank">API page</a>. Users can provide their own functions and replace them, as long as the units for <code>dsigma_xv</code> and <code>sigma_xe</code> are cm<sup>2</sup> sr<sup>−1</sup> and cm<sup>2</sup>, respectively.</p>
+<p>For example, let <code>dsigma_xv</code> and <code>sigma_xe</code> be constant </p>
 <pre><code class="language-python"># constant dsigma_xv
 casA_bdm.dsigma_xv = lambda Tx,mx,psi: 1e-35/4/np.pi
 # constant sigma_xe
