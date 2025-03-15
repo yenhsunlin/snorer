@@ -575,6 +575,17 @@ plt.show()
 </figure>
 
 <p>Thus in <code>casA_bdm_xenon</code>, the method <code>sigma_xe</code> is for DM-Xenon interaction cross section. Note that the above is a very naive example and is not plausible in practice. Given when nucleus is under discussion, nucleus form factor should be introduced in <code>amp2_x_xenon</code>. We relegate this to the users who work in this field. </p>
+<h3 id="override-methods-dsigma_xv-and-sigma_xe">Override methods <code>dsigma_xv</code> and <code>sigma_xe</code><a class="headerlink" href="#override-methods-dsigma_xv-and-sigma_xe" title="Permanent link">&para;</a></h3>
+<p>Under certain circumstances, issues and unstable results may occur in our algorithm for calculating <code>dsigma_xv</code> and <code>sigma_xe</code>. 
+If this happens, users may wish to override these two methods with their own functions.
+It can be done easily, given that <code>dsigma_xv</code> and <code>sigma_xe</code> take <strong><em>three</em></strong> and <strong><em>two</em></strong> <em>positional arguments</em>, respectively. See this <a href="../../api/utils/BDM/" target="_blank">API page</a>. Users can provide their own functions and replace them, as long as the units for <code>dsigma_xv</code> and <code>sigma_xe</code> are cm<sup>2</sup> sr<sup>-1</sup> and cm<sup>2</sup>, respectively.</p>
+<p>For example, let <code>dsigma_xv</code> and <code>sigma_xe</code> are both constant </p>
+<pre><code class="language-python"># constant dsigma_xv
+casA_bdm.dsigma_xv = lambda Tx,mx,psi: 1e-35/4/np.pi
+# constant sigma_xe
+casA_bdm.sigma_xe = lambda Tx,mx: 1e-35
+</code></pre>
+<p>This will override the methods for calculating cross sections in <code>casA_bdm</code> and affect <code>casA_bdm.flux</code> and <code>casA_bdm.event</code>.</p>
               
             </div>
           </div><footer>

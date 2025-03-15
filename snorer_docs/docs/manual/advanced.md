@@ -467,3 +467,21 @@ plt.show()
 </figure>
 
 Thus in `casA_bdm_xenon`, the method `sigma_xe` is for DM-Xenon interaction cross section. Note that the above is a very naive example and is not plausible in practice. Given when nucleus is under discussion, nucleus form factor should be introduced in `amp2_x_xenon`. We relegate this to the users who work in this field. 
+
+### Override methods `dsigma_xv` and `sigma_xe`
+
+Under certain circumstances, issues and unstable results may occur in our algorithm for calculating `dsigma_xv` and `sigma_xe`. 
+If this happens, users may wish to override these two methods with their own functions.
+It can be done easily, given that `dsigma_xv` and `sigma_xe` take ***three*** and ***two*** *positional arguments*, respectively. See this [API page](../api/utils/BDM.md){:target="_blank"}. Users can provide their own functions and replace them, as long as the units for `dsigma_xv` and `sigma_xe` are cm<sup>2</sup> sr<sup>-1</sup> and cm<sup>2</sup>, respectively.
+
+
+For example, let `dsigma_xv` and `sigma_xe` are both constant 
+
+```python
+# constant dsigma_xv
+casA_bdm.dsigma_xv = lambda Tx,mx,psi: 1e-35/4/np.pi
+# constant sigma_xe
+casA_bdm.sigma_xe = lambda Tx,mx: 1e-35
+```
+
+This will override the methods for calculating cross sections in `casA_bdm` and affect `casA_bdm.flux` and `casA_bdm.event`.
