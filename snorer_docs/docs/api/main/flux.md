@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.flux
 
 
-###  <span class="mono">snorer.flux(*t*,*Tx*,*mx*,*Rs*,*beta*,*Re=8.5*,*sigxv0=1e-45*,*is_spike=False*,*\*\*kwargs**)</span>
+###  <span class="mono">snorer.flux(*t*,*Tx*,*mx*,*Rs*,*beta*,*Re=8.5*,*sigxv0=1e-45*,<br>*is_spike=False*,*\*\*kwargs**)</span>
 
 The supernova-neutrino-boosted dark matter flux at time $t$ on Earth after integrated over
 a field-of-view $d\Omega$. Note that zenith angle $\theta$ is integrated up to $\theta^*_M$ and azimuthal angle $\varphi$ from $0$ to $2\pi$.

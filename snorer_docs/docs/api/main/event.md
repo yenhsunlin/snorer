@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.event
 
 
-###   <span class="mono">snorer.event(*mx*,*Rs*,*beta*,*Re=8.5*,*Tx_range=[5,30]*,<br>*t_range=[10,1.1045e+09]*,*sigxv0=1e-45*,*is_spike=False*,*\*\*kwargs*)</span>
+###   <span class="mono">snorer.event(*mx*,*Rs*,*beta*,*Re=8.5*,*Tx_range=[5,30]*,<br>*t_range=[10,1.1045e+09]*,*sigxv0=1e-45*,<br>*is_spike=False*,*\*\*kwargs*)</span>
 
 The supernova-neutrino-boosted dark matter evnet per electron with DM-$e$ cross section $\sigma_{\chi e}$
 normalized to 1 cm<sup>2</sup> at Earth. The field-of-view $d\Omega$ is integrated over entirely

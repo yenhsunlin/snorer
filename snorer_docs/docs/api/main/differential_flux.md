@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.differential_flux
 
 
-###  <span class="mono">snorer.differential_flux(*t*,*Tx*,*mx*,*theta*,*phi*,*Rs*,*beta*,*Re=8.5*,*sigxv0=1e-45*,*is_spike=False*,*\*\*kwargs*)</span>
+###  <span class="mono">snorer.differential_flux(*t*,*Tx*,*mx*,*theta*,*phi*,*Rs*,*beta*,*Re=8.5*,<br>*sigxv0=1e-45*,*is_spike=False*,*\*\*kwargs*)</span>
 
 The differential supernova-neutrin-boosted dark matter flux at Earth at specific time $t$ and angular direction $(\theta,\varphi)$
 

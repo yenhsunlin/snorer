@@ -15,7 +15,7 @@ window.MathJax = {
 # snorer.emissivity_jx
 
 
-###   <span class="mono">snorer.emissivity_jx(*Ev*,*dEv*,*mx*,*d*,*r*,*psi*,*sigxv0=1e-45*,*d_cut=3.24e-15*,*is_spike=False*,*\*\*kwargs*)</span>
+###   <span class="mono">snorer.emissivity_jx(*Ev*,*dEv*,*mx*,*d*,*r*,*psi*,*sigxv0=1e-45*,<br>*d_cut=3.24e-15*,*is_spike=False*,*\*\*kwargs*)</span>
 
 Emissivity $j_\chi$ of supernova-neutrino-boost dark matter at boost point.
 See Eq. (13) in [BDM Physics](../../manual/overview.md#emissivity-on-the-shell){:target="_blank"}.

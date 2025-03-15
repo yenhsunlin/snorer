@@ -219,9 +219,9 @@ window.MathJax = {
 </style>
 
 <h1 id="snorerparams">snorer.params<a class="headerlink" href="#snorerparams" title="Permanent link">&para;</a></h1>
-<h3 id="class-snorerparams"><em><code>class</code></em> <span class="mono">snorer.params</span><a class="headerlink" href="#class-snorerparams" title="Permanent link">&para;</a></h3>
-<p>This class contains default parameters that will be used in many functions as keyword arguments (<code>**kwargs</code>).
-Four classes of parameters are predefined and incorporated as attributes in this class. We illustrate them in the followings.</p>
+<h3 id="snorerparams_1"><span class="mono">snorer.params</span><a class="headerlink" href="#snorerparams_1" title="Permanent link">&para;</a></h3>
+<p>This instance contains default parameters that will be used in many functions as keyword arguments (<code>**kwargs</code>).
+Four classes of parameters are predefined (not loaded automatically with snorer in the beginning) and incorporated as attributes in this instance. We illustrate them in the followings.</p>
 <h4 id="snorerparamsmin_distance"><span class="mono">snorer.params.min_distance</span><a class="headerlink" href="#snorerparamsmin_distance" title="Permanent link">&para;</a></h4>
 <p><em>Instance.</em></p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
@@ -258,13 +258,21 @@ Four classes of parameters are predefined and incorporated as attributes in this
 <p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Notes</div></strong></p>
 <p>What type or types of parameters are contained in <code>**kwargs</code>
 of that function will be documented in its docstrings.
-Suppose the docstrings says the keywaord arguments containing the values in <strong>min_distance</strong>, <strong>halo</strong> and <strong>spike</strong>, it means all the attributes in the above theree categories can be used as keyword arguments in that function.
-We illustrate this in the following example.</p>
+Suppose the docstrings says the keyword arguments containing the values in <strong>min_distance</strong>, <strong>halo</strong> and <strong>spike</strong>, it means all the attributes in the above three categories can be used as keyword arguments in that function.
+We illustrate this in the following examples.</p>
 <p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div></strong></p>
-<p>Let's take <a href="../../main/event/" target="_blank"><code>snorer.event</code></a> as an example. By looking at its doc page, the necessary <code>**kwargs</code> at least contains: <code>rhos</code>, <code>rs</code>, <code>n</code>, <code>d_cut</code>, <code>r_cut</code>, <code>nitn</code> and <code>neval</code>. However if one sets <code>is_spike = True</code>, then the followings: <code>mBH</code>, <code>tBH</code>, <code>rh</code>, <code>alpha</code> and <code>sigv</code> are also mandatory. If user didn't specify any of them above, they <strong>snorer</strong> will use default values listed above.</p>
-<p>For instance, without any keyword argument specification</p>
+<p>To view the default value, such as the characteristic density <code>rhos</code> in <strong>snorer</strong>, we can do</p>
 <pre><code class="language-python">&gt;&gt;&gt; import snorer as sn # import snorer
-&gt;&gt;&gt; mx,Rs,beta = 1e-2,8.5,0.3
+&gt;&gt;&gt; print(sn.params.halo.rhos)
+184
+</code></pre>
+<p>For spike default, such as SMBH mass <code>mBH</code>,</p>
+<pre><code class="language-python">&gt;&gt;&gt; print(sn.params.spike.mBH)
+4290000.0
+</code></pre>
+<p>In terms of implementation, let's take <a href="../../main/event/" target="_blank"><code>snorer.event</code></a> as an example. By looking at its doc page, the necessary <code>**kwargs</code> at least contains: <code>rhos</code>, <code>rs</code>, <code>n</code>, <code>d_cut</code>, <code>r_cut</code>, <code>nitn</code> and <code>neval</code>. However if one sets <code>is_spike = True</code>, then the followings: <code>mBH</code>, <code>tBH</code>, <code>rh</code>, <code>alpha</code> and <code>sigv</code> are also mandatory. If user didn't specify any of them above, they <strong>snorer</strong> will use default values listed above.</p>
+<p>For instance, without any keyword argument specification</p>
+<pre><code class="language-python">&gt;&gt;&gt; mx,Rs,beta = 1e-2,8.5,0.3
 &gt;&gt;&gt; event = sn.event(mx,Rs,beta) # none of the kwargs is specified.
 &gt;&gt;&gt; print(event)
 1.4301996553521633e-06

@@ -27,8 +27,8 @@ import ipyparallel as ipp
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 # uncomment the following two lines if you have a Hi-DPI monitor and wish to have a better figure resolution
-%matplotlib inline
-%config InlineBackend.figure_format='retina'
+# %matplotlib inline
+# %config InlineBackend.figure_format='retina'
 
 # import snorer
 import snorer as sn
@@ -347,7 +347,7 @@ plt.show()
 <center><img src="../../figs/output_21_0.png" alt="scheme" style="width: 60%;">
 </figure>
 
-To evaluate event number, rember the parameter `t_range` in `sn.event` is the integration range of time interval and starts from $t_0=10$ seconds by default.
+To evaluate event number, remember the parameter `t_range` in `sn.event` is the integration range of time interval and starts from $t_0=10$ seconds by default.
 But it is not the case for Cas A as 350 years has passed. We shoud begin $t_0=350$ years and end with, say, 35 years after $t_0$. Hence,
 
 

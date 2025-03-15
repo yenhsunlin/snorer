@@ -15,10 +15,10 @@ window.MathJax = {
 # snorer.params
 
 
-### *`class`* <span class="mono">snorer.params</span>
+### <span class="mono">snorer.params</span>
 
-This class contains default parameters that will be used in many functions as keyword arguments (`**kwargs`).
-Four classes of parameters are predefined and incorporated as attributes in this class. We illustrate them in the followings.
+This instance contains default parameters that will be used in many functions as keyword arguments (`**kwargs`).
+Four classes of parameters are predefined (not loaded automatically with snorer in the beginning) and incorporated as attributes in this instance. We illustrate them in the followings.
 
 
 
@@ -76,19 +76,33 @@ The following will be used as keyword arguments when `is_spike = True`. When hav
 
 What type or types of parameters are contained in `**kwargs`
 of that function will be documented in its docstrings.
-Suppose the docstrings says the keywaord arguments containing the values in **min_distance**, **halo** and **spike**, it means all the attributes in the above theree categories can be used as keyword arguments in that function.
-We illustrate this in the following example.
+Suppose the docstrings says the keyword arguments containing the values in **min_distance**, **halo** and **spike**, it means all the attributes in the above three categories can be used as keyword arguments in that function.
+We illustrate this in the following examples.
 
 
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div>**
 
 
-Let's take [`snorer.event`](../main/event.md){:target="_blank"} as an example. By looking at its doc page, the necessary `**kwargs` at least contains: `rhos`, `rs`, `n`, `d_cut`, `r_cut`, `nitn` and `neval`. However if one sets `is_spike = True`, then the followings: `mBH`, `tBH`, `rh`, `alpha` and `sigv` are also mandatory. If user didn't specify any of them above, they **snorer** will use default values listed above.
+To view the default value, such as the characteristic density `rhos` in **snorer**, we can do
+
+```python
+>>> import snorer as sn # import snorer
+>>> print(sn.params.halo.rhos)
+184
+```
+
+For spike default, such as SMBH mass `mBH`,
+
+```python
+>>> print(sn.params.spike.mBH)
+4290000.0
+```
+
+In terms of implementation, let's take [`snorer.event`](../main/event.md){:target="_blank"} as an example. By looking at its doc page, the necessary `**kwargs` at least contains: `rhos`, `rs`, `n`, `d_cut`, `r_cut`, `nitn` and `neval`. However if one sets `is_spike = True`, then the followings: `mBH`, `tBH`, `rh`, `alpha` and `sigv` are also mandatory. If user didn't specify any of them above, they **snorer** will use default values listed above.
 
 For instance, without any keyword argument specification
 
 ```python
->>> import snorer as sn # import snorer
 >>> mx,Rs,beta = 1e-2,8.5,0.3
 >>> event = sn.event(mx,Rs,beta) # none of the kwargs is specified.
 >>> print(event)
