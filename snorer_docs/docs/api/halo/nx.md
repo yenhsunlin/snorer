@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.nx
 
 
-###  <span class="mono">snorer.nx(*r*,*mx*,*profile='MW'*)</span>
+###  <span class="mono">snorer.nx(*r*,*mx*,*is_spike=False*,*\*\*kwargs**)</span>
 
 Dark matter number density of Milky Way of Large Magellanic Cloud at distance $r$ to the galactic center.  Spike feature is not included.
 
@@ -26,7 +26,9 @@ Dark matter number density of Milky Way of Large Magellanic Cloud at distance $r
 
 > `mx` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV
 
-> `profile` : *str* <br>&nbsp;&nbsp;&nbsp;&nbsp;`'MW'` or `'LMC'`, stands for MW halo or LMC halo
+> `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is `False`.
+
+> ***`**kwargs`*** <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If `is_spike = False`, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in [`snorer.params.halo`](../params/params.md#snorerparamshalo){:target="_blank"} and [`snorer.params.spike`](../params/params.md#snorerparamsspike){:target="_blank"}.
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**
 
@@ -41,17 +43,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import snorer as sn
 
-# DM mass, keV
 mx = 0.01
 # radius, kpc
 r_vals = np.logspace(-3,2,100)
 # profiles
-profiles = ['MW','LMC']
+profiles = [sn.constant.MW_profile,sn.constant.LMC_profile]
+labels = ['MW','LMC']
 
 # Make plot
-for profile in profiles:
-    nx_vals = nx(r_vals,mx,profile=profile)
-    plt.plot(r_vals,nx_vals,label=profile)
+for i in range(2):
+    rhos,rs,n,_,_ = profiles[i].values()
+    nx_vals = sn.nx(r_vals,mx,rhos=rhos,rs=rs,n=n)
+    plt.plot(r_vals,nx_vals,label=labels[i])
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel(r'$r$ [kpc]')

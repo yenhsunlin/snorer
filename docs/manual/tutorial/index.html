@@ -61,13 +61,13 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#the-differential-dm-nu-cross-section">The differential DM-\(\nu\) cross section</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#evaluating-snnu-properties">Evaluating SN\(\nu\) properties</a>
+    <li class="toctree-l2"><a class="reference internal" href="#evaluating-snnu-bdm">Evaluating SN\(\nu\) BDM</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#coordinate-transform-and-sn-in-arbitrary-distant-galaxy">Coordinate transform and SN in arbitrary distant galaxy</a>
     </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../advanced.md">Advanced</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced Topics</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">API</span></p>
@@ -214,10 +214,11 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="tutorial">Tutorial<a class="headerlink" href="#tutorial" title="Permanent link">&para;</a></h1>
-<p>In this tutorial, we briefly introduce the basic usage of <strong>snorer</strong>, from the basic functions related to dark matter (DM) halo, supernova (SN) flux, and boosted dark matter (BDM) flux and event calculations, etc.
-This tutorial is not meant for a complete guide for all classses and functions, but a portal to utilize the most important feature for physics calculation.
+<p>In this tutorial, we briefly introduce the basic usage of <strong>snorer</strong>, from the basic functions related to supernova (SN) flux, and boosted dark matter (BDM) flux and event calculations, etc.
+This tutorial is not meant for a complete guide for all classses and functions, but a portal to utilize the most important feature for physics calculation. For how to manipulate DM halo,
+we refer to their API description pages: <a href="../../api/halo/HaloSpike/" target="_blank"><code>snorer.HaloSpike</code></a> and <a href="../../api/halo/nx/" target="_blank"><code>snorer.nx</code></a>.
 To have a full description of every functions, we refer the users to API document.
-In the following content, all equation numbers refer to <a href="../overview/#snnu-spectrum" target="_blank">BDM Physics</a> unless specified otherwise.</p>
+In the following content, all equation numbers are referred to <a href="../overview/#snnu-spectrum" target="_blank">BDM Physics</a> unless specified otherwise.</p>
 <p>We begin with importing snorer and other useful packages in this tutorial. We use <strong>ipyparallel</strong> to manifest multiprocessing feature on jupyter for Mac/Windows users. For linux users, they can simply use <strong>multiprocessing</strong>.</p>
 <pre><code class="language-python"># import python packages
 import numpy as np
@@ -225,7 +226,7 @@ import ipyparallel as ipp
 
 # import plotting package
 import matplotlib.pyplot as plt
-from matplotlib.colors import SymLogNorm,mcolors
+import matplotlib.colors as mcolors
 # uncomment the following two lines if you have a Hi-DPI monitor and wish to have a better figure resolution
 # %matplotlib inline
 # %config InlineBackend.figure_format='retina'
@@ -294,7 +295,7 @@ plt.show()
 </figure>
 
 <p>One can also compare with <a href="../../api/kinematics/get_gx/" target="_blank"><code>sn.get_gx</code></a> because <code>sn.dsigma_xv = sigxv0 * sn.get_gx</code>. Note that the plot in <code>sn.get_gx</code> page, we have weighted the result by <span class="arithmatex">\(d\Omega=2\pi \sin\psi\)</span>. It explains the numerics is 0 at <span class="arithmatex">\(\psi=0\)</span>.</p>
-<h2 id="evaluating-snnu-properties">Evaluating SN<span class="arithmatex">\(\nu\)</span> properties<a class="headerlink" href="#evaluating-snnu-properties" title="Permanent link">&para;</a></h2>
+<h2 id="evaluating-snnu-bdm">Evaluating SN<span class="arithmatex">\(\nu\)</span> BDM<a class="headerlink" href="#evaluating-snnu-bdm" title="Permanent link">&para;</a></h2>
 <h3 id="flux-at-earth">Flux at Earth<a class="headerlink" href="#flux-at-earth" title="Permanent link">&para;</a></h3>
 <p>The SN<span class="arithmatex">\(\nu\)</span> BDM flux at Earth is given by Eq. (18), which has been integrated over the sky that contains non-zero BDM.
 The corresponding function is <code>sn.flux</code> and takes 8 parameters and <code>**kwargs</code>. The first 5 are <code>t</code>, <code>Tx</code>, <code>mx</code>, <code>Rs</code> and <code>beta</code> that indicate the time of arrival at Earth, relative to SN<span class="arithmatex">\(\nu\)</span>'s arrival at Earth, the BDM kinetic energy (MeV), the BDM mass (MeV), the distance to SN (kpc) and the off-center angle (rad).
@@ -439,7 +440,7 @@ plt.show()
 <li><code>sigv</code>: DM annihilation cross section in the unit of 10<sup>-26</sup> cm<sup>3</sup> s<sup>-1</sup>. For example, if we wish to have <span class="arithmatex">\(\langle \sigma v\rangle = 3\times 10^{-26}\)</span> cm<sup>3</sup> s<sup>-1</sup>, we simply set <code>sigv = 3</code>.</li>
 </ol>
 <p>If one sets <code>is_spike = False</code> and typing any of the above <code>**kwargs</code> for spiky halo, ValueError will appear.</p>
-<p>Now if we want to evaluate a galaxy similar to our Milky Way but <span class="arithmatex">\(\rho_s=100\)</span> and <span class="arithmatex">\(n=3.3\)</span>. Also we wish to have spike feature, such as SMBH mass is <span class="arithmatex">\(10^7~M_\odot\)</span> and strong annihilation such that <span class="arithmatex">\(\langle \sigma v\rangle = 13\times 10^{-26}\)</span>. We can then evaluate</p>
+<p>Now if we want to evaluate a galaxy similar to our Milky Way but <span class="arithmatex">\(\rho_s=100\)</span> and <span class="arithmatex">\(n=3.3\)</span>. Also we wish to have spike feature, such as SMBH mass is <span class="arithmatex">\(10^7~M_\odot\)</span> and strong annihilation such that <span class="arithmatex">\(\langle \sigma v\rangle = 13\times 10^{-26}\)</span>. We can then set</p>
 <pre><code class="language-python"># Halo setup
 rhos, n = 100, 3.3
 mBH, sigv = 1e7, 13
@@ -450,12 +451,9 @@ Rs, beta = 9.9, 0.33  # kpc, rad
 # BDM properties
 Tx, mx = 10, 0.1 # MeV
 
-# Get vanishing time
-tvan = sn.get_tvan(Tx,mx,Rs)
-
 # Flux
 t = 15*sn.constant.year2Seconds 
-bdmflux_customized = sn.flux(t,Tx,mx,Rs,beta,is_spike = True,mBH = mBH, sigv = sigv, neval = 15000)
+bdmflux_customized = sn.flux(t,Tx,mx,Rs,beta,is_spike=True,mBH=mBH,sigv=sigv,neval=15000)
 print(bdmflux_customized)
 </code></pre>
 <pre><code class="language-shell">6.6134929121434916e-18
@@ -490,19 +488,19 @@ sn1987a_beta,_,_ = sn.equatorial_to_beta(SN1987a_ra,SN1987a_dec,GC_coord=[LMC_ra
 </code></pre>
 <p>To evaluate event, we still use <code>sn.event</code> but have to specify <code>Re</code> by <code>Rg</code> because the default <code>Re = 8.5</code> implies the distance between Earth and Milky Way center.</p>
 <pre><code class="language-python">mx = 0.5
-Rs, beta = 8.5, 0.0  # kpc, rad
+beta = 0.0  # kpc, rad
 SN1987a_event = sn.event(mx,Rs,beta,Re=Rg,r_cut=1e-5,neval=30000)
 SN1987a_event *= (Ne * sigxe) # Assuming Ne and sigma_xe follow previously
 print(f'BDM event from SN1987a in LMC is {SN1987a_event:.3e}.')
 </code></pre>
-<pre><code class="language-shell">BDM event from SN1987a in LMC is 1.226e-12.
+<pre><code class="language-shell">BDM event from SN1987a in LMC is 8.512e-13.
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../overview/" class="btn btn-neutral float-left" title="BDM Physics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../../api/params/params/" class="btn btn-neutral float-right" title="Parameters">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../advanced/" class="btn btn-neutral float-right" title="Advanced Topics">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -528,7 +526,7 @@ print(f'BDM event from SN1987a in LMC is {SN1987a_event:.3e}.')
       <span><a href="../overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../api/params/params/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../advanced/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

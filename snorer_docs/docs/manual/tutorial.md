@@ -1,9 +1,10 @@
 # Tutorial
 
-In this tutorial, we briefly introduce the basic usage of **snorer**, from the basic functions related to dark matter (DM) halo, supernova (SN) flux, and boosted dark matter (BDM) flux and event calculations, etc.
-This tutorial is not meant for a complete guide for all classses and functions, but a portal to utilize the most important feature for physics calculation.
+In this tutorial, we briefly introduce the basic usage of **snorer**, from the basic functions related to supernova (SN) flux, and boosted dark matter (BDM) flux and event calculations, etc.
+This tutorial is not meant for a complete guide for all classses and functions, but a portal to utilize the most important feature for physics calculation. For how to manipulate DM halo,
+we refer to their API description pages: [`snorer.HaloSpike`](../api/halo/HaloSpike.md){:target="_blank"} and [`snorer.nx`](../api/halo/nx.md){:target="_blank"}.
 To have a full description of every functions, we refer the users to API document.
-In the following content, all equation numbers refer to [BDM Physics](overview.md#snnu-spectrum){:target="_blank"} unless specified otherwise.
+In the following content, all equation numbers are referred to [BDM Physics](overview.md#snnu-spectrum){:target="_blank"} unless specified otherwise.
 
 We begin with importing snorer and other useful packages in this tutorial. We use **ipyparallel** to manifest multiprocessing feature on jupyter for Mac/Windows users. For linux users, they can simply use **multiprocessing**.
 
@@ -15,7 +16,7 @@ import ipyparallel as ipp
 
 # import plotting package
 import matplotlib.pyplot as plt
-from matplotlib.colors import SymLogNorm,mcolors
+import matplotlib.colors as mcolors
 # uncomment the following two lines if you have a Hi-DPI monitor and wish to have a better figure resolution
 # %matplotlib inline
 # %config InlineBackend.figure_format='retina'
@@ -106,8 +107,8 @@ plt.show()
 
 One can also compare with [`sn.get_gx`](../api/kinematics/get_gx.md){:target="_blank"} because `sn.dsigma_xv = sigxv0 * sn.get_gx`. Note that the plot in `sn.get_gx` page, we have weighted the result by $d\Omega=2\pi \sin\psi$. It explains the numerics is 0 at $\psi=0$.
 
-## Evaluating SN$\nu$ properties
- 
+## Evaluating SN$\nu$ BDM 
+
 ### Flux at Earth
 
 The SN$\nu$ BDM flux at Earth is given by Eq. (18), which has been integrated over the sky that contains non-zero BDM.
@@ -299,7 +300,7 @@ If `is_spike = True`, then there are five additional `**kwargs` will be activate
 
 If one sets `is_spike = False` and typing any of the above `**kwargs` for spiky halo, ValueError will appear.
 
-Now if we want to evaluate a galaxy similar to our Milky Way but $\rho_s=100$ and $n=3.3$. Also we wish to have spike feature, such as SMBH mass is $10^7~M_\odot$ and strong annihilation such that $\langle \sigma v\rangle = 13\times 10^{-26}$. We can then evaluate
+Now if we want to evaluate a galaxy similar to our Milky Way but $\rho_s=100$ and $n=3.3$. Also we wish to have spike feature, such as SMBH mass is $10^7~M_\odot$ and strong annihilation such that $\langle \sigma v\rangle = 13\times 10^{-26}$. We can then set
 
 
 ```python
@@ -313,12 +314,9 @@ Rs, beta = 9.9, 0.33  # kpc, rad
 # BDM properties
 Tx, mx = 10, 0.1 # MeV
 
-# Get vanishing time
-tvan = sn.get_tvan(Tx,mx,Rs)
-
 # Flux
 t = 15*sn.constant.year2Seconds 
-bdmflux_customized = sn.flux(t,Tx,mx,Rs,beta,is_spike = True,mBH = mBH, sigv = sigv, neval = 15000)
+bdmflux_customized = sn.flux(t,Tx,mx,Rs,beta,is_spike=True,mBH=mBH,sigv=sigv,neval=15000)
 print(bdmflux_customized)
 ```
 ```shell
@@ -378,12 +376,12 @@ To evaluate event, we still use `sn.event` but have to specify `Re` by `Rg` beca
 
 ```python
 mx = 0.5
-Rs, beta = 8.5, 0.0  # kpc, rad
+beta = 0.0  # kpc, rad
 SN1987a_event = sn.event(mx,Rs,beta,Re=Rg,r_cut=1e-5,neval=30000)
 SN1987a_event *= (Ne * sigxe) # Assuming Ne and sigma_xe follow previously
 print(f'BDM event from SN1987a in LMC is {SN1987a_event:.3e}.')
 ```
 ```shell
-BDM event from SN1987a in LMC is 1.226e-12.
+BDM event from SN1987a in LMC is 8.512e-13.
 ```
 

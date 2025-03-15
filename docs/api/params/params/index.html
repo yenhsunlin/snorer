@@ -57,7 +57,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../../manual/tutorial/">Tutorial</a>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../../../manual/advanced.md">Advanced</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../manual/advanced/">Advanced Topics</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">API</span></p>
@@ -223,14 +223,14 @@ window.MathJax = {
 <p>This class contains default parameters that will be used in many functions as keyword arguments (<code>**kwargs</code>).
 Four classes of parameters are predefined and incorporated as attributes in this class. We illustrate them in the followings.</p>
 <h4 id="snorerparamsmin_distance"><span class="mono">snorer.params.min_distance</span><a class="headerlink" href="#snorerparamsmin_distance" title="Permanent link">&para;</a></h4>
-<p>Instance.</p>
+<p><em>Instance.</em></p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
 <blockquote>
 <p><code>d_cut</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating point for <span class="arithmatex">\(d\)</span>. Below this value <code>snorer.sn_nu_spectrum</code> will return 0. Default is <span class="arithmatex">\(3.24\times 10^{-15}\)</span> kpc, approximating 100 km, the size of neutrino sphere. </p>
 <p><code>r_cut</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Terminating <span class="arithmatex">\(n_\chi\)</span> when <span class="arithmatex">\(r^\prime &lt;\)</span> <code>r_cut</code>, kpc. Below this value <code>snorer.differential_flux</code> will return 0. If one needs to incorporate dark matter spike in the central region, <code>r_cut</code> cannot be too large. Otherwise, the spike effect will be chopped off before it has any noticeble consequence. Default is <span class="arithmatex">\(10^{-8}\)</span> kpc.</p>
 </blockquote>
 <h4 id="snorerparamshalo"><span class="mono">snorer.params.halo</span><a class="headerlink" href="#snorerparamshalo" title="Permanent link">&para;</a></h4>
-<p>Instance.</p>
+<p><em>Instance.</em></p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
 <blockquote>
 <p><code>rhos</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Characteristic density, MeV cm<sup>−3</sup>. Default is 184.</p>
@@ -238,7 +238,7 @@ Four classes of parameters are predefined and incorporated as attributes in this
 <p><code>n</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Index for the halo. Default is 2.</p>
 </blockquote>
 <h4 id="snorerparamsspike"><span class="mono">snorer.params.spike</span><a class="headerlink" href="#snorerparamsspike" title="Permanent link">&para;</a></h4>
-<p>Instance.</p>
+<p><em>Instance.</em></p>
 <p>The following will be used as keyword arguments when <code>is_spike = True</code>. When having <code>is_spike = False</code>, typing any of the following arguments into function input will result in ValueError.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
 <blockquote>
@@ -249,7 +249,7 @@ Four classes of parameters are predefined and incorporated as attributes in this
 <p><code>sigv</code> : <em>None or float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;DM annihilation cross section, in the unit of <span class="arithmatex">\(10^{-26}\)</span> cm<sup>3</sup> s<sup>−1</sup>. <strong>None</strong> indicates no annihilation and 5.9 as <span class="arithmatex">\(5.9\times 10^{-26}\)</span>.</p>
 </blockquote>
 <h4 id="snorerparamsvegas"><span class="mono">snorer.params.vegas</span><a class="headerlink" href="#snorerparamsvegas" title="Permanent link">&para;</a></h4>
-<p>Instance.
+<p><em>Instance.</em>
 <strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
 <blockquote>
 <p><code>nitn</code> : <em>int</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of chains in <strong>vegas</strong> for each integration. Default is 10.</p>
@@ -281,7 +281,7 @@ This will result in ValueError due to <code>mBH</code> only valid when spike fea
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../../manual/tutorial/" class="btn btn-neutral float-left" title="Tutorial"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../../manual/advanced/" class="btn btn-neutral float-left" title="Advanced Topics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../../main/sn_nu_spectrum/" class="btn btn-neutral float-right" title="sn_nu_spectrum">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -305,7 +305,7 @@ This will result in ValueError due to <code>mBH</code> only valid when spike fea
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../../../manual/tutorial/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../../../manual/advanced/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../../main/sn_nu_spectrum/" style="color: #fcfcfc">Next &raquo;</a></span>

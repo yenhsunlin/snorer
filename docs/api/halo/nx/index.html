@@ -57,7 +57,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../../manual/tutorial/">Tutorial</a>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../../../manual/advanced.md">Advanced</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../manual/advanced/">Advanced Topics</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">API</span></p>
@@ -221,13 +221,14 @@ window.MathJax = {
 </style>
 
 <h1 id="snorernx">snorer.nx<a class="headerlink" href="#snorernx" title="Permanent link">&para;</a></h1>
-<h3 id="snorernxrmxprofilemw"><span class="mono">snorer.nx(<em>r</em>,<em>mx</em>,<em>profile='MW'</em>)</span><a class="headerlink" href="#snorernxrmxprofilemw" title="Permanent link">&para;</a></h3>
+<h3 id="snorernxrmxis_spikefalsekwargs"><span class="mono">snorer.nx(<em>r</em>,<em>mx</em>,<em>is_spike=False</em>,<em>**kwargs</em>*)</span><a class="headerlink" href="#snorernxrmxis_spikefalsekwargs" title="Permanent link">&para;</a></h3>
 <p>Dark matter number density of Milky Way of Large Magellanic Cloud at distance <span class="arithmatex">\(r\)</span> to the galactic center.  Spike feature is not included.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
 <p><code>r</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance to galactic center <span class="arithmatex">\(r\)</span>, kpc</p>
 <p><code>mx</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter mass, MeV</p>
-<p><code>profile</code> : <em>str</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<code>'MW'</code> or <code>'LMC'</code>, stands for MW halo or LMC halo</p>
+<p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Is halo spike included? Default is <code>False</code>.</p>
+<p><strong><em><code>**kwargs</code></em></strong> <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
 </blockquote>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div></strong></p>
 <blockquote>
@@ -239,17 +240,18 @@ window.MathJax = {
 import matplotlib.pyplot as plt
 import snorer as sn
 
-# DM mass, keV
 mx = 0.01
 # radius, kpc
 r_vals = np.logspace(-3,2,100)
 # profiles
-profiles = ['MW','LMC']
+profiles = [sn.constant.MW_profile,sn.constant.LMC_profile]
+labels = ['MW','LMC']
 
 # Make plot
-for profile in profiles:
-    nx_vals = nx(r_vals,mx,profile=profile)
-    plt.plot(r_vals,nx_vals,label=profile)
+for i in range(2):
+    rhos,rs,n,_,_ = profiles[i].values()
+    nx_vals = sn.nx(r_vals,mx,rhos=rhos,rs=rs,n=n)
+    plt.plot(r_vals,nx_vals,label=labels[i])
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel(r'$r$ [kpc]')

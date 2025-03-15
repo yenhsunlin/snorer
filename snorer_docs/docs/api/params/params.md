@@ -24,7 +24,7 @@ Four classes of parameters are predefined and incorporated as attributes in this
 
 ####  <span class="mono">snorer.params.min_distance</span>
 
-Instance.
+*Instance.*
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div>**
 
@@ -34,7 +34,7 @@ Instance.
 
 
 ####  <span class="mono">snorer.params.halo</span>
-Instance.
+*Instance.*
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div>**
 
@@ -46,7 +46,7 @@ Instance.
  
 #### <span class="mono">snorer.params.spike</span>
 
-Instance.
+*Instance.*
 
 The following will be used as keyword arguments when `is_spike = True`. When having `is_spike = False`, typing any of the following arguments into function input will result in ValueError.
 
@@ -64,7 +64,7 @@ The following will be used as keyword arguments when `is_spike = True`. When hav
 
 ####  <span class="mono">snorer.params.vegas</span>
 
-Instance.
+*Instance.*
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div>**
 
 > `nitn` : *int* <br>&nbsp;&nbsp;&nbsp;&nbsp;Number of chains in **vegas** for each integration. Default is 10.

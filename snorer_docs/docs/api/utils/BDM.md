@@ -15,7 +15,7 @@ window.MathJax = {
 # snorer.BoostedDarkMatter
 
 
-### *`class`* <span class="mono">snorer.BoostedDarkMatter(*Rs*,*Rg*,*beta*,*amp2_xv*,*amp2_xe*,<br>*is_spike=False*,*\*\*kwargs*)</span>
+### *`class`* <span class="mono">snorer.BoostedDarkMatter(*Rs*,*Rg*,*beta*,*amp2_xv*,*amp2_xe*,<br>*mt=None*,*is_spike=False*,*\*\*kwargs*)</span>
 
 Superclass: `Constants`
     
@@ -48,7 +48,7 @@ Similarily, for DM-$e$ scattering, $m_1 = m_\chi$, $m_2 = m_e$ and kinetic mixin
 ```python
 def amp2_xe(s,t,u,mx) -> float:
     mV = mx/3
-    me = constant.me
+    me = snorer.constant.me
     gx,eps = 1e-02,1e-06
     Q = gx*eps
     return 2*(s**2 + u**2 + 4*t*(me**2 + mx**2) - 2*(me**2 + mx**2)**2)*(Q/(t - mV**2))**2
@@ -69,7 +69,10 @@ These are the desired amplitudes and serve as the inputs in the class.
 
 > `amp2_xv` : *func* <br>&nbsp;&nbsp;&nbsp;&nbsp;Amplitude squared for DM-$\nu$ interaction with 4 positioning arguments. `amp2_xv = func(s,t,u,mx)`: the first 3 are Mandelstam variables and the last one is the DM mass.
 
-> `amp2_xe` : *func* <br>&nbsp;&nbsp;&nbsp;&nbsp;Identical to `amp2_xv`, but is for DM-$e$ interaction.
+> `amp2_xe` : *func* <br>&nbsp;&nbsp;&nbsp;&nbsp;Arguments are identical to `amp2_xv`, but is for DM-$e$ interaction. Generally, `amp2_xe` is not exclusively for electron, user can assume any particle in the detector to be scattered off by BDM. If the target is not electron, user has to input its mass
+`mt`. See the description for parameter `mt` next.
+
+> `mt` : *None/float* <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of the target in the detector. Default is `None` and implies the target is electron. If `amp2_xe` is for particle other than electron, user has to assign its mass here. The unit is MeV.
 
 > `is_spike` : *bool* <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in $n_\chi$. Default is False.
 
@@ -77,7 +80,7 @@ These are the desired amplitudes and serve as the inputs in the class.
 
 ####  <span class="mono">nx(*r*,*mx*)</span>
 
-Method.
+*Method.*
 
 Yields DM number density at place distant $r$ to GC. Whether spike feature is on depending the initial setting of `is_spike` when the class instance is initialized.
 
@@ -92,7 +95,7 @@ Yields DM number density at place distant $r$ to GC. Whether spike feature is on
 
 ####  <span class="mono">dsigma_xv(*Tx*,*mx*,*psi*)</span>
 
-Method.
+*Method.*
 
 Yields differential DM-$\nu$ cross section for a given $(T_\chi,m_\chi,\psi)$ associated with `amp2_xv`.
 
@@ -110,7 +113,7 @@ Yields differential DM-$\nu$ cross section for a given $(T_\chi,m_\chi,\psi)$ as
 
 ####  <span class="mono">sigma_xe(*Tx*,*mx*)</span>
 
-Method.
+*Method.*
 
 Yields total DM-$e$ cross section for a given $(T_\chi,m_\chi)$ associated with `amp2_xe`.
 
@@ -126,7 +129,7 @@ Yields total DM-$e$ cross section for a given $(T_\chi,m_\chi)$ associated with 
 
 ####  <span class="mono">flux(*t*,*Tx*,*mx*,*\*\*kwargs*)</span>
 
-Method.
+*Method.*
 
 The SN$\nu$ BDM flux at time $t$ on Earth after integrated over
 a field-of-view $d\Omega_{\rm lab}$. Note that zenith angle $\theta$ is integrated up to $\theta_{\rm M}^*$
@@ -148,7 +151,7 @@ and azimuthal angle $\varphi$ from $0$ to $2\pi$.
 
 ####  <span class="mono">event(*mx*,*Tx_range=[5,30]*,*t_range=[10,1.1045e+09]*,*\*\*kwargs*)</span>
 
-Method.
+*Method.*
 
 The SN$\nu$ BDM evnet *per electron*, $N_{\chi,0}$. To retrieve the correct
 event number, one should mutiply the total electron number $N_e$.

@@ -57,7 +57,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../../manual/tutorial/">Tutorial</a>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../../../manual/advanced.md">Advanced</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../manual/advanced/">Advanced Topics</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">API</span></p>
@@ -222,7 +222,7 @@ window.MathJax = {
 </style>
 
 <h1 id="snorerboosteddarkmatter">snorer.BoostedDarkMatter<a class="headerlink" href="#snorerboosteddarkmatter" title="Permanent link">&para;</a></h1>
-<h3 id="class-snorerboosteddarkmatterrsrgbetaamp2_xvamp2_xeis_spikefalsekwargs"><em><code>class</code></em> <span class="mono">snorer.BoostedDarkMatter(<em>Rs</em>,<em>Rg</em>,<em>beta</em>,<em>amp2_xv</em>,<em>amp2_xe</em>,<br><em>is_spike=False</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#class-snorerboosteddarkmatterrsrgbetaamp2_xvamp2_xeis_spikefalsekwargs" title="Permanent link">&para;</a></h3>
+<h3 id="class-snorerboosteddarkmatterrsrgbetaamp2_xvamp2_xemtnoneis_spikefalsekwargs"><em><code>class</code></em> <span class="mono">snorer.BoostedDarkMatter(<em>Rs</em>,<em>Rg</em>,<em>beta</em>,<em>amp2_xv</em>,<em>amp2_xe</em>,<br><em>mt=None</em>,<em>is_spike=False</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#class-snorerboosteddarkmatterrsrgbetaamp2_xvamp2_xemtnoneis_spikefalsekwargs" title="Permanent link">&para;</a></h3>
 <p>Superclass: <code>Constants</code></p>
 <p>Class with medoths that evaluate supernova-neutrino-boosted dark matter (SN<span class="arithmatex">\(\nu\)</span> BDM) coming from SN in arbitrary distant
 galaxy with DM-<span class="arithmatex">\(\nu\)</span> and DM-<span class="arithmatex">\(e\)</span> interaction cross sections descrbied by a specific particle model. This class integrates functions like <code>snorer.flux</code> and <code>snorer.event</code>
@@ -244,7 +244,7 @@ incident and target particles respectively and <span class="arithmatex">\(m_V\)<
 <p>Similarily, for DM-<span class="arithmatex">\(e\)</span> scattering, <span class="arithmatex">\(m_1 = m_\chi\)</span>, <span class="arithmatex">\(m_2 = m_e\)</span> and kinetic mixing <span class="arithmatex">\(\varepsilon = 10^{-6}\)</span>,</p>
 <pre><code class="language-python">def amp2_xe(s,t,u,mx) -&gt; float:
     mV = mx/3
-    me = constant.me
+    me = snorer.constant.me
     gx,eps = 1e-02,1e-06
     Q = gx*eps
     return 2*(s**2 + u**2 + 4*t*(me**2 + mx**2) - 2*(me**2 + mx**2)**2)*(Q/(t - mV**2))**2
@@ -256,12 +256,14 @@ incident and target particles respectively and <span class="arithmatex">\(m_V\)<
 <p><code>Rg</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to the center of a distant galaxy, kpc.</p>
 <p><code>beta</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Off-center angle, rad.</p>
 <p><code>amp2_xv</code> : <em>func</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Amplitude squared for DM-<span class="arithmatex">\(\nu\)</span> interaction with 4 positioning arguments. <code>amp2_xv = func(s,t,u,mx)</code>: the first 3 are Mandelstam variables and the last one is the DM mass.</p>
-<p><code>amp2_xe</code> : <em>func</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Identical to <code>amp2_xv</code>, but is for DM-<span class="arithmatex">\(e\)</span> interaction.</p>
+<p><code>amp2_xe</code> : <em>func</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Arguments are identical to <code>amp2_xv</code>, but is for DM-<span class="arithmatex">\(e\)</span> interaction. Generally, <code>amp2_xe</code> is not exclusively for electron, user can assume any particle in the detector to be scattered off by BDM. If the target is not electron, user has to input its mass
+<code>mt</code>. See the description for parameter <code>mt</code> next.</p>
+<p><code>mt</code> : <em>None/float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Mass of the target in the detector. Default is <code>None</code> and implies the target is electron. If <code>amp2_xe</code> is for particle other than electron, user has to assign its mass here. The unit is MeV.</p>
 <p><code>is_spike</code> : <em>bool</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Whether spike feature is included in <span class="arithmatex">\(n_\chi\)</span>. Default is False.</p>
 <p><strong><em><code>**kwargs</code></em></strong>  <br>&nbsp;&nbsp;&nbsp;&nbsp; Keyword arguments for characteristic parameters of NFW profile and spike halo, . If <code>is_spike = False</code>, the parameters for configuring spiky halo will be deactivated. Default values assume Milky Way. See default arguments in <a href="../../params/params/#snorerparamshalo" target="_blank"><code>snorer.params.halo</code></a> and <a href="../../params/params/#snorerparamsspike" target="_blank"><code>snorer.params.spike</code></a>.</p>
 </blockquote>
 <h4 id="nxrmx"><span class="mono">nx(<em>r</em>,<em>mx</em>)</span><a class="headerlink" href="#nxrmx" title="Permanent link">&para;</a></h4>
-<p>Method.</p>
+<p><em>Method.</em></p>
 <p>Yields DM number density at place distant <span class="arithmatex">\(r\)</span> to GC. Whether spike feature is on depending the initial setting of <code>is_spike</code> when the class instance is initialized.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
@@ -273,7 +275,7 @@ incident and target particles respectively and <span class="arithmatex">\(m_V\)<
 <p><code>out</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Dark matter number density at <span class="arithmatex">\(r\)</span>, cm<sup>−3</sup>.</p>
 </blockquote>
 <h4 id="dsigma_xvtxmxpsi"><span class="mono">dsigma_xv(<em>Tx</em>,<em>mx</em>,<em>psi</em>)</span><a class="headerlink" href="#dsigma_xvtxmxpsi" title="Permanent link">&para;</a></h4>
-<p>Method.</p>
+<p><em>Method.</em></p>
 <p>Yields differential DM-<span class="arithmatex">\(\nu\)</span> cross section for a given <span class="arithmatex">\((T_\chi,m_\chi,\psi)\)</span> associated with <code>amp2_xv</code>.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
@@ -286,7 +288,7 @@ incident and target particles respectively and <span class="arithmatex">\(m_V\)<
 <p><code>out</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Differential DM-<span class="arithmatex">\(\nu\)</span> cross section, cm<sup>2</sup> sr<sup>−1</sup>.</p>
 </blockquote>
 <h4 id="sigma_xetxmx"><span class="mono">sigma_xe(<em>Tx</em>,<em>mx</em>)</span><a class="headerlink" href="#sigma_xetxmx" title="Permanent link">&para;</a></h4>
-<p>Method.</p>
+<p><em>Method.</em></p>
 <p>Yields total DM-<span class="arithmatex">\(e\)</span> cross section for a given <span class="arithmatex">\((T_\chi,m_\chi)\)</span> associated with <code>amp2_xe</code>.</p>
 <p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
 <blockquote>
@@ -298,7 +300,7 @@ incident and target particles respectively and <span class="arithmatex">\(m_V\)<
 <p><code>out</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Total DM-<span class="arithmatex">\(e\)</span> cross section, cm<sup>2</sup>.</p>
 </blockquote>
 <h4 id="fluxttxmxkwargs"><span class="mono">flux(<em>t</em>,<em>Tx</em>,<em>mx</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#fluxttxmxkwargs" title="Permanent link">&para;</a></h4>
-<p>Method.</p>
+<p><em>Method.</em></p>
 <p>The SN<span class="arithmatex">\(\nu\)</span> BDM flux at time <span class="arithmatex">\(t\)</span> on Earth after integrated over
 a field-of-view <span class="arithmatex">\(d\Omega_{\rm lab}\)</span>. Note that zenith angle <span class="arithmatex">\(\theta\)</span> is integrated up to <span class="arithmatex">\(\theta_{\rm M}^*\)</span>
 and azimuthal angle <span class="arithmatex">\(\varphi\)</span> from <span class="arithmatex">\(0\)</span> to <span class="arithmatex">\(2\pi\)</span>.</p>
@@ -314,7 +316,7 @@ and azimuthal angle <span class="arithmatex">\(\varphi\)</span> from <span class
 <p><code>out</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The time-depenent boosted dark matter flux at Earth, MeV<sup>−1</sup> cm<sup>2</sup> s<sup>−1</sup>.</p>
 </blockquote>
 <h4 id="eventmxtx_range530t_range1011045e09kwargs"><span class="mono">event(<em>mx</em>,<em>Tx_range=[5,30]</em>,<em>t_range=[10,1.1045e+09]</em>,<em>**kwargs</em>)</span><a class="headerlink" href="#eventmxtx_range530t_range1011045e09kwargs" title="Permanent link">&para;</a></h4>
-<p>Method.</p>
+<p><em>Method.</em></p>
 <p>The SN<span class="arithmatex">\(\nu\)</span> BDM evnet <em>per electron</em>, <span class="arithmatex">\(N_{\chi,0}\)</span>. To retrieve the correct
 event number, one should mutiply the total electron number <span class="arithmatex">\(N_e\)</span>.
 For instance, if the BDM event rate obtained from this function is <span class="arithmatex">\(N_\chi\)</span>, then the total BDM event in a detector with electron number  <span class="arithmatex">\(N_e\)</span> is</p>

@@ -33,7 +33,7 @@ the BDM flux and event at Earth associated to that particular SN.
 See [Positioning](Positioning.md){:target="_blank"} for more detail.
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div>**
 
-> `t` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;The BDM at specific time $t$, seconds. Time-zero is set to be the arrival of SN$\nu$ at Earth
+> `t` : *array_like* <br>&nbsp;&nbsp;&nbsp;&nbsp;The BDM at specific time $t$, seconds. Time-zero is set to be the arrival of SN$\nu$ at Earth
 
 > `vx` : *array_like*  <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM dimesionless velocity $v_\chi/c$
 

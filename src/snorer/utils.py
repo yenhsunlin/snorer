@@ -83,7 +83,14 @@ class BoostedDarkMatter(Constants):
         'amp2_xv = func(s,t,u,mx)': the first 3 are Mandelstam variables and the last
         one is the DM mass.
     amp2_xe : func
-        Identical to amp2_xv, but is for DM-e interaction.
+        Arguments are identical to 'amp2_xv', but is for DM-$e$ interaction. Generally,
+        'amp2_xe' is not exclusively for electron, users can assume any particle in the
+        detector to be scattered off by BDM. If the target is not electron, user has to
+        input its mass 'mt'. See the description for parameter 'mt' next.
+    mt : float
+        Mass of the target in the detector. Default is None and implies the target is
+        electron. If 'amp2_xe' is for particle other than electron, user has to assign
+        its mass here. The unit is MeV.
     is_spike : bool
         Is spike feature included? Default is False.
     **kwargs
@@ -174,13 +181,15 @@ class BoostedDarkMatter(Constants):
     before its vanishing, SK can accumulate around 7.34e+33*1.1068e-32 ~ 81 event before SNv BDM
     vanished.
     """
-    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,is_spike=False,**kwargs): 
+    def __init__(self,Rs,Rg,beta,amp2_xv,amp2_xe,mt=None,is_spike=False,**kwargs): 
         self.Rs = Rs
         self.Rg = Rg
         self.beta = beta
         self.amp2_xv = amp2_xv
         self.amp2_xe = amp2_xe
         self.is_spike = is_spike
+        if mt is None: self.mt = self.me
+        else: self.mt = mt
 
         # Setup internal function _nx for DM number density calculation
         if self.is_spike is True:  # turn on spike
@@ -205,7 +214,7 @@ class BoostedDarkMatter(Constants):
     
     def sigma_xe(self,Tx,mx) -> float:
         """Obtain total sigma_xe for a given (Tx,mx), cm^2"""
-        me = self.me
+        me = self.mt
         Ex = Tx + mx                             # Total BDM energy, kinetic + mass
         s = 2*me*Ex + mx**2 + me**2
         p_squared = (s - (me + mx)**2) * (s - (me - mx)**2)/4/s
@@ -325,7 +334,7 @@ class BoostedDarkMatter(Constants):
             # # Jacobian, it should not diverge as we already require d > d_trunct
             J = d * vx / (vx * (l - Rs * cos(theta)) + d) * constant.c
             # Differential flux 
-            diff_flux = J * jx * sin(theta)
+            diff_flux = J * jx
         else:
             diff_flux = 0
         return diff_flux
@@ -364,7 +373,7 @@ class BoostedDarkMatter(Constants):
             """
             theta, phi = x
             df = self._differential_flux(t=t,Tx=Tx,mx=mx,theta=theta,phi=phi,d_cut=d_cut,r_cut=r_cut)
-            return df
+            return df * sin(theta)
         
         # Get vanishing time
         _,t_van = _get_tof(Tx,mx,Rs)
@@ -416,7 +425,7 @@ class BoostedDarkMatter(Constants):
             """
             t, Tx, theta, phi = x
             df = self._differential_flux(t=t,Tx=Tx,mx=mx,theta=theta,phi=phi,d_cut=d_cut,r_cut=r_cut)
-            return df * self.sigma_xe(Tx,mx)
+            return df * sin(theta) * self.sigma_xe(Tx,mx)
 
         # Integration range for Tx
         Tx_min,Tx_max = Tx_range

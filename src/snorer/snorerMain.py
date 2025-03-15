@@ -271,7 +271,7 @@ def differential_flux(t,Tx,mx,theta,phi,Rs,beta,Re=8.5,sigxv0=1e-45,is_spike=Fal
         # Jacobian, it should not diverge as we already require d > d_trunct
         J = d * vx / (vx * (l - Rs * cos(theta)) + d) * constant.c
         # Differential flux 
-        diff_flux = J * jx * sin(theta)
+        diff_flux = J * jx
     else:
         diff_flux = 0
     return diff_flux
@@ -330,7 +330,7 @@ def flux(t,Tx,mx,Rs,beta,Re=8.5,sigxv0=1e-45,is_spike=False,**kwargs) -> float:
         theta, phi = x[0], x[1]
         df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta, Re=Re,
                                sigxv0=sigxv0, is_spike=is_spike, **kwargs)
-        return df
+        return df * sin(theta)
 
     # Get vanishing time
     _,t_van = _get_tof(Tx,mx,Rs)
@@ -409,7 +409,7 @@ def event(mx,Rs,beta,Re=8.5,Tx_range=[5,30],t_range=[10,1.1045e+09],sigxv0=1e-45
         t, Tx, theta, phi = x
         df = differential_flux(t=t, Tx=Tx, mx=mx, theta=theta, phi=phi, Rs=Rs, beta=beta, Re=Re,
                                sigxv0=sigxv0, is_spike=is_spike, **kwargs)
-        return df
+        return df * sin(theta)
 
     # Integration range for Tx
     Tx_min,Tx_max = Tx_range
