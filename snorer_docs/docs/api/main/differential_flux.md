@@ -21,7 +21,7 @@ window.MathJax = {
 The differential supernova-neutrin-boosted dark matter flux at Earth at specific time $t$ and angular direction $(\theta,\varphi)$
 
 $$
-\left.\mathcal{J}j_\chi(d,r,T_\chi,\psi)\right|_{t=\frac{d}{c}+\frac{\ell}{v_\chi}-t_\nu}.
+\left.\tau_s\mathcal{J}j_\chi(d(t),r(t),T_\chi,\psi)\right|_{t=\frac{d}{c}+\frac{\ell}{v_\chi}-t_\nu}.
 $$
 
 See the equation before Eq. (18) in [BDM Physics](../../manual/overview.md#from-line-of-sight-to-time-dependency){:target="_blank"}, cf. [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} too.
