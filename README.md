@@ -47,8 +47,6 @@ The versions of these dependencies are not strict, but are recommended to update
 
 ## *snorer* Document
 
-
-
 See the ***snorer*** documentation: <a heref = "https://yenhsunlin.github.io/snorer/" target = "_blank">https://yenhsunlin.github.io/snorer/</a> for more details.
 
 ## Known Issue
