@@ -26,7 +26,7 @@ wheels/
 MANIFEST
 pip-wheel-metadata/
 
-snorer_docs/
+
 
 # Jupyter Notebook
 .ipynb_checkpoints
