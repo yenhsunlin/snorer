@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Tutorial - snorer</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/output/chtml/fonts/woff-v2.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tutorial";
+        var mkdocs_page_input_path = "manual/tutorial.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> snorer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >Overview</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../overview/">BDM Physics</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Tutorial</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#the-snnu-spectrum">The SN\(\nu\) spectrum</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-differential-dm-nu-cross-section">The differential DM-\(\nu\) cross section</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#evaluating-snnu-bdm">Evaluating SN\(\nu\) BDM</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#coordinate-transform-and-sn-in-arbitrary-distant-galaxy">Coordinate transform and SN in arbitrary distant galaxy</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced Topics</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/params/params/">Parameters</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Main</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/main/sn_nu_spectrum/">sn_nu_spectrum</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/main/dsigma_xv/">dsigma_xv</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/main/emissivity_jx/">emissivity_jx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/main/differential_flux/">differential_flux</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/main/flux/">flux</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/main/event/">event</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Halo</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/HaloSpike/">HaloSpike</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/M_sigma/">M_sigma</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/nx/">nx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/nxSpike/">nxSpike</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/radiusInfluence/">radiusInfluence</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/radiusSchwarzschild/">radiusSchwarzschild</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/halo/rhox/">rhox</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Kinematics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../api/kinematics/22scat/">2-2 elastic scattering</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/Kinematics/">Kinematics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/Mandelstam/">Mandelstam</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/Neutrino/">Neutrino</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/get_gx/">get_gx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/get_thetaMax/">get_thetaMax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/get_tvan/">get_tvan</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/get_psiMax/">get_psiMax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/get_vx/">get_vx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/kinematics/KallenLambda/">KallenLambda</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Propagation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../api/geometry/Positioning/">Positioning</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/geometry/Geometry/">Geometry</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/geometry/Propagation/">Propagation</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Utilities</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../api/utils/coord_transf/">Coordinate Transformations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/utils/BDM/">BoostedDarkMatter</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/utils/gal_to_beta/">galactic_to_beta</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../api/utils/equa_to_beta/">equatorial_to_beta</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/constants/Constants/">Constants</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">snorer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">User Manual</li>
+      <li class="breadcrumb-item active">Tutorial</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="tutorial">Tutorial<a class="headerlink" href="#tutorial" title="Permanent link">&para;</a></h1>
+<p>In this tutorial, we briefly introduce the basic usage of <strong>snorer</strong>, from the basic functions related to supernova (SN) flux, and boosted dark matter (BDM) flux and event calculations, etc.
+This tutorial is not meant for a complete guide for all classses and functions, but a portal to utilize the most important feature for physics calculation. For how to manipulate DM halo,
+we refer to their API description pages: <a href="../../api/halo/HaloSpike/" target="_blank"><code>snorer.HaloSpike</code></a> and <a href="../../api/halo/nx/" target="_blank"><code>snorer.nx</code></a>.
+To have a full description of every functions, we refer the users to API document.
+In the following content, all equation numbers are referred to <a href="../overview/#snnu-spectrum" target="_blank">BDM Physics</a> unless specified otherwise.</p>
+<p>We begin with importing snorer and other useful packages in this tutorial. We use <strong>ipyparallel</strong> to manifest multiprocessing feature on jupyter for Mac/Windows users. For linux users, they can simply use <strong>multiprocessing</strong>.</p>
+<pre><code class="language-python"># import python packages
+import numpy as np
+import ipyparallel as ipp
+
+# import plotting package
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+# uncomment the following two lines if you have a Hi-DPI monitor and wish to have a better figure resolution
+# %matplotlib inline
+# %config InlineBackend.figure_format='retina'
+
+# import snorer
+import snorer as sn
+print(f'Current version of snorer: {sn.__version__}')
+</code></pre>
+<pre><code class="language-shell">Current version of snorer: 2.0.0
+</code></pre>
+<h2 id="the-snnu-spectrum">The SN<span class="arithmatex">\(\nu\)</span> spectrum<a class="headerlink" href="#the-snnu-spectrum" title="Permanent link">&para;</a></h2>
+<p>The SN<span class="arithmatex">\(\nu\)</span> spectrum is shown in Eq. (9)  and the corresponding function in snorer is <code>sn.sn_nu_spectrum</code>.
+It takes four arguments where the first two <code>Ev</code> and <code>d</code> are necessary. They indicate the SN<span class="arithmatex">\(\nu\)</span> energy, in MeV, and the flux at distance <span class="arithmatex">\(d\)</span> to the SN explosion site.
+The last two <code>d_trunct</code> and <code>is_density</code> are optional. When <span class="arithmatex">\(d\to 0\)</span>, Eq. (9) diverges, one has to set a truncation point. The default is <span class="arithmatex">\(3.24\times 10^{-15}\)</span> kpc which roughly corresponds to 100 km and is the size of neutrino sphere. <code>is_density</code> is to change the output to density unit, see Eq. (12).</p>
+<pre><code class="language-python"># Neutrino energy
+Ev_vals = np.logspace(-3,2,100)
+# Distance to the explosion site
+d_vals = np.logspace(-16,2,200)
+
+# Setup meshgrid for (Ev,d) plane
+Ev,D = np.meshgrid(Ev_vals,d_vals,indexing='ij')
+# Evaluate SNv flux
+DNvDEv = sn.sn_nu_spectrum(Ev,D)
+
+# Plot
+fig, ax = plt.subplots()
+# log-scaler color
+norm = mcolors.LogNorm(vmin=DNvDEv.min()+1, vmax=DNvDEv.max())
+# Contour plot
+contour = ax.contourf(Ev, D, DNvDEv, levels=20, cmap=&quot;viridis&quot;, norm=norm)
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.set_xlabel(r'$E_\nu$ [MeV]')
+ax.set_ylabel(r'$d$ [kpc]')
+# Color bar
+cbar = fig.colorbar(contour, ax=ax)
+cbar.set_label(r&quot;$dN_\nu/dE_\nu$ [MeV$^{-1}$ cm$^{-2}$ s$^{-1}$]&quot;)
+plt.show()
+</code></pre>
+<figure>
+<center><img src="../../figs/output_3_1.png" alt="scheme" style="width: 60%;">
+</figure>
+
+<h2 id="the-differential-dm-nu-cross-section">The differential DM-<span class="arithmatex">\(\nu\)</span> cross section<a class="headerlink" href="#the-differential-dm-nu-cross-section" title="Permanent link">&para;</a></h2>
+<p>How DM distributes in lab-frame angular direction after boosted by <span class="arithmatex">\(\nu\)</span> is desecribed by Eq. (2). Given its energy indpendency, we assume the total cross section, after integrating over solid angle, is <span class="arithmatex">\(\sigma_0\)</span>. The differential case is just <span class="arithmatex">\(\sigma_0 \times g_\chi\)</span>.
+The corresponding function is <code>sn.dsigma_xv</code> and it takes four parameters. The first three are <code>Ev</code>, <code>mx</code> and <code>psi</code>, the incoming neutrino energy (MeV), DM mass (MeV) and lab frame scattering angle (rad). The last one <code>sigxv0</code> is <span class="arithmatex">\(\sigma_0\)</span> and by default is 10<sup>−45</sup> cm<sup>2</sup>. </p>
+<pre><code class="language-python"># Neutrino energy, mx values and psi range
+Ev = 10
+mx_vals = np.logspace(-3,0,4)
+sigma0 = 1e-35
+psi_vals = np.linspace(0,np.pi/2,500)
+
+for mx in mx_vals:
+    # differential cross section
+    diff_sigma0 = sn.dsigma_xv(Ev,mx,psi_vals,sigxv0 = sigma0)
+    # make plot
+    plt.plot(psi_vals,diff_sigma0,label=fr'$m_\chi={1000*mx:.0f}$ keV')
+plt.yscale('log')
+plt.legend()
+plt.xlabel(r'$\psi$ [rad]')
+plt.ylabel(r'$d\sigma_{\chi\nu}/d\Omega_{\rm lab}$ [cm$^2$ sr$^{-1}$]')
+plt.show()
+</code></pre>
+<figure>
+<center><img src="../../figs/output_5_0.png" alt="scheme" style="width: 60%;">
+</figure>
+
+<p>One can also compare with <a href="../../api/kinematics/get_gx/" target="_blank"><code>sn.get_gx</code></a> because <code>sn.dsigma_xv = sigxv0 * sn.get_gx</code>. Note that the plot in <code>sn.get_gx</code> page, we have weighted the result by <span class="arithmatex">\(d\Omega=2\pi \sin\psi\)</span>. It explains the numerics is 0 at <span class="arithmatex">\(\psi=0\)</span>.</p>
+<h2 id="evaluating-snnu-bdm">Evaluating SN<span class="arithmatex">\(\nu\)</span> BDM<a class="headerlink" href="#evaluating-snnu-bdm" title="Permanent link">&para;</a></h2>
+<h3 id="flux-at-earth">Flux at Earth<a class="headerlink" href="#flux-at-earth" title="Permanent link">&para;</a></h3>
+<p>The SN<span class="arithmatex">\(\nu\)</span> BDM flux at Earth is given by Eq. (18), which has been integrated over the sky that contains non-zero BDM.
+The corresponding function is <code>sn.flux</code> and takes 8 parameters and <code>**kwargs</code>. The first 5 are <code>t</code>, <code>Tx</code>, <code>mx</code>, <code>Rs</code> and <code>beta</code> that indicate the time of arrival at Earth, relative to SN<span class="arithmatex">\(\nu\)</span>'s arrival at Earth, the BDM kinetic energy (MeV), the BDM mass (MeV), the distance to SN (kpc) and the off-center angle (rad).
+The rest 3 optional are <code>Re = 8.5</code>, <code>sigxv0 = 1e-45</code> and <code>is_density = False</code>. <code>Re</code> is the distance to galactic center and <code>is_density</code> determines whether the halo spike should be included.
+For additional keyword arguments, see pages for <a href="../../api/main/flux/" target="_blank"><code>sn.flux</code></a> and <a href="../../api/params/params/" target="_blank"><code>sn.params</code></a>.</p>
+<p>Additionally, BDM flux only lasts unitil <span class="arithmatex">\(t=t_{\rm van}\)</span>, see Eq. (23). To evaluate the time-dependent flux, <span class="arithmatex">\(t&gt;t_{\rm van}\)</span> is meaningless as the flux is 0.
+We can obtain the maximum time to be calculated at first by <code>sn.get_tvan</code>. It takes three inputs <code>Tx</code>, <code>mx</code> and <code>Rs</code>.</p>
+<p>For example, let's assume there is a SN at <span class="arithmatex">\((R_s,\beta)=(9.9\,{\rm kpc},0.33\,{\rm rad})\)</span> and BDM has <span class="arithmatex">\((T_\chi,m_\chi)=(10,0.1)\)</span> MeV:</p>
+<pre><code class="language-python"># SN location
+Rs, beta = 9.9, 0.33  # kpc, rad
+
+# BDM properties
+Tx, mx = 10, 0.1 # MeV
+
+# Get vanishing time
+tvan = sn.get_tvan(Tx,mx,Rs)
+print(f'Vanishing time is {tvan/sn.constant.year2Seconds:.2f} years.') # convert from seconds to years
+</code></pre>
+<pre><code class="language-shell">Vanishing time is 80.61 years.
+</code></pre>
+<p>For a particular time, say <span class="arithmatex">\(t=23\)</span> years, one can set</p>
+<pre><code class="language-python">t = 23 * sn.constant.year2Seconds
+bdmflux = sn.flux(t,Tx,mx,Rs,beta)
+print(f'BDM flux at {t/sn.constant.year2Seconds:.2f} is {bdmflux:.4e} /MeV/cm^2/s.')
+</code></pre>
+<pre><code class="language-shell">BDM flux at 23.00 is 5.5491e-18 /MeV/cm^2/s.
+</code></pre>
+<p>Now we can construct the time-dependent BDM flux, say from <span class="arithmatex">\(t=0\)</span> to <span class="arithmatex">\(t=80.61\)</span> years.
+In <code>sn.flux</code> we use <strong>vegas</strong> to perform the multidimension integral Eq. (18). Hence we use <strong>ipyparallel</strong> to utilize the multiprocessing computing on Mac/Windows jupyter notebook.</p>
+<pre><code class="language-python"># Define a function for multiprocessing flux evaluation by ipyparallel
+def get_flux(t):
+    from snorer import flux
+    Rs, beta = 9.9, 0.33  # kpc, rad
+    Tx, mx = 10, 0.1 # MeV
+    return flux(t,Tx,mx,Rs,beta)
+
+# Time steps
+time_vals = np.logspace(1,np.log10(tvan),50)
+
+# request a cluster
+with ipp.Cluster(n = 5) as rc: # 5 cores
+    # get a view on the cluster
+    view = rc.load_balanced_view()
+    # submit the tasks
+    asyncresult = view.map_async(get_flux, time_vals)
+    # wait interactively for results
+    asyncresult.wait_interactive()
+    # retrieve actual results
+    bdmflux_time = asyncresult.get()
+</code></pre>
+<pre><code class="language-shell">Starting 5 engines with &lt;class 'ipyparallel.cluster.launcher.LocalEngineSetLauncher'&gt;
+    0%|          | 0/5 [00:00&lt;?, ?engine/s]
+get_flux:   0%|          | 0/50 [00:00&lt;?, ?tasks/s]
+Stopping engine(s): 1741921266
+engine set stopped 1741921266: {'engines': {'0': {'exit_code': 0, 'pid': 5889, 'identifier': '0'}, '1': {'exit_code': 0, 'pid': 5890, 'identifier': '1'}, '2': {'exit_code': 0, 'pid': 5891, 'identifier': '2'}, '3': {'exit_code': 0, 'pid': 5892, 'identifier': '3'}, '4': {'exit_code': 0, 'pid': 5893, 'identifier': '4'}}, 'exit_code': 0}
+Stopping controller
+Controller stopped: {'exit_code': 0, 'pid': 5876, 'identifier': 'ipcontroller-1741921265-4v3e-2996'}
+</code></pre>
+<pre><code class="language-python"># Plot
+plt.plot(time_vals/sn.constant.year2Seconds,bdmflux_time)
+plt.xscale('log')
+plt.yscale('log')
+plt.ylim(5e-19,2e-17)
+plt.xlabel(r'$t$ [years]')
+plt.ylabel(r'$d\Phi_\chi/dT_\chi dt$ [MeV$^{-1}$ cm$^{-2}$ s$^{-1}$]')
+plt.show()
+</code></pre>
+<figure>
+<center><img src="../../figs/output_13_0.png" alt="scheme" style="width: 60%;">
+</figure>
+
+<h3 id="event-at-earth">Event at Earth<a class="headerlink" href="#event-at-earth" title="Permanent link">&para;</a></h3>
+<p>We call function <code>sn.event</code> to evaluate the BDM event <span class="arithmatex">\(N_\chi\)</span> at Earth. It's simply</p>
+<div class="arithmatex">\[
+N_\chi =N_e \sigma_{\chi e} \int_{t_{\rm min}}^{t_{\rm max}} dt\int_{T_{\chi,{\rm min}}}^{T_{\chi,{\rm max}}}dT_\chi \frac{d\Phi_\chi}{dT_\chi dt}
+\]</div>
+<p>It takes 8 inputs and <code>**kwargs</code>. The first three <code>mx</code>, <code>Rs</code> and <code>beta</code> are necessary.
+The last five <code>Re</code>, <code>Tx_range</code>, <code>t_range</code>, <code>sigxv0</code> and <code>is_spike</code> are optional. By default <code>Tx_range = [5,30]</code> is the <span class="arithmatex">\(T_\chi\)</span>-integration range (MeV) and <code>t_range = [10,1.1045e+09]</code> is the time-integration range (seconds). The default <span class="arithmatex">\(t_{\rm max}\)</span> approximates 35 years. Note that the function will automatically truncate <span class="arithmatex">\(t_{\rm max}\)</span> at <span class="arithmatex">\(t_{\rm van}\)</span> if the user-input <span class="arithmatex">\(t_{\rm max}\)</span> is greater than <span class="arithmatex">\(t_{\rm van}\)</span>.</p>
+<p>Note that <code>sn.event</code> is normalized to <span class="arithmatex">\(N_e = 1\)</span>, the electron number, and <span class="arithmatex">\(\sigma_{\chi e}=1\)</span> cm<sup>2</sup>, the DM-electron cross section.
+One can easily scale the result to a detector with arbitrary number of <span class="arithmatex">\(N_e\)</span> and  <span class="arithmatex">\(\sigma_{\chi e}=1\)</span>.</p>
+<pre><code class="language-python"># Define a function for multiprocessing event evaluation by ipyparallel
+def get_event(mx):
+    from snorer import event
+    Rs, beta = 8.5, 0.0  # kpc, rad
+    return event(mx,Rs,beta,r_cut=1e-5,neval=30000)  # increasing the evaluation number in each MCMC chain in vegas
+
+# DM mass to be evaluated
+mx_vals = np.logspace(-6,2,35)
+
+# request a cluster
+with ipp.Cluster(n = 5) as rc: # 5 cores
+    # get a view on the cluster
+    view = rc.load_balanced_view()
+    # submit the tasks
+    asyncresult = view.map_async(get_event, mx_vals)
+    # wait interactively for results
+    asyncresult.wait_interactive()
+    # retrieve actual results
+    bdmevent_mx = asyncresult.get()
+</code></pre>
+<pre><code class="language-shell">Starting 5 engines with &lt;class 'ipyparallel.cluster.launcher.LocalEngineSetLauncher'&gt;
+    0%|          | 0/5 [00:00&lt;?, ?engine/s]
+get_event:   0%|          | 0/35 [00:00&lt;?, ?tasks/s]
+engine set stopped 1741928354: {'engines': {'0': {'exit_code': 0, 'pid': 9398, 'identifier': '0'}, '1': {'exit_code': 0, 'pid': 9399, 'identifier': '1'}, '2': {'exit_code': 0, 'pid': 9400, 'identifier': '2'}, '4': {'exit_code': 0, 'pid': 9402, 'identifier': '4'}, '3': {'exit_code': 0, 'pid': 9401, 'identifier': '3'}}, 'exit_code': 0}
+Stopping engine(s): 1741928391
+engine set stopped 1741928391: {'engines': {'0': {'exit_code': 0, 'pid': 9444, 'identifier': '0'}, '1': {'exit_code': 0, 'pid': 9445, 'identifier': '1'}, '2': {'exit_code': 0, 'pid': 9446, 'identifier': '2'}, '3': {'exit_code': 0, 'pid': 9447, 'identifier': '3'}, '4': {'exit_code': 0, 'pid': 9448, 'identifier': '4'}}, 'exit_code': 0}
+Stopping controller
+Controller stopped: {'exit_code': 0, 'pid': 9432, 'identifier': 'ipcontroller-1741928390-sv9q-2996'}
+</code></pre>
+<p>Assume <span class="arithmatex">\(N_e=3\times 10^{33}\)</span> and <span class="arithmatex">\(\sigma_{\chi e}=10^{-35}\)</span> cm<sup>2</sup>:</p>
+<pre><code class="language-python">Ne = 1e33
+sigxe = 1e-35
+bdmevent_mx = np.array(bdmevent_mx) * Ne * sigxe
+
+# Plot
+plt.scatter(mx_vals,bdmevent_mx)
+plt.xscale('log')
+plt.yscale('log')
+#plt.ylim(5e-19,2e-17)
+plt.xlabel(r'$m_\chi$ [MeV]')
+plt.ylabel(r'$N_\chi$')
+plt.show()
+</code></pre>
+<figure>
+<center><img src="../../figs/output_17_0.png" alt="scheme" style="width: 60%;">
+</figure>
+
+<h3 id="more-about-kwargs-in-snflux-and-snevent">More about <code>**kwargs</code> in <code>sn.flux</code> and <code>sn.event</code><a class="headerlink" href="#more-about-kwargs-in-snflux-and-snevent" title="Permanent link">&para;</a></h3>
+<p>We elaborate the optional parameters contained in <code>**kwargs</code> for both <code>sn.flux</code> and <code>sn.event</code>. Practically, they determine the DM halo shape (<code>sn.params.halo</code> and <code>sn.params.spike</code>) and control <strong>vegas</strong> algortihm (<code>sn.params.vegas</code>). See its <a href="../../api/params/params/" target="_blank">API page</a> for detail.</p>
+<p>For halo related <code>**kwargs</code>, if sets <code>is_spike = False</code>, then only three are avalaible:</p>
+<ol>
+<li><code>rhos</code>: Characteristic denisty, MeV cm<sup>-3</sup>.</li>
+<li><code>rs</code>: Characteristic length, kpc.</li>
+<li><code>n</code>: Halo profile slope.</li>
+</ol>
+<p>If <code>is_spike = True</code>, then there are five additional <code>**kwargs</code> will be activated:</p>
+<ol>
+<li><code>mBH</code>: Supermassive black hole (SMBH) mass, <span class="arithmatex">\(M_\odot\)</span>.</li>
+<li><code>tBH</code>: SMBH age, years.</li>
+<li><code>rh</code>: SMBH influence radius, kpc.</li>
+<li><code>alpha</code>: Spike slope, string type, only two options: <code>'3/2'</code> and <code>'7/3'</code>.</li>
+<li><code>sigv</code>: DM annihilation cross section in the unit of 10<sup>-26</sup> cm<sup>3</sup> s<sup>-1</sup>. For example, if we wish to have <span class="arithmatex">\(\langle \sigma v\rangle = 3\times 10^{-26}\)</span> cm<sup>3</sup> s<sup>-1</sup>, we simply set <code>sigv = 3</code>.</li>
+</ol>
+<p>If one sets <code>is_spike = False</code> and typing any of the above <code>**kwargs</code> for spiky halo, ValueError will appear.</p>
+<p>Now if we want to evaluate a galaxy similar to our Milky Way but <span class="arithmatex">\(\rho_s=100\)</span> and <span class="arithmatex">\(n=3.3\)</span>. Also we wish to have spike feature, such as SMBH mass is <span class="arithmatex">\(10^7~M_\odot\)</span> and strong annihilation such that <span class="arithmatex">\(\langle \sigma v\rangle = 13\times 10^{-26}\)</span>. We can then set</p>
+<pre><code class="language-python"># Halo setup
+rhos, n = 100, 3.3
+mBH, sigv = 1e7, 13
+
+# SN location
+Rs, beta = 9.9, 0.33  # kpc, rad
+
+# BDM properties
+Tx, mx = 10, 0.1 # MeV
+
+# Flux
+t = 15*sn.constant.year2Seconds 
+bdmflux_customized = sn.flux(t,Tx,mx,Rs,beta,is_spike=True,mBH=mBH,sigv=sigv,neval=15000)
+print(bdmflux_customized)
+</code></pre>
+<pre><code class="language-shell">6.6134929121434916e-18
+</code></pre>
+<h2 id="coordinate-transform-and-sn-in-arbitrary-distant-galaxy">Coordinate transform and SN in arbitrary distant galaxy<a class="headerlink" href="#coordinate-transform-and-sn-in-arbitrary-distant-galaxy" title="Permanent link">&para;</a></h2>
+<p><strong>snorer</strong> also provides functions for converting galactic and equatorial coordinates into off-center angle <span class="arithmatex">\(\beta\)</span>, see <a href="../../api/utils/coord_transf/" target="_blank">Coordinate Transoformation</a> for discussion.
+This aids us to compute those SNe documented in <a href="http://snrcat.physics.umanitoba.ca/" target="_blank">SRcat</a>.</p>
+<p>For example, the <a href="http://snrcat.physics.umanitoba.ca/SNRrecord.php?id=G184.6m05.8" target="_blank">Crab Neubla</a> has <span class="arithmatex">\((\alpha,\delta)= (05{\rm h}34{\rm m}31{\rm s}, 22{\rm d}01{\rm m}00{\rm s})\)</span> in equatorial coordinate based on ICRS J2000.0 frame. We can obtain <span class="arithmatex">\(\beta\)</span> by <code>sn.equatorial_to_beta</code>. This function takes three inputs and the first two are <code>ra</code> and <code>dec</code> in string type which correspond to <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\delta\)</span> of the SN to be investigated.
+The third one <code>GC_coord</code> is optional. Default <code>None</code> will automatically refer to Milky Way center. If you have your own prefer galaxy to be studied, please specifiy as <code>GC = [gc_ra,gc_dec]</code> where <code>gc_ra</code> and <code>gc_dec</code> are the equatorial coordinate of the galactic center.</p>
+<p>Additionally, <code>sn.equatorial_to_beta</code> will output a tuple contains three values <span class="arithmatex">\((\beta,\ell,b)\)</span> where the last two indicate the galactic coordinate <span class="arithmatex">\(\ell\)</span> and <span class="arithmatex">\(b\)</span> of SN.</p>
+<pre><code class="language-python"># Coordinate
+crab_ra, crab_dec = '05h34m31s', '22d01m00s'
+crab_beta,_,_ = sn.equatorial_to_beta(crab_ra,crab_dec)
+print(f'Off-center angle of Crab Neubla is {crab_beta:.3e} rad.')
+</code></pre>
+<pre><code class="language-shell">Off-center angle of Crab Neubla is 3.013e+00 rad.
+</code></pre>
+<p>Now we show a case where SN is not in the Milky Way, the SN1987a, which located in Large Magellanic Cloud. There locations are given in</p>
+<pre><code class="language-python"># Print LMC coordinate: ra,dec,dist
+print(sn.constant.LMC_coord)
+
+# Print SN1987a coordinate: ra,dec,dist
+print(sn.constant.SN1987a_coord)
+</code></pre>
+<pre><code class="language-shell">['05h23m34.5264s', '-69d45m22.053s', 49.97]
+['05h35m27.8733s', '-69d16m10.478s', 51.4]
+</code></pre>
+<p>Hence to get <span class="arithmatex">\(\beta\)</span>, we do</p>
+<pre><code class="language-python">SN1987a_ra,SN1987a_dec,Rs = sn.constant.SN1987a_coord
+LMC_ra,LMC_dec,Rg = sn.constant.LMC_coord
+sn1987a_beta,_,_ = sn.equatorial_to_beta(SN1987a_ra,SN1987a_dec,GC_coord=[LMC_ra,LMC_dec])
+</code></pre>
+<p>To evaluate event, we still use <code>sn.event</code> but have to specify <code>Re</code> by <code>Rg</code> because the default <code>Re = 8.5</code> implies the distance between Earth and Milky Way center.</p>
+<pre><code class="language-python">mx = 0.5
+beta = 0.0  # kpc, rad
+SN1987a_event = sn.event(mx,Rs,beta,Re=Rg,r_cut=1e-5,neval=30000)
+SN1987a_event *= (Ne * sigxe) # Assuming Ne and sigma_xe follow previously
+print(f'BDM event from SN1987a in LMC is {SN1987a_event:.3e}.')
+</code></pre>
+<pre><code class="language-shell">BDM event from SN1987a in LMC is 8.512e-13.
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../overview/" class="btn btn-neutral float-left" title="BDM Physics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../advanced/" class="btn btn-neutral float-right" title="Advanced Topics">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../advanced/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
