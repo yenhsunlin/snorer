@@ -43,7 +43,7 @@ where **vegas** is a the backend engine for evaluating multidimensional integral
 Other packages maybe required by these dependencies during the installation, see `requirements.txt` for details.
 The versions of these dependencies are not strict, but are recommended to update to the latest ones to avoid incompatibility.
 
-## Documentation
+## *snorer* Document
 
 See the ***snorer*** documentation: <a heref = "https://yenhsunlin.github.io/snorer/" target = "_blank">https://yenhsunlin.github.io/snorer/</a> for more details.
 
@@ -60,7 +60,7 @@ To be fair, the probability of a very cuspy DM spike surving the gravitational d
 
 This issue is scheduled to fix in the future update.
 
-## Bugs and troubleshooting
+## Bugs and Troubleshooting
 
 Please report to the author, Yen-Hsun Lin, via [yenhsun@phys.ncku.edu.tw](mailto:yenhsun@phys.ncku.edu.tw).
 
