@@ -1,0 +1,92 @@
+site_name: snorer
+
+nav:
+  - Introduction: index.md
+  - User Manual:
+    - Overview:
+      - BDM Physics: manual/overview.md
+      #- Emissivity: manual/emissivity.md
+    - Tutorial: manual/tutorial.md
+    - Advanced Topics: manual/advanced.md
+  - API:
+    - Parameters: api/params/params.md
+    - Main:
+      - Functions:
+        - sn_nu_spectrum: api/main/sn_nu_spectrum.md
+        - dsigma_xv: api/main/dsigma_xv.md
+        - emissivity_jx: api/main/emissivity_jx.md
+        - differential_flux: api/main/differential_flux.md
+        - flux: api/main/flux.md
+        - event:  api/main/event.md
+    - Halo:
+      - Classes:
+        - HaloSpike: api/halo/HaloSpike.md
+      - Functions:
+        - M_sigma: api/halo/M_sigma.md
+        - nx: api/halo/nx.md
+        - nxSpike: api/halo/nxSpike.md
+        - radiusInfluence: api/halo/radiusInfluence.md
+        - radiusSchwarzschild: api/halo/radiusSchwarzschild.md
+        - rhox: api/halo/rhox.md
+    - Kinematics:
+      - 2-2 elastic scattering: api/kinematics/22scat.md
+      - Classes:
+        - Kinematics: api/kinematics/Kinematics.md
+        - Mandelstam: api/kinematics/Mandelstam.md
+        - Neutrino: api/kinematics/Neutrino.md
+      - Functions:
+        - get_gx: api/kinematics/get_gx.md
+        - get_thetaMax: api/kinematics/get_thetaMax.md
+        - get_tvan: api/kinematics/get_tvan.md
+        - get_psiMax: api/kinematics/get_psiMax.md
+        - get_vx: api/kinematics/get_vx.md
+        - KallenLambda: api/kinematics/KallenLambda.md
+    - Propagation: 
+      - Positioning: api/geometry/Positioning.md
+      - Classes:
+        - Geometry: api/geometry/Geometry.md
+        - Propagation: api/geometry/Propagation.md
+    - Utilities:
+      - Coordinate Transformations: api/utils/coord_transf.md
+      - Classes:
+        - BoostedDarkMatter: api/utils/BDM.md
+      - Functions:
+        - galactic_to_beta: api/utils/gal_to_beta.md
+        - equatorial_to_beta: api/utils/equa_to_beta.md
+    - Constants: api/constants/Constants.md
+
+theme:
+  name: readthedocs
+  #name: material
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+
+markdown_extensions:
+#  - pymdownx.highlight:
+#      use_pygments: true
+  - pymdownx.arithmatex:
+      generic: true
+  - attr_list
+  - toc:
+      permalink: true
+      toc_depth: 2  # 只顯示 H2（##），隱藏 H3（###）以下的標題
+
+extra:
+  toc:
+    exclude:
+      - "docs/api/constants/*.md"  # 隱藏某個資料夾內的所有 .md
+      #- "docs/myfile.md"  # 隱藏特定 .md 文件的 TOC
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  #- https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js 
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js
+  #- js/mathjax-config.js
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/output/chtml/fonts/woff-v2.css
+
+
