@@ -5,6 +5,7 @@
 
 # ***snorer***: *S*upernova-*N*eutrino-b*O*osted da*R*k matt*ER*
 
+![Version](https://img.shields.io/badge/version-2.0-blue.svg)
 
 `snorer` is a package for evaluating time-of-flight signatures of supernova-neutrino-boosted dark matter (SNν BDM) from our Milky Way (MW), SN1987a in Large Magellanic Cloud (LMC) and SN in arbitrary distant galaxy based on
 <a href = "https://doi.org/10.1103/PhysRevLett.130.111002" target = "_blank">*Phys. Rev. Lett.* **130**, 111002 (2023)</a> [<a href = "https://arxiv.org/abs/2206.06864" target = "_blank">arXiv:2206.06864</a>]
