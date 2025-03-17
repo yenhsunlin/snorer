@@ -31,7 +31,7 @@ See Eqs. (22) and (23) in [BDM Physics](../../manual/overview.md#time-dependent-
 
 **<div style="background-color: lightgrey; padding: 5px; width: 100%;">Returns:</div>**
 
-> `out` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM vanishing time $t_{\rm vab}$, seconds
+> `out` : *scalar/ndarray* <br>&nbsp;&nbsp;&nbsp;&nbsp;BDM vanishing time $t_{\rm van}$, seconds
 
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div>**
 
