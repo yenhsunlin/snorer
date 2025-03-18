@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Geometry - snorer</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/output/chtml/fonts/woff-v2.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Geometry";
+        var mkdocs_page_input_path = "api/geometry/Geometry.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> snorer
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Introduction</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Overview</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../manual/overview/">BDM Physics</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../manual/tutorial/">Tutorial</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../manual/advanced/">Advanced Topics</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../params/params/">Parameters</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Main</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/sn_nu_spectrum/">sn_nu_spectrum</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/dsigma_xv/">dsigma_xv</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/emissivity_jx/">emissivity_jx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/differential_flux/">differential_flux</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/flux/">flux</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../main/event/">event</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Halo</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/HaloSpike/">HaloSpike</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/M_sigma/">M_sigma</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/nx/">nx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/nxSpike/">nxSpike</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/radiusInfluence/">radiusInfluence</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/radiusSchwarzschild/">radiusSchwarzschild</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../halo/rhox/">rhox</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Kinematics</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../kinematics/22scat/">2-2 elastic scattering</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/Kinematics/">Kinematics</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/Mandelstam/">Mandelstam</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/Neutrino/">Neutrino</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_gx/">get_gx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_thetaMax/">get_thetaMax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_tvan/">get_tvan</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_psiMax/">get_psiMax</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/get_vx/">get_vx</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../kinematics/KallenLambda/">KallenLambda</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Propagation</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../Positioning/">Positioning</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" >Classes</a>
+    <ul class="current">
+                <li class="toctree-l3 current"><a class="reference internal current" href="#">Geometry</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../Propagation/">Propagation</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Utilities</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../utils/coord_transf/">Coordinate Transformations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Classes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/BDM/">BoostedDarkMatter</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Functions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/gal_to_beta/">galactic_to_beta</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../utils/equa_to_beta/">equatorial_to_beta</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../constants/Constants/">Constants</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">snorer</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API</li>
+          <li class="breadcrumb-item">Propagation</li>
+          <li class="breadcrumb-item">Classes</li>
+      <li class="breadcrumb-item active">Geometry</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <script>
+window.MathJax = {
+  tex: {
+    tags: "ams"  // Auto-numbering, AMS based
+  }
+};
+</script>
+<style>
+.mono {
+    font-family: monospace;
+}
+</style>
+
+<h1 id="snorergeometry">snorer.Geometry<a class="headerlink" href="#snorergeometry" title="Permanent link">&para;</a></h1>
+<h3 id="class-snorergeometrylthetaphirsrebeta"><em><code>class</code></em> <span class="mono">snorer.Geometry(<em>l</em>,<em>theta</em>,<em>phi</em>,<em>Rs</em>,<em>Re</em>,<em>beta</em>)</span><a class="headerlink" href="#class-snorergeometrylthetaphirsrebeta" title="Permanent link">&para;</a></h3>
+<p>The class constructs the static geomatrical relations for <span class="arithmatex">\(d\)</span>, <span class="arithmatex">\(r^\prime\)</span> and <span class="arithmatex">\(\cos\psi\)</span>
+when <span class="arithmatex">\((l,\theta,\phi)\)</span> and <span class="arithmatex">\((R_s,R_e,\beta)\)</span> are specified. 
+See <a href="../Positioning/" target="_blank">Positioning</a> for more detail.
+<strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Parameters:</div></strong></p>
+<blockquote>
+<p><code>l</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The line-of-sight distance, kpc</p>
+<p><code>theta</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;The zenith angle <span class="arithmatex">\(\theta\)</span> at Earth, centers SN, rad</p>
+<p><code>phi</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Azimuthal angle <span class="arithmatex">\(\varphi\)</span> at Earth, centers SN, rad</p>
+<p><code>Rs</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to SN, kpc</p>
+<p><code>Re</code> : <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from Earth to GC, kpc</p>
+<p><code>beta</code>: <em>array_like</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Off-center angle <span class="arithmatex">\(\beta\)</span>, rad</p>
+</blockquote>
+<p><strong><div style="background-color: lightgrey; padding: 5px; width: 100%;">Attributes:</div></strong></p>
+<blockquote>
+<p><code>d</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from SN to boost point <span class="arithmatex">\(d\)</span>, kpc</p>
+<p><code>rprime</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Distance from GC to boost point <span class="arithmatex">\(r^\prime\)</span>, kpc</p>
+<p><code>cos_psi</code> : <em>scalar/ndarray</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="arithmatex">\(\cos\psi\)</span> at boost point where <span class="arithmatex">\(\psi\)</span> is the direction for BDM at B pointing Earth</p>
+</blockquote>
+<p><strong><div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div></strong></p>
+<p>Import <code>snorer</code> and do</p>
+<pre><code class="language-python">&gt;&gt;&gt; l,theta,phi,Rs,Re,beta = 5.160e-9,1e-4,0,11.6,8.5,0.71  # specify quantities
+&gt;&gt;&gt; bdmGeo = Geometry(l,theta,phi,Rs,Re,beta)
+&gt;&gt;&gt; print(bdmGeo.d)  # SN to boost point
+11.59999999483988
+&gt;&gt;&gt; print(bdmGeo.rprime) # GC to boost point
+8.49999999608676
+&gt;&gt;&gt; print(bdmGeo.cos_psi) # cos(psi)
+0.9999999721078604
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Positioning/" class="btn btn-neutral float-left" title="Positioning"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Propagation/" class="btn btn-neutral float-right" title="Propagation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Positioning/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Propagation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
