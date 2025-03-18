@@ -29,7 +29,7 @@ from .kinematics import Neutrino,get_gx,get_vx,get_thetaMax,_get_tof
 from .geometry import Propagation
 from .constants import constant
 from .params import params
-from .sysmsg import FlagError
+#from .sysmsg import FlagError
 
 
 ##########################################################################
