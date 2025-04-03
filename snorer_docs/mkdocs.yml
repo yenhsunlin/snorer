@@ -8,7 +8,8 @@ nav:
       #- Emissivity: manual/emissivity.md
     - Tutorial: manual/tutorial.md
     - Advanced Topics: manual/advanced.md
-  - API:
+    - Demonstration: manual/demo.md 
+  - API References:
     - Parameters: api/params/params.md
     - Main:
       - Functions:
