@@ -8,24 +8,24 @@ window.MathJax = {
 
 # Demonstration
 
-In this page, we show three demonstrations for how BDM evolving in time
-on the celestial sphere. Practically, we present the $T_\chi$-integrated
-BDM flux by
+
+In this page, we present three demonstrations showing how BDM evolves over time on the celestial sphere. 
+Specifically, we display the **\( T_\chi \)-integrated BDM flux** for \( m_\chi = 5 \, \text{keV} \), defined by 
 \begin{equation}
-\frac{d\Phi_\chi(t)}{d\Omega}=\int_{T_{\chi,{\rm min}}}^{T_{\chi,{\rm max}}}\frac{d\Phi_\chi(t)}{dT_\chi d\Omega}
-\end{equation}
-where $(T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,50)$, $(300,1000)$ and
-$(1,1000)$ keV.
+\frac{d\Phi_\chi(t)}{d\Omega} = \int_{T_{\chi,\mathrm{min}}}^{T_{\chi,\mathrm{max}}} \frac{d\Phi_\chi(t)}{dT_\chi\, d\Omega}
+\end{equation} 
+with integration ranges \( (T_{\chi,\mathrm{min}}, T_{\chi,\mathrm{max}}) = (5, 50) \), \( (300, 1000) \), and \( (1, 1000) \) keV.
 
-We assume the Milky Way (MW) core-collapse supernova (CCSN) rate approximates 1.63 per century
-and the simulation time is 100,000 years.
-In average, the expected CCSN number is around 1,630 in this period.
-Suppos the CCSN location follows the MW baryonic density distribution
-and the birth dates are unifomly distributed in 100,000 years.
+We assume the Milky Way (MW) core-collapse supernova (CCSN) rate is approximately 1.63 per century, 
+and the simulation spans a total duration of 100,000 years. 
+On average, this corresponds to about 1,630 CCSNe occurring during the simulation period. 
+The CCSN locations are sampled from the MW baryonic density distribution, 
+and their birth times are assumed to be uniformly distributed over the 100,000-year period.
 
-The animations are shown below and the time progresses in logarithmic scale.
-The dataset contains MW CCSNe locations and birth dates in the following animations
-can be [downloaded here](../../dat/MW_sne.txt).
+The animations below illustrate the time evolution in **logarithmic time scale**. 
+The dataset containing the simulated CCSN positions and birth dates used in these animations 
+can be [downloaded here](../../dat/MW_sne.txt){:target="_blank"}.
+
 
 ## Animations
 

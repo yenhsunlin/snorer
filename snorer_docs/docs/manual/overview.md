@@ -234,7 +234,7 @@ which has units of cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup> and sr<s
 It would be more convenient to restore the energy spectrum form and translate it into $T_\chi$ expression,
 $$
 \begin{equation}\label{eq:jx}
-j_\chi(d,r,T_\chi,\psi) = cn_\chi \frac{dn_\nu}{dE_\nu}  \left(\frac{1}{2\pi}\frac{d\sigma_{\chi\nu}}{d\cos\psi}\right)\frac{dE_\nu}{dT_\chi}
+j_\chi(d,r,T_\chi,\psi) = cn_\chi \frac{dn_\nu}{dE_\nu}  \left(\frac{1}{2\pi}\frac{d\sigma_{\chi\nu}}{d\cos\psi}\right)\left(\frac{dE_\nu}{dT_\chi}\frac{v_\chi}{c}\right)
 \end{equation}
 $$
 where $dE_\nu/dT_\chi$ is given in Eq. $\eqref{eq:dEv/dTx}$.

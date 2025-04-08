@@ -5,7 +5,7 @@ nav:
   - User Manual:
     - Overview:
       - BDM Physics: manual/overview.md
-      #- Emissivity: manual/emissivity.md
+      - Emissivity: manual/emissivity.md
     - Tutorial: manual/tutorial.md
     - Advanced Topics: manual/advanced.md
     - Demonstration: manual/demo.md 
