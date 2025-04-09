@@ -37,9 +37,9 @@ n_\chi(r) = \frac{\rho_s}{m_\chi} \frac{1}{\frac{r}{r_s} ( 1 + \frac{r}{r_s} )^2
 where $\rho_s = 184$ MeV cm<sup>−3</sup> and $r_s = 24.4$ kpc.
 Due to the spherically symmetric nature of the DM halo, there is no need to specify the orientation of the galactic plane. 
 However, unless S lies precisely along the axis $\overline{\mathsf{GE}}$, the resulting BDM distribution will not be azimuthally symmetric in $\varphi$.
-
-We define $\beta$ as the off-center angle, which quantifies the angular displacement of the SN relative to the GC. 
-This quantity is further explained in the API documentation:  
+The angle $\beta$ quantifies the angular displacement of the SN relative to the GC,
+$\psi$ the scattering angle and its corresponding angular direction viewed as $\theta$ on E.
+These quantities are further explained in the API documentation:
 [Positioning](../api/geometry/Positioning.md){:target="_blank"} and 
 [Coordinate Transformations](../api/utils/coord_transf.md){:target="_blank"}.
 
