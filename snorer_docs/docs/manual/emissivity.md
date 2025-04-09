@@ -109,7 +109,7 @@ dN_\chi = I_\chi  dA_\perp  d\Omega dp_\chi  dt
 which implies
 
 \begin{equation}
-I_\chi = \frac{dN_\chi}{dp_\chi d\Omega dA_\perp\, dt} = \frac{d\Phi_\chi}{dp_\chi d\Omega} \equiv \frac{dn_\chi}{dp_\chi d\Omega} v_\chi
+I_\chi = \frac{dN_\chi}{dp_\chi d\Omega dA_\perp dt} = \frac{d\Phi_\chi}{dp_\chi d\Omega} \equiv \frac{dn_\chi}{dp_\chi d\Omega} v_\chi
 \end{equation}
 
 where one can verify that \( dN_\chi / dA_\perp dt \) indeed has the units of flux, and \( n_\chi \) denotes the BDM number density.
