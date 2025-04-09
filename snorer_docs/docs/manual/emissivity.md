@@ -8,7 +8,7 @@ window.MathJax = {
 
 # Emissivity
 
-We systematically derive how the BDM emissivity $j_\chi$, given by Eq. (13) in [BDM Physics](overview.md#emissivity-on-the-shell){:target="_blank"},
+We systematically derive the BDM emissivity $j_\chi$, given by Eq. (13) in [BDM Physics](overview.md#emissivity-on-the-shell){:target="_blank"},
 
 \begin{equation}
 j_\chi = c n_\chi \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi\nu}}{d\Omega} \left( \frac{dE_\nu}{dT_\chi} \frac{v_\chi}{c} \right).
