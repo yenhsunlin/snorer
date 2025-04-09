@@ -23,7 +23,7 @@ All terms can be expressed in vector notations generally, but we omitt this in t
 First, recall that the particle number $N$ is defined as
 
 \begin{equation}
-N\equiv \int d^3 p d^3x\, f(x,x)
+N\equiv \int d^3 p d^3x\, f(x,p)
 \end{equation}
 
 where \( f(x, p) \) is the phase space distribution and \( p  \) the particle momentum.

@@ -170,7 +170,7 @@ We begin by writing down the SN$\nu$ energy spectrum on the shell at distance $d
 where $L_{\nu_i} = L_{\rm tot} / 6$ is the luminosity for each neutrino species ($\nu_{e,\mu,\tau}$ and their antiparticles), 
 and $f_{\nu_i}(E_\nu)$ is the neutrino phase space distributin that obeys Fermi-Dirac statistics [[4](#bib_Duan2006PRD)]:
 \begin{equation}
-E_\nu^2 f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{E_\nu^2}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
+f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{1}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
 \end{equation}
 where
 \begin{equation}
