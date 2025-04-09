@@ -165,12 +165,12 @@ This is generally characterized by the **emissivity**, which has units of cm<sup
 
 We begin by writing down the SN$\nu$ energy spectrum on the shell at distance $d$:
 \begin{equation}\label{eq:snv_spectrum}
-\frac{dN_\nu}{dE_\nu} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle} f_{\nu_i}(E_\nu)
+\frac{dN_\nu}{dE_\nu} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle} E_\nu^2 f_{\nu_i}(E_\nu)
 \end{equation}
 where $L_{\nu_i} = L_{\rm tot} / 6$ is the luminosity for each neutrino species ($\nu_{e,\mu,\tau}$ and their antiparticles), 
-and $f_{\nu_i}(E_\nu)$ is the Fermi-Dirac distribution [[4](#bib_Duan2006PRD)]:
+and $f_{\nu_i}(E_\nu)$ is the neutrino phase space distributin that obeys Fermi-Dirac statistics [[4](#bib_Duan2006PRD)]:
 \begin{equation}
-f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{E_\nu^2}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
+E_\nu^2 f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{E_\nu^2}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
 \end{equation}
 where
 \begin{equation}
@@ -223,15 +223,15 @@ After converting erg to MeV, one can verify that Eq. \eqref{eq:snv_spectrum}, wh
 Since neutrinos travel at the speed of light, the thickness of the SN$\nu$ shell can be estimated as $h = c \tau_s$.
 The number density of neutrinos on the shell is then given by
 \begin{equation}\label{eq:snv_nd}
-\frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu} \frac{\tau_s}{h} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle c} f_{\nu_i}(E_\nu).
+\frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu} \frac{\tau_s}{h} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle c} E_\nu^2 f_{\nu_i}(E_\nu).
 \end{equation}
 One can confirm that $dn_\nu/dE_\nu$ has units of MeV<sup>−1</sup> cm<sup>−3</sup>, 
-which corresponds to the differential number density of SN$\nu$ on the shell.
-By multiplying by $E_\nu$, the MeV<sup>−1</sup> unit is removed, yielding
+which has the correct dimension.
+<!-- By multiplying by $E_\nu$, the MeV<sup>−1</sup> unit is removed, yielding
 $$
 n_\nu = \frac{E_\nu}{c} \frac{dN_\nu}{dE_\nu},
 $$
-which gives the SN$\nu$ number density.
+which gives the SN$\nu$ number density. -->
 
 
 ### Emissivity on the shell

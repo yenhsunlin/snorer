@@ -344,12 +344,12 @@ This is generally characterized by the <strong>emissivity</strong>, which has un
 <h3 id="snnu-spectrum">SN<span class="arithmatex">\(\nu\)</span> spectrum<a class="headerlink" href="#snnu-spectrum" title="Permanent link">&para;</a></h3>
 <p>We begin by writing down the SN<span class="arithmatex">\(\nu\)</span> energy spectrum on the shell at distance <span class="arithmatex">\(d\)</span>:
 \begin{equation}\label{eq:snv_spectrum}
-\frac{dN_\nu}{dE_\nu} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle} f_{\nu_i}(E_\nu)
+\frac{dN_\nu}{dE_\nu} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle} E_\nu^2 f_{\nu_i}(E_\nu)
 \end{equation}
 where <span class="arithmatex">\(L_{\nu_i} = L_{\rm tot} / 6\)</span> is the luminosity for each neutrino species (<span class="arithmatex">\(\nu_{e,\mu,\tau}\)</span> and their antiparticles), 
-and <span class="arithmatex">\(f_{\nu_i}(E_\nu)\)</span> is the Fermi-Dirac distribution [<a href="#bib_Duan2006PRD">4</a>]:
+and <span class="arithmatex">\(f_{\nu_i}(E_\nu)\)</span> is the neutrino phase space distributin that obeys Fermi-Dirac statistics [<a href="#bib_Duan2006PRD">4</a>]:
 \begin{equation}
-f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{E_\nu^2}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
+E_\nu^2 f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{E_\nu^2}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
 \end{equation}
 where
 \begin{equation}
@@ -399,15 +399,16 @@ The total energy released in the form of neutrinos from a single explosion is ro
 Since neutrinos travel at the speed of light, the thickness of the SN<span class="arithmatex">\(\nu\)</span> shell can be estimated as <span class="arithmatex">\(h = c \tau_s\)</span>.
 The number density of neutrinos on the shell is then given by
 \begin{equation}\label{eq:snv_nd}
-\frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu} \frac{\tau_s}{h} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle c} f_{\nu_i}(E_\nu).
+\frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu} \frac{\tau_s}{h} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle c} E_\nu^2 f_{\nu_i}(E_\nu).
 \end{equation}
 One can confirm that <span class="arithmatex">\(dn_\nu/dE_\nu\)</span> has units of MeV<sup>−1</sup> cm<sup>−3</sup>, 
-which corresponds to the differential number density of SN<span class="arithmatex">\(\nu\)</span> on the shell.
-By multiplying by <span class="arithmatex">\(E_\nu\)</span>, the MeV<sup>−1</sup> unit is removed, yielding
+which has the correct dimension.</p>
+<!-- By multiplying by $E_\nu$, the MeV<sup>−1</sup> unit is removed, yielding
 $$
 n_\nu = \frac{E_\nu}{c} \frac{dN_\nu}{dE_\nu},
 $$
-which gives the SN<span class="arithmatex">\(\nu\)</span> number density.</p>
+which gives the SN$\nu$ number density. -->
+
 <h3 id="emissivity-on-the-shell">Emissivity on the shell<a class="headerlink" href="#emissivity-on-the-shell" title="Permanent link">&para;</a></h3>
 <p>To obtain the emissivity <span class="arithmatex">\(j_\chi\)</span> at point B on the SN<span class="arithmatex">\(\nu\)</span> shell, one simply computes
 $$
