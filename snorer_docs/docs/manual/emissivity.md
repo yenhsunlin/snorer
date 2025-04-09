@@ -45,31 +45,30 @@ Since the flux equals number density times velocity, we have
 Alternatively, the flux is also defined as  
 
 \begin{equation}\label{eq:flux_j}
-\frac{d\Phi}{dp d\Omega} = \int d\ell \, j_\chi
+\frac{d\Phi}{dp d\Omega} = \int ds \, j_\chi
 \end{equation}
 where $j_\chi$ is the emissivity
-and we only look for the component such that $v$ is parallel to $\ell$. Combining the two expressions above, we obtain  
+and we only look for the component such that $v$ is parallel to $s$. Combining the two expressions above, we obtain  
 
 \begin{equation}\label{eq:jx_def}
-\frac{dn}{dp d\Omega}\, v = \int d\ell \, j_\chi = v \int dt \, j_\chi
+\frac{dn}{dp d\Omega}\, v = \int ds\,  j_\chi = v \int dt \, j_\chi
 \end{equation} 
-where \( d\ell = v dt \) is used.
+where \( ds = v dt \) is used.
 
-Now, we turn to the BDM and recall that the emissivity is restricted to the SN$\nu$ shell, bounded by two Heaviside theta functions. We rewrite the relation above as  
+Now, we turn to the BDM case and rewrite the relation above as  
 
 \begin{equation}
-\frac{dn_\chi}{dp_\chi d\Omega} \approx \tau_s \int dt\, j_\chi\, \underbrace{ \delta\left( t - \frac{d}{c} - \frac{\ell}{v_\chi} \right) }_{\text{on the shell}} = \tau_s \left. j_\chi \right|_{\text{on the shell}}.
+j_\chi = \frac{dn_\chi}{dp_\chi d\Omega dt} .
 \end{equation}
 
-Here, $d\Omega$ is exclusively at boost point $\mathsf{B}$ and the subscript *on the shell* means the condition \( t = d/c + \ell/v_\chi \) must be satisfied everywhere. 
-Thus, we obtain 
+Here, $d\Omega$ is exclusively at the boost point B.
+Thus, we obtain
 
 \begin{equation}\label{eq:jx}
-\left. j_\chi \right|_{\text{on the shell}} = \frac{dn_\chi}{dp_\chi d\Omega dt} = c n_\chi(r) \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi \nu}}{d\Omega} \frac{dE_\nu}{dp_\chi}.
+ j_\chi = \frac{dn_\chi}{dp_\chi d\Omega dt} = c n_\chi(r) \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi \nu}}{d\Omega} \frac{dE_\nu}{dp_\chi}
 \end{equation}
-
-The factor \( 1/dt \) is effectively \( 1/\tau_s \). 
-One can further convert \( dE_\nu/dp_\chi \) to \( dE_\nu/dT_\chi \) by the Jacobian  
+ 
+and one can further convert \( dE_\nu/dp_\chi \) to \( dE_\nu/dT_\chi \) by 
 
 \[
 \frac{dT_\chi}{dp_\chi} = \frac{v_\chi}{c}.
@@ -109,12 +108,12 @@ where one can verify that \( dN_\chi / dA_\perp dt \) indeed has the units of fl
 The radiative transfer equation implies:
 
 \begin{equation}
-\frac{dI_\chi}{d\ell} = -\alpha_\chi I_\chi + j_\chi
+\frac{dI_\chi}{ds} = -\alpha_\chi I_\chi + j_\chi
 \end{equation}
 
 where \( \alpha_\chi \) characterizes the absorption rate of BDM particles during propagation. However, we assume this effect is highly suppressed and thus negligible in our analysis. 
 Therefore, we obtain
 \begin{equation}
-I_\chi = \int d\ell\, j_\chi.
+I_\chi = \int ds\, j_\chi.
 \end{equation}
 Repeating the same reasoning applied in Eq. \eqref{eq:jx_def} then leads us directly to the desired result in Eq. \eqref{eq:jx}.

@@ -250,25 +250,24 @@ in the phase space <span class="arithmatex">\( dp d\Omega \)</span>. This quanti
 \end{equation}\]</div>
 <p>Alternatively, the flux is also defined as  </p>
 <p>\begin{equation}\label{eq:flux_j}
-\frac{d\Phi}{dp d\Omega} = \int d\ell \, j_\chi
+\frac{d\Phi}{dp d\Omega} = \int ds \, j_\chi
 \end{equation}
 where <span class="arithmatex">\(j_\chi\)</span> is the emissivity
-and we only look for the component such that <span class="arithmatex">\(v\)</span> is parallel to <span class="arithmatex">\(\ell\)</span>. Combining the two expressions above, we obtain  </p>
+and we only look for the component such that <span class="arithmatex">\(v\)</span> is parallel to <span class="arithmatex">\(s\)</span>. Combining the two expressions above, we obtain  </p>
 <p>\begin{equation}\label{eq:jx_def}
-\frac{dn}{dp d\Omega}\, v = \int d\ell \, j_\chi = v \int dt \, j_\chi
+\frac{dn}{dp d\Omega}\, v = \int ds\,  j_\chi = v \int dt \, j_\chi
 \end{equation} 
-where <span class="arithmatex">\( d\ell = v dt \)</span> is used.</p>
-<p>Now, we turn to the BDM and recall that the emissivity is restricted to the SN<span class="arithmatex">\(\nu\)</span> shell, bounded by two Heaviside theta functions. We rewrite the relation above as  </p>
+where <span class="arithmatex">\( ds = v dt \)</span> is used.</p>
+<p>Now, we turn to the BDM case and rewrite the relation above as  </p>
 <div class="arithmatex">\[\begin{equation}
-\frac{dn_\chi}{dp_\chi d\Omega} \approx \tau_s \int dt\, j_\chi\, \underbrace{ \delta\left( t - \frac{d}{c} - \frac{\ell}{v_\chi} \right) }_{\text{on the shell}} = \tau_s \left. j_\chi \right|_{\text{on the shell}}.
+j_\chi = \frac{dn_\chi}{dp_\chi d\Omega dt} .
 \end{equation}\]</div>
-<p>Here, <span class="arithmatex">\(d\Omega\)</span> is exclusively at boost point <span class="arithmatex">\(\mathsf{B}\)</span> and the subscript <em>on the shell</em> means the condition <span class="arithmatex">\( t = d/c + \ell/v_\chi \)</span> must be satisfied everywhere. 
-Thus, we obtain </p>
+<p>Here, <span class="arithmatex">\(d\Omega\)</span> is exclusively at the boost point B.
+Thus, we obtain</p>
 <div class="arithmatex">\[\begin{equation}\label{eq:jx}
-\left. j_\chi \right|_{\text{on the shell}} = \frac{dn_\chi}{dp_\chi d\Omega dt} = c n_\chi(r) \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi \nu}}{d\Omega} \frac{dE_\nu}{dp_\chi}.
+ j_\chi = \frac{dn_\chi}{dp_\chi d\Omega dt} = c n_\chi(r) \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi \nu}}{d\Omega} \frac{dE_\nu}{dp_\chi}
 \end{equation}\]</div>
-<p>The factor <span class="arithmatex">\( 1/dt \)</span> is effectively <span class="arithmatex">\( 1/\tau_s \)</span>. 
-One can further convert <span class="arithmatex">\( dE_\nu/dp_\chi \)</span> to <span class="arithmatex">\( dE_\nu/dT_\chi \)</span> by the Jacobian  </p>
+<p>and one can further convert <span class="arithmatex">\( dE_\nu/dp_\chi \)</span> to <span class="arithmatex">\( dE_\nu/dT_\chi \)</span> by </p>
 <div class="arithmatex">\[
 \frac{dT_\chi}{dp_\chi} = \frac{v_\chi}{c}.
 \]</div>
@@ -294,12 +293,12 @@ I_\chi = \frac{dN_\chi}{dp_\chi\, d\Omega\, dA_\perp\, dt} = \frac{d\Phi_\chi}{d
 <p>where one can verify that <span class="arithmatex">\( dN_\chi / dA_\perp dt \)</span> indeed has the units of flux, and <span class="arithmatex">\( n_\chi \)</span> denotes the BDM number density.
 The radiative transfer equation implies:</p>
 <div class="arithmatex">\[\begin{equation}
-\frac{dI_\chi}{d\ell} = -\alpha_\chi I_\chi + j_\chi
+\frac{dI_\chi}{ds} = -\alpha_\chi I_\chi + j_\chi
 \end{equation}\]</div>
 <p>where <span class="arithmatex">\( \alpha_\chi \)</span> characterizes the absorption rate of BDM particles during propagation. However, we assume this effect is highly suppressed and thus negligible in our analysis. 
 Therefore, we obtain
 \begin{equation}
-I_\chi = \int d\ell\, j_\chi.
+I_\chi = \int ds\, j_\chi.
 \end{equation}
 Repeating the same reasoning applied in Eq. \eqref{eq:jx_def} then leads us directly to the desired result in Eq. \eqref{eq:jx}.</p>
               
