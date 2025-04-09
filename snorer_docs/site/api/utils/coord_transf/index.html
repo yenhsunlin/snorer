@@ -53,6 +53,8 @@
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../../../manual/overview/">BDM Physics</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../manual/emissivity/">Emissivity</a>
+                </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../../manual/tutorial/">Tutorial</a>
@@ -221,73 +223,169 @@ window.MathJax = {
 </script>
 
 <h1 id="coordinate-transformations">Coordinate Transformations<a class="headerlink" href="#coordinate-transformations" title="Permanent link">&para;</a></h1>
-<p>We briefly introduce how to extract the off-center angle <span class="arithmatex">\(\beta\)</span>, cf. <a href="../../../manual/overview/#snv_bdm_scheme" target="_blank">Fig. 1</a> in <a href="../../../manual/overview/#general-picture" target="_blank">BDM Physics</a>, from two famous astronomical coordinate systems, galactic and equatorial coordinates.
-This aids us to input arbitrary supernova (SN) loactions from astrophysical database, eg. <a href="http://snrcat.physics.umanitoba.ca/" target="_blank">SRcat</a>,  into <strong>snorer</strong> and evaluates its BDM signature.</p>
+<p>We briefly introduce how to extract the off-center angle <span class="arithmatex">\(\beta\)</span>,
+cf. <a href="../../../manual/overview/#snv_bdm_scheme" target="_blank">Fig. 1</a> in
+<a href="../../../manual/overview/#general-picture" target="_blank">BDM Physics</a>,
+from two widely used astronomical coordinate systems: <em>galactic</em> and <em>equatorial coordinates</em>.
+This enables the input of arbitrary supernova (SN) locations from astrophysical databases, e.g.<br />
+<a href="http://snrcat.physics.umanitoba.ca/" target="_blank">SRcat</a>, into <strong>snorer</strong>,
+allowing users to evaluate its corresponding BDM signature.</p>
+<!-- We briefly introduce how to extract the off-center angle $\beta$, cf. [Fig. 1](../../manual/overview.md#snv_bdm_scheme){:target="_blank"} in [BDM Physics](../../manual/overview.md#general-picture){:target="_blank"}, from two famous astronomical coordinate systems, galactic and equatorial coordinates.
+This aids us to input arbitrary supernova (SN) loactions from astrophysical database, eg. [SRcat](http://snrcat.physics.umanitoba.ca/){:target="_blank"},  into **snorer** and evaluates its BDM signature. -->
+
 <h2 id="galactic-coordinate">Galactic coordinate<a class="headerlink" href="#galactic-coordinate" title="Permanent link">&para;</a></h2>
-<p>The galactic coordinate is shown in <a href="#galcoord">Fig. 1</a> with its longitute <span class="arithmatex">\(\ell\)</span> and latitude <span class="arithmatex">\(b\)</span>.
-Once <span class="arithmatex">\((\ell,b)\)</span> for a SN is specified, its position on the celestial sphere is marked.</p>
+<p>The galactic coordinate system is shown in <a href="#galcoord">Fig. 1</a>, with longitude <span class="arithmatex">\(\ell\)</span> and latitude <span class="arithmatex">\(b\)</span>.
+Once <span class="arithmatex">\((\ell, b)\)</span> for a SN is specified, its position on the celestial sphere is determined.
+Given that the distance from Earth to the SN, <span class="arithmatex">\(R_s\)</span>, is typically provided by the database, the final task is to extract <span class="arithmatex">\(\beta\)</span>, the deviation of SN from galactic center (GC) in polar direction.</p>
+<figure id="galcoord">
+<center><img src="../../../figs/galactic_coord.svg" alt="galcoord" style="width: 80%;">
+<figcaption>Figure 1. The galactic coordinate system, including longitude \(\ell\) and latitude \(b\).</figcaption>
+</center>
+</figure>
+
+<p>Before proceeding, note that there are two conventions within this coordinate system.
+In the Cartesian representation, Earth is placed at the origin, and the GC is at <span class="arithmatex">\((x, y, z) = (0, R_e, 0)\)</span>.
+See the side view of this geometric configuration in <a href="#gal_to_bR">Fig. 2</a>.</p>
+<!-- The galactic coordinate is shown in [Fig. 1](#galcoord) with its longitute $\ell$ and latitude $b$.
+Once $(\ell,b)$ for a SN is specified, its position on the celestial sphere is marked.
+
 <figure id="galcoord">
 <center><img src="../../../figs/galactic_coord.svg" alt="galcoord" style="width: 80%;">
 <figcaption>Figure 1. The galactic coordinate, including longitutde \(\ell\) and latitude \(b\).
 </figure>
 
-<p>Given that the distance from Earth to SN, <span class="arithmatex">\(R_s\)</span>, will be provided by the database, the last task is to retrieve <span class="arithmatex">\(\beta\)</span>.
-Before proceed, there are two conventions in this coordinate. In terms of Cartesian representation, the Earth is at the origin and the galactic center (GC) at <span class="arithmatex">\((x,y,z)=(0,R_e,0)\)</span>.
-See the lateral view to this geometrical system in <a href="#gal_to_bR">Fig. 2</a>. </p>
+Given that the distance from Earth to SN, $R_s$, will be provided by the database, the last task is to retrieve $\beta$.
+Before proceed, there are two conventions in this coordinate. In terms of Cartesian representation, the Earth is at the origin and the galactic center (GC) at $(x,y,z)=(0,R_e,0)$.
+See the lateral view to this geometrical system in [Fig. 2](#gal_to_bR).  -->
+
 <figure id="gal_to_bR">
 <center><img src="../../../figs/gal_to_betaRs.svg" alt="gal_to_bR" style="width: 60%;">
 <figcaption>Figure 2. The Cartesian representation of galactic coordinate with distance included.
 </figure>
 
-<p>With two unit vectors that one points from Earth to SN <span class="arithmatex">\(\hat{\mathbf{s}} = (x_s,y_s,z_s)/R_s\)</span> and the other points from Earth to GC <span class="arithmatex">\(\hat{\mathbf{g}} = (0,1,0)\)</span>, we immediately obtain</p>
-<div class="arithmatex">\[
+<p>With two unit vectors—one pointing from Earth to the SN, <span class="arithmatex">\(\hat{\mathbf{s}} = (x_s, y_s, z_s) / R_s\)</span>,
+and the other pointing from Earth to the GC, <span class="arithmatex">\(\hat{\mathbf{g}} = (0, 1, 0)\)</span>—we immediately find</p>
+<div class="arithmatex">\[\begin{equation}
+y_s = R_s \cos b \cos\ell.
+\end{equation}\]</div>
+<p>The reason why <span class="arithmatex">\(x_s\)</span> and <span class="arithmatex">\(z_s\)</span> are not needed becomes clear when we evaluate <span class="arithmatex">\(\beta\)</span>,</p>
+<div class="arithmatex">\[\begin{equation}\label{eq:cos_beta_MW}
+\cos\beta = \hat{\mathbf{g}} \cdot \hat{\mathbf{s}} = \cos b \cos\ell,
+\end{equation}\]</div>
+<p>which involves only the <span class="arithmatex">\(y\)</span>-component of the SN position in galactic coordinates.</p>
+<p>Note that when we extract <span class="arithmatex">\(\beta\)</span> from galactic coordinates, the inverse transformation is not possible.
+It is evident that the map from <span class="arithmatex">\((\ell, b)\)</span> to <span class="arithmatex">\(\beta\)</span> is <strong>many-to-one</strong>:
+<span class="arithmatex">\(\beta\)</span> is a scalar while <span class="arithmatex">\((\ell, b)\)</span> contains two degrees of freedom.
+Without an additional constraint, the inverse problem is ill-posed.
+Therefore, reconstructing the SN location relative to the galactic plane using only <span class="arithmatex">\(\beta\)</span> is implausible.</p>
+<p>For completeness, to fully recover the spatial location, one would need the missing <strong>azimuthal angle</strong>
+around the Earth-GC axis, which depends on both <span class="arithmatex">\(x_s\)</span> and <span class="arithmatex">\(z_s\)</span>.
+We omit further detail here, as it is irrelevant to our current purpose.</p>
+<!-- With two unit vectors that one points from Earth to SN $\hat{\mathbf{s}} = (x_s,y_s,z_s)/R_s$ and the other points from Earth to GC $\hat{\mathbf{g}} = (0,1,0)$, we immediately obtain
+
+$$
 \begin{equation}
 y_s = R_s \cos b \cos\ell
 \end{equation}
-\]</div>
-<p>The reason why we don't need <span class="arithmatex">\(x_s\)</span> and <span class="arithmatex">\(z_s\)</span> is clear that when we evaluate <span class="arithmatex">\(\beta\)</span>,</p>
-<div class="arithmatex">\[
+$$
+
+The reason why we don't need $x_s$ and $z_s$ is clear that when we evaluate $\beta$,
+
+$$
 \begin{equation}\label{eq:cos_beta_MW}
 \cos\beta = \hat{\mathbf{g}}\cdot \hat{\mathbf{s}} = \cos b\cos\ell
 \end{equation}
-\]</div>
-<p>there is no need for these two.</p>
-<p>Note that when we retrieve <span class="arithmatex">\(\beta\)</span> from galactic coordinate, there is impossible to transform it back.
-It is obvious that <span class="arithmatex">\(\beta\)</span> to <span class="arithmatex">\((\ell,b)\)</span> is a one to two transformation. Without one additional constraint,
+$$
+
+there is no need for these two.
+
+Note that when we retrieve $\beta$ from galactic coordinate, there is impossible to transform it back.
+It is obvious that $\beta$ to $(\ell,b)$ is a one to two transformation. Without one additional constraint,
 the reverse is ill-posed. Reconstructing the SN location relative to galactic plane
-is implausible simply by <span class="arithmatex">\(\beta\)</span>.</p>
-<p>For completeness, to have the exact location, the missing information one needs is the azimuthal angle, say, around the 
-Earth-GC axis. This requires both <span class="arithmatex">\(x_s\)</span> and <span class="arithmatex">\(z_s\)</span>. We omit the detail here due to its irrelevance.</p>
+is implausible simply by $\beta$.
+
+For completeness, to have the exact location, the missing information one needs is the azimuthal angle, say, around the 
+Earth-GC axis. This requires both $x_s$ and $z_s$. We omit the detail here due to its irrelevance. -->
+
 <h3 id="supernova-in-arbitrary-distant-galaxy">Supernova in arbitrary distant galaxy<a class="headerlink" href="#supernova-in-arbitrary-distant-galaxy" title="Permanent link">&para;</a></h3>
-<p>We now consider a more general case that SN lies in a arbitrary distant galaxy and we want to know the BDM signature from that SN.
-Again, no matter how this scene chages, the underlying concept is to obtain three things: <span class="arithmatex">\(R_g\)</span>, <span class="arithmatex">\(R_s\)</span> and <span class="arithmatex">\(\beta\)</span>. The last two
+<p>We now consider a more general case where the SN lies in an arbitrary distant galaxy,
+and we wish to evaluate the corresponding BDM signature from that SN.
+Again, regardless of how the scene changes, the underlying task remains the same:
+we must determine three quantities, <span class="arithmatex">\(R_g\)</span>, <span class="arithmatex">\(R_s\)</span>, and <span class="arithmatex">\(\beta\)</span>.
+The latter two are already familiar, while <span class="arithmatex">\(R_g\)</span> refers to the distance between Earth and the center of the distant galaxy.
+Effectively, this means we replace <span class="arithmatex">\(R_e\)</span> by <span class="arithmatex">\(R_g\)</span> in the calculation.
+See <a href="#arb_gal">Fig. 3</a>.</p>
+<figure id="arb_gal">
+<center><img src="../../../figs/arbitrary_galx.svg" alt="arb_gal" style="width: 60%;">
+<figcaption>Figure 3. SN in an arbitrary distant galaxy.</figcaption>
+</center>
+</figure>
+
+<p>Suppose the galactic coordinates for the two stellar objects are
+<span class="arithmatex">\((\ell_s, b_s)\)</span> for the SN and <span class="arithmatex">\((\ell_g, b_g)\)</span> for the distant GC.
+We can use the same procedure as before to obtain their Cartesian representations:
+<span class="arithmatex">\((x_s, y_s, z_s)\)</span> for the SN and <span class="arithmatex">\((x_g, y_g, z_g)\)</span> for the galaxy center.
+Thus, for the SN:</p>
+<div class="arithmatex">\[\begin{align*}
+x_s &amp;= R_s \cos b_s \sin(2\pi - \ell_s), \\
+y_s &amp;= R_s \cos b_s \cos \ell_s, \\
+z_s &amp;= R_s \sin b_s,
+\end{align*}\]</div>
+<p>and for the distant galaxy:</p>
+<div class="arithmatex">\[\begin{align*}
+x_g &amp;= R_g \cos b_g \sin(2\pi - \ell_g), \\
+y_g &amp;= R_g \cos b_g \cos \ell_g, \\
+z_g &amp;= R_g \sin b_g.
+\end{align*}\]</div>
+<p>We define two unit vectors for the two stellar objects:
+$$
+\hat{\mathbf{s}} = (-\cos b_s \sin \ell_s, \cos b_s \cos \ell_s, \sin b_s),
+$$
+for pointing to the SN direction and 
+$$
+\hat{\mathbf{g}} = (-\cos b_g \sin \ell_g, \cos b_g \cos \ell_g, \sin b_g).
+$$
+for pointing to the GC.
+The angle <span class="arithmatex">\(\beta\)</span> can then be retrieved using the same dot product formula:
+\begin{equation}
+\cos \beta = \hat{\mathbf{g}} \cdot \hat{\mathbf{s}} = \cos b_s \cos b_g \cos(\ell_s - \ell_g) + \sin b_s \sin b_g.
+\end{equation}
+In the case of our MW, where <span class="arithmatex">\(\ell_g = b_g = 0\)</span>, this expression reduces to Eq. \eqref{eq:cos_beta_MW}.</p>
+<!-- We now consider a more general case that SN lies in a arbitrary distant galaxy and we want to know the BDM signature from that SN.
+Again, no matter how this scene chages, the underlying concept is to obtain three things: $R_g$, $R_s$ and $\beta$. The last two
 are quite familiar but the first one indicates the distance between Earth and the center of the distant galaxy.
-On the other hand, we actually replace <span class="arithmatex">\(R_e\)</span> by <span class="arithmatex">\(R_g\)</span>. See <a href="#arb_gal">Fig. 3</a>.</p>
+On the other hand, we actually replace $R_e$ by $R_g$. See [Fig. 3](#arb_gal).
+
 <figure id="arb_gal">
 <center><img src="../../../figs/arbitrary_galx.svg" alt="arb_gal" style="width: 60%;">
 <figcaption>Figure 3. SN in arbitrary distant galaxy.
 </figure>
 
-<p>Suppose the galactic coordinates for the two stellar objects are <span class="arithmatex">\((\ell_s,b_s)\)</span> and <span class="arithmatex">\((\ell_g,b_g)\)</span> respectively, we can follow
-the previous derivation to obtain their Cartesian representations <span class="arithmatex">\((x_s,y_s,z_s)\)</span> and <span class="arithmatex">\((x_g,y_g,z_g)\)</span>.
-Thus</p>
-<div class="arithmatex">\[
+Suppose the galactic coordinates for the two stellar objects are $(\ell_s,b_s)$ and $(\ell_g,b_g)$ respectively, we can follow
+the previous derivation to obtain their Cartesian representations $(x_s,y_s,z_s)$ and $(x_g,y_g,z_g)$.
+Thus
+
+$$
 \begin{align*}
-x_s &amp;=  R_s \cos b_s \sin (2\pi- \ell_s), \\
-y_s &amp; = R_s \cos b_s \cos \ell_s, \\
-z_s &amp; = R_s \sin b_s
+x_s &=  R_s \cos b_s \sin (2\pi- \ell_s), \\
+y_s & = R_s \cos b_s \cos \ell_s, \\
+z_s & = R_s \sin b_s
 \end{align*}
-\]</div>
-<p>for SN and</p>
-<div class="arithmatex">\[
+$$
+
+for SN and
+
+$$
 \begin{align*}
-x_g &amp;=  R_g \cos b_g \sin (2\pi- \ell_g), \\
-y_g &amp; = R_g \cos b_g \cos \ell_g, \\
-z_g &amp; = R_g \sin b_g
+x_g &=  R_g \cos b_g \sin (2\pi- \ell_g), \\
+y_g & = R_g \cos b_g \cos \ell_g, \\
+z_g & = R_g \sin b_g
 \end{align*}
-\]</div>
-<p>for the distant galaxy.</p>
-<p>We define two unit vectors for the two stellar objects
+$$
+
+for the distant galaxy. -->
+<!-- 
+We define two unit vectors for the two stellar objects
 $$
 \hat{\mathbf{s}}=(-\cos b_s \sin \ell_s, \cos b_s \cos \ell_s,\sin b_s)
 $$
@@ -295,18 +393,29 @@ and
 $$
 \hat{\mathbf{g}}=(-\cos b_g \sin \ell_g, \cos b_g \cos \ell_g,\sin b_g)
 $$
-respectively. The off-center angle <span class="arithmatex">\(\beta\)</span> can be retrieved by the same formula</p>
-<div class="arithmatex">\[
+respectively. The off-center angle $\beta$ can be retrieved by the same formula
+
+$$
 \begin{equation}
 \cos \beta = \hat{\mathbf{g}}\cdot\hat{\mathbf{s}} = \cos b_s \cos b_g \cos(\ell_s - \ell_g) + \sin b_s \sin b_g.
 \end{equation}
-\]</div>
-<p>In terms of our Milky Way, <span class="arithmatex">\(\ell_g = b_g=0\)</span>, we recover Eq. <span class="arithmatex">\(\eqref{eq:cos_beta_MW}\)</span>.</p>
+$$
+
+In terms of our Milky Way, $\ell_g = b_g=0$, we recover Eq. $\eqref{eq:cos_beta_MW}$. -->
+
 <h2 id="equatorial-coordinate">Equatorial coordinate<a class="headerlink" href="#equatorial-coordinate" title="Permanent link">&para;</a></h2>
-<p>Another commonly used coordinate system is the equatorial coordinate and is specified by right ascension <span class="arithmatex">\(\alpha\)</span> (RA) and declination <span class="arithmatex">\(\delta\)</span> (DEC).
-Due to its complexity, we do not provide any detail mathematical conversion from <span class="arithmatex">\((\alpha,\delta)\)</span> to <span class="arithmatex">\(\beta\)</span> here.</p>
-<p>To tackle this task, we employ <a href="https://www.astropy.org/" target="_blank"><strong>Astropy</strong></a> to resolve <span class="arithmatex">\((\ell,b)\)</span> from <span class="arithmatex">\((\alpha,\delta)\)</span>.
-Then proceed the discussion in the last section to recover <span class="arithmatex">\(\beta\)</span>. Note that we will assume the input <span class="arithmatex">\((\alpha,\delta)\)</span> in <strong>snorer</strong> is expressed in terms of ICRS J2000.0.</p>
+<p>Another commonly used coordinate system is the equatorial coordinate system,
+which is specified by right ascension <span class="arithmatex">\(\alpha\)</span> (RA) and declination <span class="arithmatex">\(\delta\)</span> (DEC).
+Due to its complexity, we do not provide the detailed mathematical conversion from <span class="arithmatex">\((\alpha, \delta)\)</span> to <span class="arithmatex">\(\beta\)</span> here.</p>
+<p>To handle this task, we make use of <a href="https://www.astropy.org/" target="_blank"><strong>Astropy</strong></a>
+to convert <span class="arithmatex">\((\alpha, \delta)\)</span> into <span class="arithmatex">\((\ell, b)\)</span>.
+Once this conversion is done, we can follow the discussion in the previous section to compute <span class="arithmatex">\(\beta\)</span>.
+Note that in <strong>snorer</strong>, we assume the input <span class="arithmatex">\((\alpha, \delta)\)</span> values are expressed in the <strong>ICRS J2000.0</strong> frame.</p>
+<!-- Another commonly used coordinate system is the equatorial coordinate and is specified by right ascension $\alpha$ (RA) and declination $\delta$ (DEC).
+Due to its complexity, we do not provide any detail mathematical conversion from $(\alpha,\delta)$ to $\beta$ here.
+
+To tackle this task, we employ [**Astropy**](https://www.astropy.org/){:target="_blank"} to resolve $(\ell,b)$ from $(\alpha,\delta)$.
+Then proceed the discussion in the last section to recover $\beta$. Note that we will assume the input $(\alpha,\delta)$ in **snorer** is expressed in terms of ICRS J2000.0. -->
               
             </div>
           </div><footer>

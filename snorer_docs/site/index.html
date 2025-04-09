@@ -50,6 +50,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#document-structure">Document structure</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#reporting-bugs">Reporting bug(s)</a>
@@ -62,6 +64,8 @@
                   <li class="toctree-l1"><a class="reference internal" >Overview</a>
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="manual/overview/">BDM Physics</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="manual/emissivity/">Emissivity</a>
                 </li>
     </ul>
                   </li>
@@ -227,7 +231,9 @@
 </style>
 
 <h1 id="what-is-snorer-about">What is <em><code>snorer</code></em> about?<a class="headerlink" href="#what-is-snorer-about" title="Permanent link">&para;</a></h1>
-<p><strong><em>snorer</em></strong>, stands for  <strong><em>S</em></strong>upernova-<strong><em>N</em></strong>eutrino-b<strong><em>O</em></strong>osted da<strong><em>R</em></strong>k matt<strong><em>ER</em></strong>, is a package for evaluating time-of-flight signatures of supernova-neutrino-boosted dark matter (SN<span class="arithmatex">\(\nu\)</span> BDM) from our Milky Way, SN1987a in Large Magellanic Cloud and SN in arbitrary distant galaxy.</p>
+<p><strong><em>snorer</em></strong>, short for <strong><em>S</em></strong>upernova-<strong><em>N</em></strong>eutrino-b<strong><em>O</em></strong>osted da<strong><em>R</em></strong>k matt<strong><em>ER</em></strong>,
+is a package for evaluating time-of-flight signatures of supernova-neutrino-boosted dark matter (SN<span class="arithmatex">\(\nu\)</span> BDM)
+from the Milky Way, SN1987a in the Large Magellanic Cloud, and SN in arbitrary distant galaxies.</p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">&para;</a></h2>
 <p>If you use this package or part of the code in your research, please cite the followings:</p>
 <ol>
@@ -241,17 +247,40 @@
 </code></pre>
 <p>and everything should be processed on-the-fly.</p>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
-<p><strong>snorer</strong> requires python &gt;= 3.8 and the following dependencies:</p>
+<p><strong>snorer</strong> requires Python &gt;= 3.8 and the following dependencies:</p>
 <ul>
-<li><strong>numpy</strong> &gt;= 1.20</li>
-<li><strong>scipy</strong> &gt;= 1.10</li>
-<li><strong>vegas</strong> &gt;= 6.0</li>
+<li><strong>numpy</strong> &gt;= 1.20  </li>
+<li><strong>scipy</strong> &gt;= 1.10  </li>
+<li><strong>vegas</strong> &gt;= 6.0  </li>
 <li><strong>astropy</strong> &gt;= 6.0</li>
 </ul>
-<p>where <a href="https://github.com/gplepage/vegas" target="_blank"><strong>vegas</strong></a> is a the backend engine for evaluating multidimensional integrals based on adaptive Monte Carlo vegas algorithm, see  for detail.
-Other dependencies may be required by these packages and will be installed as well.</p>
+<p>Here, <a href="https://github.com/gplepage/vegas" target="_blank"><strong>vegas</strong></a>
+serves as the backend engine for evaluating multidimensional integrals using the <em>vegas algorithm</em>.
+See the linked repository for more details.
+Other dependencies may be required by these packages and will be installed automatically.</p>
+<!-- **snorer** requires python >= 3.8 and the following dependencies:
+
+- **numpy** >= 1.20
+- **scipy** >= 1.10
+- **vegas** >= 6.0
+- **astropy** >= 6.0
+
+where [**vegas**](https://github.com/gplepage/vegas){:target="_blank"} is a the backend engine for evaluating multidimensional integrals based on adaptive Monte Carlo vegas algorithm, see  for detail.
+Other dependencies may be required by these packages and will be installed as well. -->
+
+<h2 id="document-structure">Document structure<a class="headerlink" href="#document-structure" title="Permanent link">&para;</a></h2>
+<p>There are <strong>two</strong> main parts in this document: <em>User Manual</em> and <em>API References</em>.
+The <em>User Manual</em> contains four sections. The first section provides an overview of the entire BDM physics,
+including comprehensive and self-consistent derivations of all relevant equations.
+This is followed by two tutorial-style instructions for using <strong>snorer</strong>,
+covering topics from basic to advanced usage, and concluding with one demonstration page.</p>
+<p>In the <em>API References</em>, we list all docstrings and usage examples for every function and class in <strong>snorer</strong>,
+organized by functionality.
+Each section begins with any supplementary documents that may be needed beyond what is covered in the <em>User Manual</em>.
+Then it is divided into two categories: <em>Classes</em> and <em>Functions</em>, which explain the usage and behavior of all classes and functions in that section.</p>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p><strong>snorer</strong> can be imported like any other packages</p>
+<p>Following is a simple taste of <strong>snorer</strong>.
+To import, do</p>
 <pre><code class="language-python">import snorer as sn   # Import snorer functions
 </code></pre>
 <p>Assuming the following locations:</p>
@@ -272,18 +301,24 @@ Other dependencies may be required by these packages and will be installed as we
 &gt;&gt;&gt; print(flux)
 4.572295175982701e-16
 </code></pre>
-<p>The parameter <code>is_spike</code> determines whether DM spike in the central region of the halo is considered and <code>neval</code>
-dictates how many samples will be generated by <a href="https://github.com/gplepage/vegas" target="_blank"><strong>vegas</strong></a> in each chain. The default value for DM-<span class="arithmatex">\(\nu\)</span> cross section <span class="arithmatex">\(\sigma_{\chi\nu}=10^{-45}\)</span> cm<sup>2</sup>.
+<p>The parameter <code>is_spike</code> determines whether a DM spike in the central region of the halo is included,
+and <code>neval</code> specifies how many samples will be generated by
+<strong>vegas</strong> in each integration chain.
+The default value for the DM-<span class="arithmatex">\(\nu\)</span> cross section is <span class="arithmatex">\(\sigma_{\chi\nu} = 10^{-45}\)</span> cm<sup>2</sup>.
 See also <a href="api/main/flux/" target="_blank"><code>snorer.flux</code></a>.</p>
 <h3 id="evaluating-event">Evaluating event<a class="headerlink" href="#evaluating-event" title="Permanent link">&para;</a></h3>
-<p>Assuming the main target to scatter with BDM in the detector is electron, the following function evaluating the event number per second per electron.
-The default value for DM-<span class="arithmatex">\(\nu\)</span> cross section <span class="arithmatex">\(\sigma_{\chi\nu}=10^{-45}\)</span> cm<sup>2</sup> but DM-<em>e</em> cross section <span class="arithmatex">\(\sigma_{\chi e}\)</span> is normalized to 1 cm<sup>2</sup>.</p>
+<p>Assuming the main target that scatters with BDM in the detector is the <strong>electron</strong>,
+the following function evaluates the <strong>event rate per second per electron</strong>.
+The default value for the DM–<span class="arithmatex">\(\nu\)</span> cross section is <span class="arithmatex">\(\sigma_{\chi\nu} = 10^{-45}\)</span> cm<sup>2</sup>,
+while the DM–<em>e</em> cross section <span class="arithmatex">\(\sigma_{\chi e}\)</span> is <em>normalized to</em> <strong>1 cm<sup>2</sup></strong>.</p>
 <pre><code class="language-python">&gt;&gt;&gt; mx,Rstar,beta = 1e-2,8.5,0.3 # Collecting parameters
 &gt;&gt;&gt; event = sn.event(mx,Rstar,beta,is_spike=True,neval=30000) # Evaluating BDM event per electron with sigma_xe = 1 cm^2
 &gt;&gt;&gt; print(event)
 4.6009089186164447e-07
 </code></pre>
-<p>Given the previous setup, <code>event</code> is the event number per electron for <span class="arithmatex">\(\sigma_{\chi e}=1\)</span> cm<sup>2</sup>. Suppose there are <span class="arithmatex">\(N_e\)</span> electrons in the detector and the true cross sections are <span class="arithmatex">\(\sigma_{\chi\nu}^{\rm true}\)</span> and <span class="arithmatex">\(\sigma_{\chi e}^{\rm true}\)</span>, the total event number in this detector is</p>
+<p>Given the previous setup, <code>event</code> is the event rate per electron assuming <span class="arithmatex">\(\sigma_{\chi e} = 1\)</span> cm<sup>2</sup>.
+Suppose the detector contains <span class="arithmatex">\(N_e\)</span> electrons, and the true cross sections are
+<span class="arithmatex">\(\sigma_{\chi\nu}^{\rm true}\)</span> and <span class="arithmatex">\(\sigma_{\chi e}^{\rm true}\)</span>, then the <strong>total event number</strong> in this detector is</p>
 <p>$$
 N_\chi^{\rm tot} = \texttt{event} \times \frac{N_e}{1}\times \frac{\sigma_{\chi e}^{\rm true}}{1 \,{\rm cm^2}} \times \frac{\sigma_{\chi\nu}^{\rm true}}{10^{-45}\,{\rm cm^2}}.
 $$
@@ -341,5 +376,5 @@ See also <a href="api/main/event/" target="_blank"><code>snorer.event</code></a>
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-04-03 13:02:36.407935+00:00
+Build Date UTC : 2025-04-09 04:58:17.843418+00:00
 -->

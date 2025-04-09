@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Demonstration - snorer</title>
+    <title>Emissivity - snorer</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -14,8 +14,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Demonstration";
-        var mkdocs_page_input_path = "manual/demo.md";
+        var mkdocs_page_name = "Emissivity";
+        var mkdocs_page_input_path = "manual/emissivity.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -49,11 +49,17 @@
               </ul>
               <p class="caption"><span class="caption-text">User Manual</span></p>
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" >Overview</a>
-    <ul>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Overview</a>
+    <ul class="current">
                 <li class="toctree-l2"><a class="reference internal" href="../overview/">BDM Physics</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../emissivity/">Emissivity</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Emissivity</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#particle-approach">Particle approach</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#heuristic-approach">Heuristic approach</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                   </li>
@@ -61,11 +67,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../advanced/">Advanced Topics</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Demonstration</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#animations">Animations</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../demo/">Demonstration</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">API References</span></p>
@@ -202,7 +204,8 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">User Manual</li>
-      <li class="breadcrumb-item active">Demonstration</li>
+          <li class="breadcrumb-item">Overview</li>
+      <li class="breadcrumb-item active">Emissivity</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -219,42 +222,93 @@ window.MathJax = {
 };
 </script>
 
-<h1 id="demonstration">Demonstration<a class="headerlink" href="#demonstration" title="Permanent link">&para;</a></h1>
-<p>In this page, we present three demonstrations showing how BDM evolves over time on the celestial sphere. 
-Specifically, we display the <strong><span class="arithmatex">\( T_\chi \)</span>-integrated BDM flux</strong> for <span class="arithmatex">\( m_\chi = 5 \, \text{keV} \)</span>, defined by 
-\begin{equation}
-\frac{d\Phi_\chi(t)}{d\Omega} = \int_{T_{\chi,\mathrm{min}}}^{T_{\chi,\mathrm{max}}} \frac{d\Phi_\chi(t)}{dT_\chi\, d\Omega}
+<h1 id="emissivity">Emissivity<a class="headerlink" href="#emissivity" title="Permanent link">&para;</a></h1>
+<p>We systematically derive how the BDM emissivity <span class="arithmatex">\(j_\chi\)</span>, given by Eq. (13) in <a href="../overview/#emissivity-on-the-shell" target="_blank">BDM Physics</a>,</p>
+<p>\begin{equation}
+j_\chi = c n_\chi \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi\nu}}{d\Omega} \left( \frac{dE_\nu}{dT_\chi} \frac{v_\chi}{c} \right).
 \end{equation} 
-with integration ranges <span class="arithmatex">\( (T_{\chi,\mathrm{min}}, T_{\chi,\mathrm{max}}) = (5, 50) \)</span>, <span class="arithmatex">\( (300, 1000) \)</span>, and <span class="arithmatex">\( (1, 1000) \)</span> keV.</p>
-<p>We assume the Milky Way (MW) core-collapse supernova (CCSN) rate is approximately 1.63 per century, 
-and the simulation spans a total duration of 100,000 years. 
-On average, this corresponds to about 1,630 CCSNe occurring during the simulation period. 
-The CCSN locations are sampled from the MW baryonic density distribution, 
-and their birth times are assumed to be uniformly distributed over the 100,000-year period.</p>
-<p>The animations below illustrate the time evolution in <strong>logarithmic time scale</strong>. 
-The dataset containing the simulated CCSN positions and birth dates used in these animations 
-can be <a href="../../dat/MW_sne.txt" target="_blank">downloaded here</a>.</p>
-<h2 id="animations">Animations<a class="headerlink" href="#animations" title="Permanent link">&para;</a></h2>
-<h3 id="t_chirm-mint_chirm-max550rm-kev"><span class="arithmatex">\((T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,50)~{\rm keV}\)</span><a class="headerlink" href="#t_chirm-mint_chirm-max550rm-kev" title="Permanent link">&para;</a></h3>
-<video controls width="100%">
-  <source src="../../anis/5_50keV.mp4" type="video/mp4">
-  Your browser does not suppor MP4 playback.
-</video>
+Below, we provide two approaches: one that is more familiar to particle physicists, and another that is more heuristic.
+All terms can be expressed in vector notations generally, but we omitt this in the following discussion for simplicity.</p>
+<h2 id="particle-approach">Particle approach<a class="headerlink" href="#particle-approach" title="Permanent link">&para;</a></h2>
+<h3 id="specific-number-intensity">Specific number intensity<a class="headerlink" href="#specific-number-intensity" title="Permanent link">&para;</a></h3>
+<p>First, recall that the particle flux at position <span class="arithmatex">\( x \)</span> is defined as<br />
+\begin{equation}
+\Phi = \int d^3p f(x, p)v(p) = \int dp d\Omega\, p^2 f(x, p)\, v(p)
+\end{equation}
+where <span class="arithmatex">\( f(x, p) \)</span> is the phase space distribution, <span class="arithmatex">\( p  \)</span> is the particle momentum, and <span class="arithmatex">\( v \)</span> is the particle velocity. 
+This distribution is defined in momentum space because <span class="arithmatex">\( d^3p/E \)</span> is Lorentz invariant, with <span class="arithmatex">\( E = \sqrt{p^2 + m^2} \)</span>.
+Transforming to other phase space variables is straightforward via an appropriate Jacobian factor. From now on, we omit <span class="arithmatex">\(x \)</span> for simplicity.</p>
+<p>We then define the specific number intensity <span class="arithmatex">\( I(p) \)</span> as<br />
+\begin{equation}\label{eq:I}
+I(p) \equiv p^2 f(p)v(p) = \frac{d\Phi}{dp d\Omega}
+\end{equation} 
+in the phase space <span class="arithmatex">\( dp d\Omega \)</span>. This quantity has the dimension: per unit energy, per steradian, per volume.</p>
+<h3 id="emissivity-on-the-snnu-shell">Emissivity on the SN<span class="arithmatex">\(\nu\)</span> shell<a class="headerlink" href="#emissivity-on-the-snnu-shell" title="Permanent link">&para;</a></h3>
+<p>Since the flux equals number density times velocity, we have  </p>
+<div class="arithmatex">\[\begin{equation}\label{eq:flux_I}
+\frac{d \Phi}{dp d\Omega} = \frac{dn}{dp d\Omega}v(p).
+\end{equation}\]</div>
+<p>Alternatively, the flux is also defined as  </p>
+<p>\begin{equation}\label{eq:flux_j}
+\frac{d\Phi}{dp d\Omega} = \int d\ell \, j_\chi
+\end{equation}
+where <span class="arithmatex">\(j_\chi\)</span> is the emissivity
+and we only look for the component such that <span class="arithmatex">\(v\)</span> is parallel to <span class="arithmatex">\(\ell\)</span>.
+Combining the two expressions above, we obtain  </p>
+<p>\begin{equation}\label{eq:jx_def}
+\frac{dn}{dp d\Omega}\, v = \int d\ell \, j_\chi = v \int dt \, j_\chi
+\end{equation} 
+where <span class="arithmatex">\( d\ell = v dt \)</span> is used.</p>
+<p>Now, we turn to the BDM and recall that the emissivity is restricted to the SN<span class="arithmatex">\(\nu\)</span> shell, bounded by two Heaviside theta functions. We rewrite the relation above as  </p>
+<div class="arithmatex">\[\begin{equation}
+\frac{dn_\chi}{dp_\chi d\Omega} \approx \tau_s \int dt\, j_\chi\, \underbrace{ \delta\left( t - \frac{d}{c} - \frac{\ell}{v_\chi} \right) }_{\text{on the shell}} = \tau_s \left. j_\chi \right|_{\text{on the shell}}.
+\end{equation}\]</div>
+<p>Here, <span class="arithmatex">\(d\Omega\)</span> is exclusively at boost point <span class="arithmatex">\(\mathsf{B}\)</span> and the subscript <em>on the shell</em> means the condition <span class="arithmatex">\( t = d/c + \ell/v_\chi \)</span> must be satisfied everywhere. 
+Thus, we obtain </p>
+<div class="arithmatex">\[\begin{equation}\label{eq:jx}
+\left. j_\chi \right|_{\text{on the shell}} = \frac{dn_\chi}{dp_\chi d\Omega dt} = c n_\chi(r) \frac{dn_\nu}{dE_\nu} \frac{d\sigma_{\chi \nu}}{d\Omega} \frac{dE_\nu}{dp_\chi}.
+\end{equation}\]</div>
+<p>The factor <span class="arithmatex">\( 1/dt \)</span> is effectively <span class="arithmatex">\( 1/\tau_s \)</span>. 
+One can further convert <span class="arithmatex">\( dE_\nu/dp_\chi \)</span> to <span class="arithmatex">\( dE_\nu/dT_\chi \)</span> by the Jacobian  </p>
+<div class="arithmatex">\[
+\frac{dT_\chi}{dp_\chi} = \frac{v_\chi}{c}.
+\]</div>
+<p>Note that in the earlier step, we considered only the <span class="arithmatex">\(v\)</span>-parallel-to-<span class="arithmatex">\(\ell\)</span> component, which has been accounted for in the definition of <span class="arithmatex">\( d\sigma_{\chi\nu}/d\Omega \)</span>.</p>
+<h2 id="heuristic-approach">Heuristic approach<a class="headerlink" href="#heuristic-approach" title="Permanent link">&para;</a></h2>
+<p>In this section, we re-derive the same expression for <span class="arithmatex">\( j_\chi \)</span> using a heuristic method inspired by astrophysical domain. </p>
+<p>Suppose the number of BDM particles <span class="arithmatex">\( dN_\chi \)</span> passing through a surface element <span class="arithmatex">\( dA \)</span>, in a direction specified by an angle <span class="arithmatex">\( \psi \)</span>, is proportional to <span class="arithmatex">\( dt \)</span>, <span class="arithmatex">\( dp_\chi \)</span>, <span class="arithmatex">\( d\Omega \)</span>, and the projected surface area element <span class="arithmatex">\( \cos\psi\, dA \equiv dA_\perp \)</span>. 
+See <a href="#emissivity">Fig. 1</a> below. 
+The proportionality constant is referred to as the specific intensity <span class="arithmatex">\( I_\chi \)</span>.</p>
+<figure id="emissivity">
+<center><img src="../../figs/emissivity.svg" alt="scheme" style="width: 45%;">
+<figcaption>Figure 1. Overall BDM emitted at boost point B.
+</figure>
 
-<p><a href="../../anis/5_50keV.mp4">Download video</a></p>
-<h3 id="t_chirm-mint_chirm-max3001000rm-kev"><span class="arithmatex">\((T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(300,1000)~{\rm keV}\)</span><a class="headerlink" href="#t_chirm-mint_chirm-max3001000rm-kev" title="Permanent link">&para;</a></h3>
-<video controls width="100%">
-  <source src="../../anis/300_1000keV.mp4" type="video/mp4">
-  Your browser does not suppor MP4 playback.
-</video>
-
-<p><a href="../../anis/300_1000keV.mp4">Download video</a></p>
+<p>We can therefore write</p>
+<div class="arithmatex">\[\begin{equation}
+dN_\chi = I_\chi \, dA_\perp \, d\Omega \, dp_\chi \, dt
+\end{equation}\]</div>
+<p>which implies</p>
+<div class="arithmatex">\[\begin{equation}
+I_\chi = \frac{dN_\chi}{dp_\chi\, d\Omega\, dA_\perp\, dt} = \frac{d\Phi_\chi}{dp_\chi\, d\Omega} \equiv \frac{dn_\chi}{dp_\chi\, d\Omega} v_\chi
+\end{equation}\]</div>
+<p>where one can verify that <span class="arithmatex">\( dN_\chi / dA_\perp dt \)</span> indeed has the units of flux, and <span class="arithmatex">\( n_\chi \)</span> denotes the BDM number density.
+The radiative transfer equation implies:</p>
+<div class="arithmatex">\[\begin{equation}
+\frac{dI_\chi}{d\ell} = -\alpha_\chi I_\chi + j_\chi
+\end{equation}\]</div>
+<p>where <span class="arithmatex">\( \alpha_\chi \)</span> characterizes the absorption rate of BDM particles during propagation. However, we assume this effect is highly suppressed and thus negligible in our analysis. 
+Therefore, we obtain:
+\begin{equation}
+I_\chi = \int d\ell\, j_\chi.
+\end{equation}
+Repeating the same reasoning applied in Eq. \eqref{eq:jx_def} then leads us directly to the desired result in Eq. \eqref{eq:jx}.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../advanced/" class="btn btn-neutral float-left" title="Advanced Topics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../../api/params/params/" class="btn btn-neutral float-right" title="Parameters">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../overview/" class="btn btn-neutral float-left" title="BDM Physics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tutorial/" class="btn btn-neutral float-right" title="Tutorial">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -277,10 +331,10 @@ can be <a href="../../dat/MW_sne.txt" target="_blank">downloaded here</a>.</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../advanced/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../api/params/params/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../tutorial/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

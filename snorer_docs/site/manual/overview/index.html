@@ -61,6 +61,8 @@
     </li>
     </ul>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../emissivity/">Emissivity</a>
+                </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../tutorial/">Tutorial</a>
@@ -223,139 +225,137 @@ window.MathJax = {
 </script>
 
 <h1 id="bdm-physics">BDM Physics<a class="headerlink" href="#bdm-physics" title="Permanent link">&para;</a></h1>
-<p>We review all the details provided in Refs. [<a href="#bib_Lin2023PRL">1</a>, <a href="#bib_Lin2023PRD">2</a>].
-While these papers present mathematical expressions suitable for general readers, the content in this section is tailored for programming purposes.
-The goal of this document is not to replace Refs. [<a href="#bib_Lin2023PRL">1</a>, <a href="#bib_Lin2023PRD">2</a>] but to bridge the gap between traditional journal writing and the technical details required for programming.
-Typos and misinformation are corrected here to ensure clarity and facilitate understanding of the subsequent Python code.</p>
+<p>We review all the details provided in Refs. [<a href="#bib_Lin2023PRL">1</a>, <a href="#bib_Lin2023PRD">2</a>]. 
+While these papers present mathematical expressions suitable for general readers, the content in this section is tailored for programming purposes. 
+The goal of this document is not to replace Refs. [<a href="#bib_Lin2023PRL">1</a>, <a href="#bib_Lin2023PRD">2</a>] but to bridge the gap between traditional journal writing and the technical details required for programming. 
+Typos and misstatements are corrected here to ensure clarity and to facilitate understanding of the subsequent Python code.</p>
 <h2 id="general-picture">General picture<a class="headerlink" href="#general-picture" title="Permanent link">&para;</a></h2>
-<p>Given non-zero cross section between DM (<span class="arithmatex">\(\chi\)</span>) and neutrino (<span class="arithmatex">\(\nu\)</span>), it is expected that when SN<span class="arithmatex">\(\nu\)</span> could scatter with halo <span class="arithmatex">\(\chi\)</span> when propagating outward
-from the explosion site. We display the general scheme in <a href="#snv_bdm_scheme">Fig. 1</a>. In this figure, SN, galactic center (GC) and Earth are denoted as S, G and E respectively.</p>
+<p>Given a non-zero cross section between DM (<span class="arithmatex">\(\chi\)</span>) and neutrino (<span class="arithmatex">\(\nu\)</span>), it is expected that SN<span class="arithmatex">\(\nu\)</span> can scatter with halo <span class="arithmatex">\(\chi\)</span> particles as they propagate outward from the explosion site. 
+We illustrate the general setup in <a href="#snv_bdm_scheme">Fig. 1</a>. In this figure, the supernova (SN), galactic center (GC), and Earth are labeled as S, G, and E respectively.</p>
 <figure id="snv_bdm_scheme">
 <center><img src="../../figs/scheme.svg" alt="scheme" style="width: 60%;">
-<figcaption>Figure 1. The 3D scheme for SN\(\nu\) BDM.
+<figcaption>Figure 1. The 3D schematic of SN\(\nu\)-induced BDM.</figcaption>
 </figure>
 
-<p>In <a href="#snv_bdm_scheme">Fig. 1</a>, S, G and E are coplanar and <span class="arithmatex">\(\chi\)</span> is boosted at B on the SN<span class="arithmatex">\(\nu\)</span> shell. <span class="arithmatex">\(d\)</span> is the distance <span class="arithmatex">\(\overline{\mathsf{SB}}\)</span>, <span class="arithmatex">\(\ell\)</span> the distance <span class="arithmatex">\(\overline{\mathsf{BE}}\)</span>, <span class="arithmatex">\(R_s\)</span> the distance between SN and Earth and <span class="arithmatex">\(R_e\)</span> the distance between GC and Earth. The DM number density at B is determined by <span class="arithmatex">\(n_\chi(r)\)</span> where <span class="arithmatex">\(r\)</span> is the radial distance between GC and B. We adopt NFW profile  [<a href="#bib_NFW">3</a>] for <span class="arithmatex">\(n_\chi\)</span>,
-$$
-\begin{equation}
-n_\chi(r)=\frac{\rho_s}{m_\chi}\frac{1}{\frac{r}{r_s}(1+\frac{r}{r_s})^2}
-\end{equation}
-$$
-where <span class="arithmatex">\(\rho_s=184\)</span> MeV cm<sup>−3</sup> and <span class="arithmatex">\(r_s=24.4\)</span> kpc.
-Due to its spherical symmetric nature, one does not need to know where the galactic plane lies. Unless S lies on the axis <span class="arithmatex">\(\overline{\mathsf{GE}}\)</span>, BDM is not azimuthally symmetric around <span class="arithmatex">\(\varphi\)</span>.
-We refer <span class="arithmatex">\(\beta\)</span> as the off-center angle. It characterizes how SN deviates from GC in angular direction. It will be elaborated more in the API documents: <a href="../../api/geometry/Positioning/" target="_blank">Positioning</a> and <a href="../../api/utils/coord_transf/" target="_blank">Coordinate Transformations</a>.</p>
+<p>In <a href="#snv_bdm_scheme">Fig. 1</a>, S, G, and E lie on the same plane, and a <span class="arithmatex">\(\chi\)</span> particle is boosted at point B on the SN<span class="arithmatex">\(\nu\)</span> shell. 
+Here, <span class="arithmatex">\(d\)</span> denotes the distance <span class="arithmatex">\(\overline{\mathsf{SB}}\)</span>, <span class="arithmatex">\(\ell\)</span> the distance <span class="arithmatex">\(\overline{\mathsf{BE}}\)</span>, <span class="arithmatex">\(R_s\)</span> the distance between the SN and Earth, and <span class="arithmatex">\(R_e\)</span> the distance between the GC and Earth. 
+The DM number density at point B is given by <span class="arithmatex">\(n_\chi(r)\)</span>, where <span class="arithmatex">\(r\)</span> is the radial distance from the GC to B. 
+We adopt the NFW profile [<a href="#bib_NFW">3</a>] for <span class="arithmatex">\(n_\chi\)</span>:</p>
+<div class="arithmatex">\[\begin{equation}
+n_\chi(r) = \frac{\rho_s}{m_\chi} \frac{1}{\frac{r}{r_s} ( 1 + \frac{r}{r_s} )^2}
+\end{equation}\]</div>
+<p>where <span class="arithmatex">\(\rho_s = 184\)</span> MeV cm<sup>−3</sup> and <span class="arithmatex">\(r_s = 24.4\)</span> kpc.
+Due to the spherically symmetric nature of the DM halo, there is no need to specify the orientation of the galactic plane. 
+However, unless S lies precisely along the axis <span class="arithmatex">\(\overline{\mathsf{GE}}\)</span>, the resulting BDM distribution will not be azimuthally symmetric in <span class="arithmatex">\(\varphi\)</span>.</p>
+<p>We define <span class="arithmatex">\(\beta\)</span> as the off-center angle, which quantifies the angular displacement of the SN relative to the GC. 
+This quantity is further explained in the API documentation:<br />
+<a href="../../api/geometry/Positioning/" target="_blank">Positioning</a> and 
+<a href="../../api/utils/coord_transf/" target="_blank">Coordinate Transformations</a>.</p>
 <h3 id="particle-kinematics">Particle kinematics<a class="headerlink" href="#particle-kinematics" title="Permanent link">&para;</a></h3>
-<p>When a <span class="arithmatex">\(\nu\)</span> carries energy <span class="arithmatex">\(E_\nu\)</span> and scatters with a static <span class="arithmatex">\(\chi\)</span> at B, DM will receive kinetic energy <span class="arithmatex">\(T_\chi\)</span> by
+<p>When a <span class="arithmatex">\(\nu\)</span> carries energy <span class="arithmatex">\(E_\nu\)</span> and scatters with a static <span class="arithmatex">\(\chi\)</span> at point B, the DM particle receives kinetic energy <span class="arithmatex">\(T_\chi\)</span> given by
 $$
-T_\chi = \frac{E_\nu^2}{E_\nu+m_\chi/2}\left(\frac{1+\cos\theta_c}{2}\right)
+T_\chi = \frac{E_\nu^2}{E_\nu + m_\chi / 2} \left( \frac{1 + \cos\theta_c}{2} \right)
 $$
-where <span class="arithmatex">\(\theta_c\)</span> is the scattering angle at center-of-mass (cm) frame (do not confuse with the <span class="arithmatex">\(\theta\)</span> in <a href="#snv_bdm_scheme">Fig. 1</a>). Assuming <span class="arithmatex">\(\theta_c\)</span> uniformly distributes in <span class="arithmatex">\([0,\pi]\)</span>, we can relate it with lab frame scattering <span class="arithmatex">\(\psi\)</span> by
+where <span class="arithmatex">\(\theta_c\)</span> is the scattering angle in the center-of-mass (cm) frame (not to be confused with the <span class="arithmatex">\(\theta\)</span> in <a href="#snv_bdm_scheme">Fig. 1</a>). 
+Assuming <span class="arithmatex">\(\theta_c\)</span> is uniformly distributed in <span class="arithmatex">\([0, \pi]\)</span>, it can be related to the lab frame scattering angle <span class="arithmatex">\(\psi\)</span> by
 $$
-\theta_c =2\tan^{-1}(\gamma \tan\psi)
+\theta_c = 2 \tan^{-1}(\gamma \tan\psi)
 $$
-where <span class="arithmatex">\(\psi\in [0,\pi/2]\)</span> and <span class="arithmatex">\(\gamma=(E_\nu+m_\chi)/\sqrt{m_\chi(2E_\nu+m_\chi)}\)</span>.
-Thus we have
+where <span class="arithmatex">\(\psi \in [0, \pi/2]\)</span> and the boost factor is defined as
 $$
+\gamma = \frac{E_\nu + m_\chi}{\sqrt{m_\chi(2E_\nu + m_\chi)}}.
+$$
+Thus, the differential cross section in the lab frame becomes 
 \begin{equation}
-\frac{d\sigma_{\chi\nu}}{d\Omega_{\rm lab}}=\frac{1}{2\pi}\frac{d\sigma_{\chi\nu}}{d\cos\psi}=\sigma_0\times g_\chi(\psi)
-\end{equation}
-$$
-where
-$$
+\frac{d\sigma_{\chi\nu}}{d\Omega_{\rm lab}} = \frac{1}{2\pi} \frac{d\sigma_{\chi\nu}}{d\cos\psi} = \sigma_0 \times g_\chi(\psi)
+\end{equation} 
+where 
 \begin{equation}\label{eq:gx}
-g_\chi(\psi) = \frac{\gamma^2\sec^3\psi}{\pi(1+\gamma^2\tan^2\psi)^2} 
-\end{equation}
+g_\chi(\psi) = \frac{\gamma^2 \sec^3\psi}{\pi (1 + \gamma^2 \tan^2\psi)^2}
+\end{equation} 
+is the angular distribution of the <span class="arithmatex">\(\chi\nu\)</span> scattering cross section in the lab frame. 
+One can verify that Eq. \eqref{eq:gx} satisfies the normalization condition
 $$
-is the angular distribution for <span class="arithmatex">\(\chi\nu\)</span> scattering cross section in lab frame. One can easily verify that Eq. <span class="arithmatex">\(\eqref{eq:gx}\)</span> satisfy
+2\pi \int_0^{\pi/2} g_\chi(\psi)\, \sin\psi\, d\psi = 1
 $$
-2\pi \int_0^{\pi/2} g_\chi(\psi) \sin\psi d\psi =1
+and that the result is independent of <span class="arithmatex">\(\gamma\)</span>.
+When <span class="arithmatex">\(d\)</span>, <span class="arithmatex">\(\ell\)</span>, and <span class="arithmatex">\(R_s\)</span> are specified, the scattering angle <span class="arithmatex">\(\psi\)</span> can be determined using the law of cosines:
 $$
-and is independent of <span class="arithmatex">\(\gamma\)</span>.</p>
-<p>When <span class="arithmatex">\(d\)</span>, <span class="arithmatex">\(\ell\)</span> and <span class="arithmatex">\(R_s\)</span> are specified, one can determined <span class="arithmatex">\(\psi\)</span> by law of cosine
+R_s^2 = d^2 + \ell^2 - 2d\ell \cos(\pi - \psi)
 $$
-R_s^2 = d^2+\ell^2-2d\ell \cos(\pi-\psi)
-$$
-where
-$$
+which gives 
 \begin{equation}\label{eq:geo_psi}
- \psi =\cos^{-1}\left( \frac{R_s^2-d^2-\ell^2}{2d\ell}\right).
-\end{equation}
-$$</p>
+\psi = \cos^{-1} \left( \frac{R_s^2 - d^2 - \ell^2}{2d\ell} \right).
+\end{equation}</p>
 <h3 id="constraint-by-positive-definite-e_nu">Constraint by positive-definite <span class="arithmatex">\(E_\nu\)</span><a class="headerlink" href="#constraint-by-positive-definite-e_nu" title="Permanent link">&para;</a></h3>
-<p>Note that though the valid range of <span class="arithmatex">\(\psi\)</span> from Eq. <span class="arithmatex">\(\eqref{eq:geo_psi}\)</span> is in <span class="arithmatex">\([0,\pi]\)</span> but Eq. <span class="arithmatex">\(\eqref{eq:gx}\)</span> puts stronger constraint. As Eq. <span class="arithmatex">\(\eqref{eq:geo_psi}\)</span> is merely a geometrical relation but Eq. <span class="arithmatex">\(\eqref{eq:gx}\)</span> is required by the kinematics.
-However, <span class="arithmatex">\([0,\pi/2]\)</span> is simply the full range allowed by kinematics, if we examine further, we will find that the true valid range for <span class="arithmatex">\(\psi\)</span> is narrower.
-Let's consider the <span class="arithmatex">\(\chi\nu\)</span> scattering in lab frame in <a href="#lab_scatt">Fig. 2</a></p>
+<p>Note that although the valid range of <span class="arithmatex">\(\psi\)</span> from Eq. \eqref{eq:geo_psi} lies in <span class="arithmatex">\([0, \pi]\)</span>, Eq. \eqref{eq:gx} imposes a stronger constraint. 
+While Eq. \eqref{eq:geo_psi} is purely a geometric relation, Eq. \eqref{eq:gx} arises from the kinematics of the scattering process.
+In fact, further analysis reveals that the true valid range for <span class="arithmatex">\(\psi\)</span> is even narrower. 
+Let us consider the <span class="arithmatex">\(\chi\nu\)</span> scattering in the lab frame, illustrated in <a href="#lab_scatt">Fig. 2</a>.</p>
 <figure id="lab_scatt">
 <center><img src="../../figs/lab_scattering.svg" alt="scheme" style="width: 40%;">
-<figcaption>Figure 2. \(\chi\nu\) scattering in lab frame.
+<figcaption>Figure 2. \(\chi\nu\) scattering in lab frame.</figcaption>
+</center>
 </figure>
 
-<p>We write down the four-momenta for each particle,</p>
+<p>We write the four-momenta for each particle as</p>
 <div class="arithmatex">\[
 \begin{align*}
-p_{\nu} &amp; =(E_{\nu},0,0,E_{\nu}),\\
-p_{\chi} &amp; =(m_{\chi},0,0,0),\\
-p_{\nu}^{\prime} &amp; =(E_{\nu}^{\prime},x,y,z),\\
-p_{\chi}^{\prime} &amp; =(E_{\chi},-|\mathbf{p}_{\chi}|\sin\psi,0,|\mathbf{p}_{\chi}|\cos\psi),
+p_{\nu} &amp;= (E_{\nu}, 0, 0, E_{\nu}), \\
+p_{\chi} &amp;= (m_{\chi}, 0, 0, 0), \\
+p_{\nu}^{\prime} &amp;= (E_{\nu}^{\prime}, x, y, z), \\
+p_{\chi}^{\prime} &amp;= \left(E_{\chi}, -|\mathbf{p}_{\chi}|\sin\psi, 0, |\mathbf{p}_{\chi}|\cos\psi \right),
 \end{align*}
 \]</div>
-<p>where <span class="arithmatex">\((x,y,z)\)</span> indicates their values are irrelevant. Relativistic mechanics implies that, assuming <span class="arithmatex">\(m_\nu=0\)</span> and the metric tensor <span class="arithmatex">\(g_{\mu\nu}={\rm diag}(1,-1,-1,-1)\)</span>,</p>
+<p>where <span class="arithmatex">\((x, y, z)\)</span> are irrelevant to the calculation. 
+Assuming <span class="arithmatex">\(m_\nu = 0\)</span> and using the metric signature <span class="arithmatex">\(g^{\mu\nu}=g_{\mu\nu} = \mathrm{diag}(1, -1, -1, -1)\)</span>, relativistic kinematics gives </p>
 <div class="arithmatex">\[
 \begin{align*}
-(p_\nu-p_\chi^\prime)^2 &amp;= (p_\chi-p_\nu^\prime)^2, \\
-m_\chi^2 - 2E_\nu (E_\chi -|\mathbf{p}_{\chi}|\cos\psi) &amp;= m_\chi^2-2m_\chi E_\nu^\prime.
+(p_\nu - p_\chi^\prime)^2 &amp;= (p_\chi - p_\nu^\prime)^2, \\
+m_\chi^2 - 2E_\nu (E_\chi - |\mathbf{p}_{\chi}|\cos\psi) &amp;= m_\chi^2 - 2m_\chi E_\nu^\prime.
 \end{align*}
 \]</div>
-<p>We can rewrite the last line by <span class="arithmatex">\(E_\chi = T_\chi + m_\chi\)</span> and <span class="arithmatex">\(T_\chi = E_\nu - E_\nu^\prime\)</span> which results in</p>
+<p>Using the relations <span class="arithmatex">\(E_\chi = T_\chi + m_\chi\)</span> and <span class="arithmatex">\(T_\chi = E_\nu - E_\nu^\prime\)</span>, the equation becomes</p>
+<div class="arithmatex">\[\begin{equation}\label{eq:Ev}
+E_\nu = \frac{T_\chi m_\chi}{|\mathbf{p}_{\chi}|\cos\psi - T_\chi}.
+\end{equation}\]</div>
+<p>Given the BDM kinetic energy <span class="arithmatex">\(T_\chi\)</span> and scattering angle <span class="arithmatex">\(\psi\)</span> at point B, Eq. \eqref{eq:Ev} determines the required <span class="arithmatex">\(E_\nu\)</span> to produce such a configuration. 
+Since <span class="arithmatex">\(E_\nu\)</span> must be positive and finite, this imposes a stronger constraint:</p>
+<div class="arithmatex">\[\begin{equation}\label{eq:psi_max}
+|\mathbf{p}_\chi| \cos\psi - T_\chi &gt; 0 \quad \Rightarrow \quad \psi &lt; \psi_{\rm max} := \cos^{-1} \left( \frac{T_\chi}{|\mathbf{p}_{\chi}|} \right).
+\end{equation}\]</div>
+<p>It is also straightforward to derive</p>
 <div class="arithmatex">\[
-\begin{equation}\label{eq:Ev}
-E_\nu = \frac{T_\chi m_\chi }{ |\mathbf{p}_{\chi}|\cos\psi - T_\chi}.
-\end{equation}
+|\mathbf{p}_\chi| = \sqrt{T_\chi (T_\chi + 2m_\chi)}.
 \]</div>
-<p>Once BDM kinetic energy <span class="arithmatex">\(T_\chi\)</span> and scattering angle <span class="arithmatex">\(\psi\)</span> at B are given, Eq. <span class="arithmatex">\(\eqref{eq:Ev}\)</span> specifies the required <span class="arithmatex">\(E_\nu\)</span> to possess such properties.
-Without ambiguity, <span class="arithmatex">\(E_\nu\)</span> is positive-definite and non-divergent, hence an even stronger constraint is put by</p>
-<div class="arithmatex">\[
-\begin{equation}\label{eq:psi_max}
-|\mathbf{p}_\chi| \cos\psi - T_\chi &gt; 0 \to\psi &lt; \psi_{\rm max}:= \cos^{-1}\left(\frac{T_\chi}{|\mathbf{p}_{\chi}|}\right).
-\end{equation}
-\]</div>
-<p>It is also not hard to deduce that <span class="arithmatex">\(|\mathbf{p}_{\chi}|=\sqrt{T_\chi ( T_\chi+2m_\chi )}\)</span>.
-Hence the realistic range for <span class="arithmatex">\(\psi\)</span> is
-$$
-\begin{equation}
-\psi \in [0,\psi_{\rm max})
-\end{equation}
-$$
-while <span class="arithmatex">\(E_\nu\)</span> diverges at <span class="arithmatex">\(\psi=\psi_{\rm max}\)</span>.</p>
-<p>Moreover, we can differentiate Eq. <span class="arithmatex">\(\eqref{eq:Ev}\)</span> w.r.t. <span class="arithmatex">\(T_\chi\)</span> and obtain</p>
-<div class="arithmatex">\[
-\begin{equation}\label{eq:dEv/dTx}
-\frac{dE_\nu}{dT_\chi}=\left(\frac{ m_\chi }{|\mathbf{p}_{\chi}|\cos\psi-T_\chi }\right)^2\frac{T_\chi}{|\mathbf{p}_{\chi}|}\cos\psi.
-\end{equation}
-\]</div>
-<p>This function will be useful later.</p>
+<p>Hence, the physically allowed range for <span class="arithmatex">\(\psi\)</span> is</p>
+<div class="arithmatex">\[\begin{equation}
+\psi \in [0, \psi_{\rm max})
+\end{equation}\]</div>
+<p>and <span class="arithmatex">\(E_\nu\)</span> diverges as <span class="arithmatex">\(\psi \to \psi_{\rm max}\)</span>.
+Moreover, by differentiating Eq. \eqref{eq:Ev} with respect to <span class="arithmatex">\(T_\chi\)</span>, we obtain</p>
+<div class="arithmatex">\[\begin{equation}\label{eq:dEv/dTx} 
+\frac{dE_\nu}{dT_\chi} = \left( \frac{m_\chi}{|\mathbf{p}_{\chi}|\cos\psi - T_\chi} \right)^2 \frac{T_\chi}{|\mathbf{p}_{\chi}|} \cos\psi.
+\end{equation}\]</div>
+<p>This expression will be useful in later derivations.</p>
 <h2 id="dark-emissivity">Dark emissivity<a class="headerlink" href="#dark-emissivity" title="Permanent link">&para;</a></h2>
-<p>The key factor is determining how many <span class="arithmatex">\(\chi\)</span>s are boosted at B. This is generally characterized by the emissivity which has units of of cm<sup>−3</sup> s<sup>−1</sup> and of MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> in terms of energy spectrum.</p>
+<p>The key factor is determining how many <span class="arithmatex">\(\chi\)</span> particles are boosted at point B. 
+This is generally characterized by the <strong>emissivity</strong>, which has units of cm<sup>−3</sup> s<sup>−1</sup>, or MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> when expressed in terms of the energy spectrum.</p>
 <h3 id="snnu-spectrum">SN<span class="arithmatex">\(\nu\)</span> spectrum<a class="headerlink" href="#snnu-spectrum" title="Permanent link">&para;</a></h3>
-<p>We begin by writing down the SN<span class="arithmatex">\(\nu\)</span> energy spectrum on the shell at <span class="arithmatex">\(d\)</span>
-$$
+<p>We begin by writing down the SN<span class="arithmatex">\(\nu\)</span> energy spectrum on the shell at distance <span class="arithmatex">\(d\)</span>:
 \begin{equation}\label{eq:snv_spectrum}
-\frac{dN_\nu}{dE_\nu} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i}\rangle} f_{\nu_i}(E_\nu)
+\frac{dN_\nu}{dE_\nu} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle} f_{\nu_i}(E_\nu)
 \end{equation}
-$$
-where <span class="arithmatex">\(L_{\nu_i}=L_{\rm tot}/6\)</span> is the luminosity for each neutrino (<span class="arithmatex">\(\nu_{e,\mu,\tau}\)</span> and their anti-particles) and <span class="arithmatex">\(f_{\nu_i}(E_\nu)\)</span> is the Fermi-Dirac distribution  [<a href="#bib_Duan2006PRD">4</a>],
-$$
+where <span class="arithmatex">\(L_{\nu_i} = L_{\rm tot} / 6\)</span> is the luminosity for each neutrino species (<span class="arithmatex">\(\nu_{e,\mu,\tau}\)</span> and their antiparticles), 
+and <span class="arithmatex">\(f_{\nu_i}(E_\nu)\)</span> is the Fermi-Dirac distribution [<a href="#bib_Duan2006PRD">4</a>]:
 \begin{equation}
-f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)}\frac{1}{T_\nu^3}\frac{E_\nu^2}{e^{E_\nu/T_\nu-\eta_\nu}+1}
+f_{\nu_i}(E_\nu) = \frac{1}{F_2(\eta_\nu)} \frac{1}{T_\nu^3} \frac{E_\nu^2}{e^{E_\nu/T_\nu - \eta_\nu} + 1}
 \end{equation}
-$$
 where
-$$
 \begin{equation}
-F_k(\eta) = \int_0^\infty dx \frac{x^k}{e^{x-\eta}+1}.
+F_k(\eta) = \int_0^\infty dx\, \frac{x^k}{e^{x - \eta} + 1}.
 \end{equation}
-$$
-We list all the numerical values for the parameters mentioned above in <a href="#numerical_values">Tab. 1</a></p>
+We list all the numerical values for the parameters mentioned above in <a href="#numerical_values">Tab. 1</a>.</p>
 <div style="display: flex; justify-content: center;">
     <table id ="numerical_values" style="border-collapse: collapse; text-align: center;">
         <tr>
@@ -392,191 +392,176 @@ We list all the numerical values for the parameters mentioned above in <a href="
     </table>
 </div>
 
-<p>Suppose the duration of the SN explosion is around <span class="arithmatex">\(\tau_s=10\)</span> s, the total energy released in the form of neutrinos approximates <span class="arithmatex">\(10^{53}\)</span> erg for individual explosion.</p>
+<p>Suppose the duration of the SN explosion is approximately <span class="arithmatex">\(\tau_s = 10\)</span> s. 
+The total energy released in the form of neutrinos from a single explosion is roughly <span class="arithmatex">\(10^{53}\)</span> erg.</p>
 <h3 id="number-density-on-the-shell">Number density on the shell<a class="headerlink" href="#number-density-on-the-shell" title="Permanent link">&para;</a></h3>
-<p>After converting erg to MeV, one can examine that Eq. <span class="arithmatex">\(\eqref{eq:snv_spectrum}\)</span>, after multiplying <span class="arithmatex">\(\tau_s\)</span>, has the unit MeV<sup>−1</sup> cm<sup>−2</sup>.
-Because <span class="arithmatex">\(\nu\)</span> travels at light speed, we can estimate the shell thickness by <span class="arithmatex">\(h=c\tau_s\)</span>.
-The SN<span class="arithmatex">\(\nu\)</span> shell would have a number density
-$$
+<p>After converting erg to MeV, one can verify that Eq. \eqref{eq:snv_spectrum}, when multiplied by <span class="arithmatex">\(\tau_s\)</span>, has units of MeV<sup>−1</sup> cm<sup>−2</sup>. 
+Since neutrinos travel at the speed of light, the thickness of the SN<span class="arithmatex">\(\nu\)</span> shell can be estimated as <span class="arithmatex">\(h = c \tau_s\)</span>.
+The number density of neutrinos on the shell is then given by
 \begin{equation}\label{eq:snv_nd}
-\frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu}\frac{\tau_s}{h}= \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i}\rangle c} f_{\nu_i}(E_\nu).
+\frac{dn_\nu}{dE_\nu} = \frac{dN_\nu}{dE_\nu} \frac{\tau_s}{h} = \sum_i \frac{L_{\nu_i}}{4\pi d^2 \langle E_{\nu_i} \rangle c} f_{\nu_i}(E_\nu).
 \end{equation}
+One can confirm that <span class="arithmatex">\(dn_\nu/dE_\nu\)</span> has units of MeV<sup>−1</sup> cm<sup>−3</sup>, 
+which corresponds to the differential number density of SN<span class="arithmatex">\(\nu\)</span> on the shell.
+By multiplying by <span class="arithmatex">\(E_\nu\)</span>, the MeV<sup>−1</sup> unit is removed, yielding
 $$
-One can verify that <span class="arithmatex">\(dn_\nu/dE_\nu\)</span> has MeV<sup>−1</sup> cm<sup>−3</sup>, which is exactly the energy spectrum of SN<span class="arithmatex">\(\nu\)</span> number density on the shell.</p>
-<p>By multiplying <span class="arithmatex">\(E_\nu\)</span>, one can eliminate MeV<sup>−1</sup> and receives
+n_\nu = \frac{E_\nu}{c} \frac{dN_\nu}{dE_\nu},
 $$
-n_\nu =\frac{E_\nu}{c} \frac{dN_\nu}{dE_\nu}
-$$
-the SN<span class="arithmatex">\(\nu\)</span> number density.</p>
+which gives the SN<span class="arithmatex">\(\nu\)</span> number density.</p>
 <h3 id="emissivity-on-the-shell">Emissivity on the shell<a class="headerlink" href="#emissivity-on-the-shell" title="Permanent link">&para;</a></h3>
-<p>To obtain emissivity <span class="arithmatex">\(j_\chi\)</span> at B on the SN<span class="arithmatex">\(\nu\)</span> shell, one simply do
+<p>To obtain the emissivity <span class="arithmatex">\(j_\chi\)</span> at point B on the SN<span class="arithmatex">\(\nu\)</span> shell, one simply computes
 $$
-j_\chi := c n_\nu n_\chi \frac{d\sigma_{\chi\nu}}{d\Omega_{\rm lab}}
+j_\chi = c\, n_\nu\, n_\chi\, \frac{d\sigma_{\chi\nu}}{d\Omega_{\rm lab}},
 $$
-which has units of cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup> and sr<sup>−1</sup> indicates per steradian.
-It would be more convenient to restore the energy spectrum form and translate it into <span class="arithmatex">\(T_\chi\)</span> expression,
-$$
+which has units of cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup>, where sr<sup>−1</sup> indicates per steradian.
+It is often more convenient to restore the energy spectrum form and express it in terms of <span class="arithmatex">\(T_\chi\)</span>, yielding
 \begin{equation}\label{eq:jx}
-j_\chi(d,r,T_\chi,\psi) = cn_\chi \frac{dn_\nu}{dE_\nu}  \left(\frac{1}{2\pi}\frac{d\sigma_{\chi\nu}}{d\cos\psi}\right)\frac{dE_\nu}{dT_\chi}
+j_\chi(d, r, T_\chi, \psi) = c n_\chi \frac{dn_\nu}{dE_\nu} \left( \frac{1}{2\pi} \frac{d\sigma_{\chi\nu}}{d\cos\psi} \right) \left( \frac{dE_\nu}{dT_\chi} \frac{v_\chi}{c} \right)
 \end{equation}
-$$
-where <span class="arithmatex">\(dE_\nu/dT_\chi\)</span> is given in Eq. <span class="arithmatex">\(\eqref{eq:dEv/dTx}\)</span>.
-The above equation describes the BDM emissivity at any point on the shell
-and has a unit MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup>.</p>
+where <span class="arithmatex">\(dE_\nu / dT_\chi\)</span> is given in Eq. \eqref{eq:dEv/dTx}.
+The above equation describes the BDM emissivity at any point on the shell and has units of MeV<sup>−1</sup> cm<sup>−3</sup> s<sup>−1</sup> sr<sup>−1</sup>.
+A more detailed derivation of Eq. \eqref{eq:jx} can be found in 
+<a href="../emissivity/" target="_blank">Emissivity</a>.</p>
 <h2 id="snnu-bdm-flux">SN<span class="arithmatex">\(\nu\)</span> BDM flux<a class="headerlink" href="#snnu-bdm-flux" title="Permanent link">&para;</a></h2>
-<p>When the emissivity at any point is known, one can calculate the BDM flux at Earth by integrating <span class="arithmatex">\(j_\chi\)</span> over the ling-of-sight (l.o.s.) <span class="arithmatex">\(\ell\)</span>.
+<p>When the emissivity at any point is known, one can calculate the BDM flux at Earth by integrating <span class="arithmatex">\(j_\chi\)</span> along the line of sight (l.o.s.) <span class="arithmatex">\(\ell\)</span>. 
 Thus, cf. <a href="#snv_bdm_scheme">Figs. 1</a> and <a href="#2d_shell">3</a>,
-$$
 \begin{equation}\label{eq:total_Phi}
-\frac{d\Phi_\chi}{dT_\chi d\Omega}=\int d\ell ~  j_\chi \Theta(r_\nu - d)\Theta(d+h-r_\nu)
+\frac{d\Phi_\chi}{dT_\chi\, d\Omega} = \int d\ell\, j_\chi\, \Theta(r_\nu - d)\, \Theta(d + h - r_\nu)
 \end{equation}
+where <span class="arithmatex">\(d\Omega\)</span> denotes the field-of-view (f.o.v.) centered on the SN. 
+The two <span class="arithmatex">\(\Theta\)</span> functions ensure that <span class="arithmatex">\(j_\chi\)</span> is only non-zero within the shell.
+Without loss of generality, we assume <span class="arithmatex">\(h \ll d\)</span>, so that
 $$
-where <span class="arithmatex">\(d\Omega\)</span> is the field-of-view (f.o.v.) centering SN.
-The two <span class="arithmatex">\(\Theta\)</span> functions restrict <span class="arithmatex">\(j_\chi\)</span> is only non-zero within the shell.
-Without loss of generality, <span class="arithmatex">\(h\ll d\)</span> always holds such that 
+\Theta(r_\nu - d)\, \Theta(d + h - r_\nu) \approx h\, \delta(r_\nu - d) = c\tau_s\, \delta(r_\nu - d),
 $$
-\Theta(r_\nu-d)\Theta(d+h -r_\nu)\approx h \delta(r_\nu-d) =c\tau_s \delta(r_\nu-d)
-$$
-where <span class="arithmatex">\(\delta(x)\)</span> is the Dirac-delta function. Thus, Eq. <span class="arithmatex">\(\eqref{eq:total_Phi}\)</span> describes the total BDM flux that could be observed on the Earth.
-Note that <span class="arithmatex">\(\delta(r_\nu-d)\)</span> actually carries [L<sup>−1</sup>] and cancels the dimension from <span class="arithmatex">\(c\tau_s\)</span>.
-This approximation remains dimensionless and is self-consistent.</p>
+where <span class="arithmatex">\(\delta(x)\)</span> is the Dirac delta function. 
+Thus, Eq. \eqref{eq:total_Phi} describes the total BDM flux observable on Earth.
+Note that <span class="arithmatex">\(\delta(r_\nu - d)\)</span> has units of [L<sup>−1</sup>], which cancels the length dimension from <span class="arithmatex">\(c\tau_s\)</span>. 
+This ensures the approximation is dimensionless and self-consistent.</p>
 <figure id="2d_shell">
 <center><img src="../../figs/2D_scheme.svg" alt="scheme" style="width: 45%;">
-<figcaption>Figure 3. BDM production on the shell with thickness \(h\) at \(d\) distant to SN.
-When \(\ell\) and \(\theta\) are specified, \(j_\chi\) is non-zero at \(r_\nu\) only when \(d\leq r_\nu\leq d+h\).
+<figcaption>Figure 3. BDM production on the shell with thickness \(h\) at a distance \(d\) from the SN.  
+When \(\ell\) and \(\theta\) are specified, \(j_\chi\) is non-zero at \(r_\nu\) only if \(d \leq r_\nu \leq d + h\).</figcaption>
+</center>
 </figure>
 
 <h3 id="from-line-of-sight-to-time-dependency">From line-of-sight to time-dependency<a class="headerlink" href="#from-line-of-sight-to-time-dependency" title="Permanent link">&para;</a></h3>
-<p>However, Eq. <span class="arithmatex">\(\eqref{eq:total_Phi}\)</span> is inadequate because it does not take DM velocity into account.
-Given massive DM, BDM cannot have the same velocity as SN<span class="arithmatex">\(\nu\)</span>. Depending on where <span class="arithmatex">\(\chi\)</span> is upscattered, it will arrive on Earth at different times. This results in a prolonged flux vs. time compared to the SN<span class="arithmatex">\(\nu\)</span> flux. BDM arrives earlier if it was upscattered closer and much later if it was upscattered farther away.</p>
-<p>To incorporate time-dependent feature, let the time of SN explosion be the time-zero. Then SN<span class="arithmatex">\(\nu\)</span> needs
+<p>However, Eq. \eqref{eq:total_Phi} is inadequate because it does not take the DM velocity into account.
+Given that DM is massive, BDM cannot propagate at the same velocity as SN<span class="arithmatex">\(\nu\)</span>. 
+Depending on where the <span class="arithmatex">\(\chi\)</span> particle is upscattered, it will arrive at Earth at different times. 
+This results in a broadened flux-vs-time profile compared to that of the SN<span class="arithmatex">\(\nu\)</span> burst.
+BDM will arrive earlier if it was upscattered closer to Earth, and significantly later if it was upscattered farther away.</p>
+<p>To incorporate the time-dependent behavior, let the time of the SN explosion define time-zero. 
+Then, the time required for SN<span class="arithmatex">\(\nu\)</span> to propagate from S to E is
 $$
-t_\nu = \frac{R_s}{c}
+t_\nu = \frac{R_s}{c}.
 $$
-to propagate from S to E. For BDM produced at B, it will arrive at
-$$
+For BDM produced at point B, the arrival time at Earth is
 \begin{equation}\label{eq:tprime}
-t^\prime = \frac{d}{c} + \frac{\ell}{v_\chi}
+t^\prime = \frac{d}{c} + \frac{\ell}{v_\chi},
 \end{equation}
+where the first term accounts for the time taken by SN<span class="arithmatex">\(\nu\)</span> to travel from S to B, and the second term accounts for the BDM's time of flight to Earth. 
+The BDM velocity is given by
 $$
-where the first term accounts for SN<span class="arithmatex">\(\nu\)</span> traveling from S to B and the BDM velocity
+v_\chi = \frac{\sqrt{T_\chi (T_\chi + 2m_\chi)}}{T_\chi + m_\chi} c.
 $$
-v_\chi =\frac{\sqrt{T_\chi(T_\chi+2m_\chi )}}{T_\chi+m_\chi}c.
-$$
-Applying law of cosine, we have
-$$
+By applying the law of cosines, we express <span class="arithmatex">\(d\)</span> as
 \begin{equation}\label{eq:d}
-d = \sqrt{\ell^2 + R_s^2 - 2\ell R_s \cos\theta}
+d = \sqrt{\ell^2 + R_s^2 - 2\ell R_s \cos\theta}.
 \end{equation}
-$$
-and take total differentiation on both sides of Eq. <span class="arithmatex">\(\eqref{eq:tprime}\)</span>,
-$$
+Taking the total differential of Eq. \eqref{eq:tprime}, we find
 \begin{equation}\label{eq:dtprime}
-dt^\prime =\left( \frac{\ell - R_s \cos\theta}{c d} + \frac{1}{v_\chi} \right) d\ell := \mathcal{J}^{-1}d\ell.
+dt^\prime = \left( \frac{\ell - R_s \cos\theta}{c d} + \frac{1}{v_\chi} \right) d\ell = \mathcal{J}^{-1} d\ell.
 \end{equation}
+Note that <span class="arithmatex">\(\mathcal{J}\)</span> has the same dimension as velocity, i.e., [L T<sup>−1</sup>].
+Before recasting Eq. \eqref{eq:total_Phi} into a time-dependent form, we first manipulate
 $$
-Note that <span class="arithmatex">\(\mathcal{J}\)</span> has the same dimension as velocity [L T<sup>−1</sup>].
-Before recasting Eq. <span class="arithmatex">\(\eqref{eq:total_Phi}\)</span> into time-dependent form, we firstly manage
+c\tau_s \delta(r_\nu - d) = \tau_s \delta\left( \frac{r_\nu}{c} - \frac{d}{c} \right) = \tau_s \delta\left( \frac{r_\nu}{c} - t^\prime + \frac{\ell}{v_\chi} \right) = \tau_s \delta\left( t^\prime - \frac{r_\nu}{c} - \frac{\ell}{v_\chi} \right),
 $$
-c\tau_s \delta(r_\nu-d) = \tau_s \delta\left(\frac{r_\nu}{c}- \frac{d}{c}\right) = \tau_s\delta\left(\frac{r_\nu}{c}- t^\prime +\frac{\ell}{v_\chi}\right)=\tau_s\delta\left(t^\prime - \frac{r_\nu}{c}-\frac{\ell}{v_\chi}\right)
+using the identity <span class="arithmatex">\(\delta(ax) = \delta(x)/|a|\)</span>.
+Under the thin-shell approximation (<span class="arithmatex">\(h \ll d\)</span>), we write
 $$
-by <span class="arithmatex">\(\delta(ax)=\delta(x)/|a|\)</span>.
-Using thin-shell approximation, <span class="arithmatex">\(h\ll d\)</span>, we approximate
+d \leq r_\nu \leq d + h \approx 1 \leq \frac{r_\nu}{d} \leq 1 + \frac{h}{d} \quad \Rightarrow \quad r_\nu \approx d.
 $$
-d \leq r_\nu \leq d+h \approx  1 \leq \frac{r_\nu}{d} \leq 1+\frac{h}{d} \to r_\nu\approx d.
+Thus, the delta function becomes
 $$
-The <span class="arithmatex">\(\delta\)</span>-function becomes
+c\tau_s \delta(r_\nu - d) \approx \tau_s \delta\left( t^\prime - \frac{d}{c} - \frac{\ell}{v_\chi} \right).
 $$
-c\tau_s\delta(r_\nu-d) \approx \tau_s\delta \left(t^\prime - \frac{d}{c}-\frac{\ell}{v_\chi} \right).
-$$</p>
-<p>Hence we can recast Eq. <span class="arithmatex">\(\eqref{eq:total_Phi}\)</span> from l.o.s. integration into time integration</p>
+Hence, we can recast Eq. \eqref{eq:total_Phi} from a line-of-sight integration into a time-domain integration:</p>
 <div class="arithmatex">\[
-\frac{d\Phi_\chi}{dT_\chi d\Omega} = \tau_s \int dt^\prime  \mathcal{J}  j_\chi \delta \left(t^\prime - \frac{d}{c}-\frac{\ell}{v_\chi} \right) = \left. \tau_s\mathcal{J}  j_\chi \right|_{t^\prime = \frac{d}{c}+\frac{\ell}{v_\chi}}.
+\frac{d\Phi_\chi}{dT_\chi d\Omega} = \tau_s \int dt^\prime\, \mathcal{J} j_\chi \delta\left( t^\prime - \frac{d}{c} - \frac{\ell}{v_\chi} \right) = \left. \tau_s \mathcal{J} j_\chi \right|_{t^\prime = \frac{d}{c} + \frac{\ell}{v_\chi}}.
 \]</div>
-<p>In the last step, the <span class="arithmatex">\(\delta\)</span> function restricts the integrand to be non-zero at <span class="arithmatex">\(t^\prime = d/c+\ell/v_\chi\)</span>.
-Finally, we integrate over the f.o.v. from the viewpoint on Earth,</p>
-<div class="arithmatex">\[
-\begin{equation}\label{eq:BDM_flux}
-\frac{d\Phi_\chi(t^\prime)}{dT_\chi} =  \left. \tau_s\int_0^{2\pi} d\varphi \int_0^{\pi/2} d\theta~\sin\theta\mathcal{J}  j_\chi (d,r,T_\chi,\psi) \right|_{t^\prime = \frac{d}{c}+\frac{\ell}{v_\chi}}
-\end{equation}
-\]</div>
-<p>which is the <strong>time-dependent SN<span class="arithmatex">\(\boldsymbol{\nu}\)</span> BDM flux</strong> at Earth.
-One last thing is to check the dimension,
+<p>In the last step, the <span class="arithmatex">\(\delta\)</span> function constrains the integrand to be non-zero only at <span class="arithmatex">\(t^\prime = d/c + \ell/v_\chi\)</span>.
+Finally, we integrate over the f.o.v. as seen from Earth:</p>
+<div class="arithmatex">\[\begin{equation}\label{eq:BDM_flux}
+\frac{d\Phi_\chi(t^\prime)}{dT_\chi} = \left. \tau_s \int_0^{2\pi} d\varphi \int_0^{\pi/2} d\theta\, \sin\theta \mathcal{J} j_\chi(d, r, T_\chi, \psi) \right|_{t^\prime = \frac{d}{c} + \frac{\ell}{v_\chi}}.
+\end{equation}\]</div>
+<p>This is the <strong>time-dependent SN<span class="arithmatex">\(\boldsymbol{\nu}\)</span>-induced BDM flux</strong> observed at Earth.
+To verify dimensional consistency:
 $$
-\left[\tau_s \times  d\varphi d\theta \sin\theta \times  \mathcal{J} \times j_\chi \right] = {\rm s}\cdot{\rm sr}\cdot\frac{\rm cm}{\rm s} \cdot \frac{1}{\rm MeV~cm^3~s~sr}= {\rm MeV^{-1}~cm^{-2}~s^{-1}}
+\left[ \tau_s \cdot d\varphi\, d\theta\, \sin\theta \cdot \mathcal{J} \cdot j_\chi \right] = \mathrm{s} \cdot \mathrm{sr} \cdot \frac{\mathrm{cm}}{\mathrm{s}} \cdot \frac{1}{\mathrm{MeV\;cm^3\;s\;sr}} = \mathrm{MeV^{-1}\;cm^{-2}\;s^{-1}},
 $$
-that shows Eq. <span class="arithmatex">\(\eqref{eq:BDM_flux}\)</span> has the same unit as flux per energy width.</p>
-<p>Instead of setting time-zero for <span class="arithmatex">\(t^\prime\)</span> as the SN explosion, for our convenience, we can shift it by <span class="arithmatex">\(t_\nu\)</span>,
-$$
+showing that Eq. \eqref{eq:BDM_flux} has the correct units for differential flux per energy.
+Instead of setting <span class="arithmatex">\(t^\prime = 0\)</span> at the moment of SN explosion, it is more convenient to shift the reference point to the arrival of SN<span class="arithmatex">\(\nu\)</span> at Earth:
 \begin{equation}\label{eq:t}
-t := t^\prime - t_\nu = \frac{d}{c} + \frac{\ell}{v_\chi} - t_\nu
+t = t^\prime - t_\nu = \frac{d}{c} + \frac{\ell}{v_\chi} - t_\nu,
 \end{equation}
+which leads to the final expression for the observed BDM flux:</p>
+<div class="arithmatex">\[\begin{equation}\label{eq:BDM_flux_earth}
+\frac{d\Phi_\chi(t)}{dT_\chi} = \left. \tau_s \int_0^{2\pi} d\varphi \int_0^{\pi/2} d\theta\, \sin\theta \mathcal{J} j_\chi(d, r, T_\chi, \psi) \right|_{t = \frac{d}{c} + \frac{\ell}{v_\chi} - t_\nu}.
+\end{equation}\]</div>
+<p>Note that the prefactor <span class="arithmatex">\(\tau_s\)</span> is actually redundant. 
+We have defined
 $$
-and this offsets the time-zero to the arrival of SN<span class="arithmatex">\(\nu\)</span> at Earth,</p>
-<div class="arithmatex">\[
-\begin{equation}\label{eq:BDM_flux_earth}
-\frac{d\Phi_\chi(t)}{dT_\chi} =  \left. \tau_s\int_0^{2\pi} d\varphi \int_0^{\pi/2} d\theta~\sin\theta\mathcal{J}  j_\chi (d,r,T_\chi,\psi) \right|_{t = \frac{d}{c}+\frac{\ell}{v_\chi}-t_\nu}.
-\end{equation}
-\]</div>
-<p>Note that <span class="arithmatex">\(\tau_s\)</span> in front is actually redundant.
-Becasue we have set
+L_{\rm tot} = \frac{\mathcal{E}_{\rm tot}}{\tau_s},
 $$
-L_{\rm tot} = \frac{\mathcal{E}_{\rm tot}}{\tau_s}
-$$
-where <span class="arithmatex">\(\mathcal{E}\approx 3\times 10^{53}\)</span> erg is the total
-energy released in the form of neutrino, see <a href="#numerical_values">Tab. 1</a>. Hence</p>
+where <span class="arithmatex">\(\mathcal{E}_{\rm tot} \approx 3 \times 10^{53}\)</span> erg is the total energy released in the form of neutrinos (see <a href="#numerical_values">Tab. 1</a>). 
+Hence,</p>
 <div class="arithmatex">\[
 \tau_s \times L_{\rm tot} = \mathcal{E}_{\rm tot}.
 \]</div>
-<p>In numerics, we can dismiss <span class="arithmatex">\(\tau_s\)</span> and simply replace <span class="arithmatex">\(L_{\rm tot}\)</span> by <span class="arithmatex">\(\mathcal{E}_{\rm tot}\)</span> in Eq. <span class="arithmatex">\(\eqref{eq:snv_spectrum}\)</span>.</p>
+<p>In numerical calculations, we can therefore drop the explicit factor of <span class="arithmatex">\(\tau_s\)</span> and replace <span class="arithmatex">\(L_{\rm tot}\)</span> by <span class="arithmatex">\(\mathcal{E}_{\rm tot}\)</span> in Eq. \eqref{eq:snv_spectrum}.</p>
 <h3 id="time-dependent-feature">Time-dependent feature<a class="headerlink" href="#time-dependent-feature" title="Permanent link">&para;</a></h3>
-<p>Judging by Eq. <span class="arithmatex">\(\eqref{eq:BDM_flux_earth}\)</span>, it is easy to realize that the BDM flux from an individual SN is not everlasting.
-The last bit of signal comes from the BDM with maximum propagation time.
-Hence we define a vanishing time,
+<p>Judging from Eq. \eqref{eq:BDM_flux_earth}, it is clear that the BDM flux from an individual SN is not everlasting. 
+The final portion of the signal arrives from the BDM particles with the longest propagation time. 
+Hence, we define the <strong>vanishing time</strong> as
 $$
-t_{\rm van} = \max \left[ \frac{d(\theta)}{c} + \frac{\ell(\theta)}{v_\chi} - t_\nu\right].
+t_{\rm van} = \max \left[ \frac{d(\theta)}{c} + \frac{\ell(\theta)}{v_\chi} - t_\nu \right].
 $$
-Using law of sine, cf. <a href="#snv_bdm_scheme">Fig. 1</a>,
+Using the law of sines (cf. <a href="#snv_bdm_scheme">Fig. 1</a>),
 $$
-\frac{\ell}{\sin(\psi-\theta)}=\frac{d}{\sin\theta}=\frac{R_s}{\sin\psi}
+\frac{\ell}{\sin(\psi - \theta)} = \frac{d}{\sin\theta} = \frac{R_s}{\sin\psi},
 $$
-then
-$$
+we obtain the time-delay formula
 \begin{equation}\label{eq:t_psi}
-t =\frac{R_s}{c}\frac{\sin\theta}{\sin\psi}+\frac{R_s}{v_\chi}\frac{\sin(\psi-\theta)} {\sin\psi}-t_\nu.
+t = \frac{R_s}{c} \frac{\sin\theta}{\sin\psi} + \frac{R_s}{v_\chi} \frac{\sin(\psi - \theta)}{\sin\psi} - t_\nu.
 \end{equation}
-$$
-Obviously, when we fix <span class="arithmatex">\(\theta\)</span> in Eq. <span class="arithmatex">\(\eqref{eq:t_psi}\)</span>, <span class="arithmatex">\(t\)</span> increases monotonically with <span class="arithmatex">\(\psi \in [0,\pi/2]\)</span>.
-Thus to find the corresponding <span class="arithmatex">\(\theta\)</span> that maximizes <span class="arithmatex">\(t\)</span> globally, we restrict ourselves at <span class="arithmatex">\(\psi=\psi_{\rm max}\)</span>, cf. Eq. <span class="arithmatex">\(\eqref{eq:psi_max}\)</span>, which only depends on <span class="arithmatex">\(T_\chi\)</span> and <span class="arithmatex">\(m_\chi\)</span>.
-Hence we can do <span class="arithmatex">\(dt/d\theta=0\)</span> and obtain
-$$
+It is evident that, for fixed <span class="arithmatex">\(\theta\)</span>, <span class="arithmatex">\(t\)</span> increases monotonically with <span class="arithmatex">\(\psi \in [0, \pi/2]\)</span>. 
+Therefore, to globally maximize <span class="arithmatex">\(t\)</span>, we set <span class="arithmatex">\(\psi = \psi_{\rm max}\)</span> (cf. Eq. \eqref{eq:psi_max}), which depends only on <span class="arithmatex">\(T_\chi\)</span> and <span class="arithmatex">\(m_\chi\)</span>.
+To find the corresponding <span class="arithmatex">\(\theta\)</span> that yields the maximum <span class="arithmatex">\(t\)</span>, we solve
 \begin{equation}\label{eq:theta_maximum_t}
-\frac{\cos\theta}{c}=\frac{\cos(\psi_{\rm max}-\theta)}{v_\chi}.
+\frac{\cos\theta}{c} = \frac{\cos(\psi_{\rm max} - \theta)}{v_\chi}.
 \end{equation}
-$$
-It can be solved numerically for <span class="arithmatex">\(\theta\)</span>. Suppose <span class="arithmatex">\(\theta_{\rm MAX}\)</span> satisfy Eq. <span class="arithmatex">\(\eqref{eq:theta_maximum_t}\)</span>, then we have</p>
-<div class="arithmatex">\[
+This equation can be solved numerically for <span class="arithmatex">\(\theta\)</span>. 
+Suppose the solution is <span class="arithmatex">\(\theta_{\rm MAX}\)</span>, then the vanishing time is given by
 \begin{equation}\label{eq:tvan}
 t_{\rm van} = \frac{d(\theta_{\rm MAX})}{c} + \frac{\ell(\theta_{\rm MAX})}{v_\chi} - t_\nu.
 \end{equation}
-\]</div>
-<p>We note that Eq. <span class="arithmatex">\(\eqref{eq:tvan}\)</span> is the exact solution for <span class="arithmatex">\(t_{\rm van}\)</span> and valid for both relativistic and non-relativistic cases. However, an approximation given by Eq. (13) in Ref. [<a href="#bib_Lin2023PRD">2</a>] is only suitable for relativistic case.</p>
+We emphasize that Eq. \eqref{eq:tvan} provides the exact solution for <span class="arithmatex">\(t_{\rm van}\)</span>, 
+and it remains valid in both the relativistic and non-relativistic regimes. 
+In contrast, the approximation given by Eq. (13) in Ref. [<a href="#bib_Lin2023PRD">2</a>] is only suitable for the relativistic case.</p>
 <h3 id="field-of-view-across-the-sky">Field-of-view across the sky<a class="headerlink" href="#field-of-view-across-the-sky" title="Permanent link">&para;</a></h3>
-<p>One can understand from the last subsection that <span class="arithmatex">\(\theta_{\rm MAX}\)</span> dictates the largest f.o.v. at <span class="arithmatex">\(t_{\rm van}\)</span>.
-Now we can do it the other way around that by giving a particular time <span class="arithmatex">\(t^* &lt; t_{\rm van}\)</span>.
-The <span class="arithmatex">\(\theta^*_M\)</span> that satisfies Eq. <span class="arithmatex">\(\eqref{eq:t_psi}\)</span>,</p>
-<div class="arithmatex">\[
+<p>From the previous subsection, we learned that <span class="arithmatex">\(\theta_{\rm MAX}\)</span> determines the maximum field of view f.o.v. angle at the vanishing time <span class="arithmatex">\(t_{\rm van}\)</span>. 
+Now, we consider the inverse problem: given a particular time <span class="arithmatex">\(t^* &lt; t_{\rm van}\)</span>, we ask what is the corresponding angular extent of the observable BDM flux.
+Let <span class="arithmatex">\(\theta^*_M\)</span> satisfy Eq. \eqref{eq:t_psi}:</p>
+<div class="arithmatex">\[\begin{equation}
+t^* = \frac{R_s}{c} \frac{\sin\theta^*_M}{\sin\psi_{\rm max}} + \frac{R_s}{v_\chi} \frac{\sin(\psi_{\rm max} - \theta^*_M)}{\sin\psi_{\rm max}} - t_\nu,
+\end{equation}\]</div>
+<p>then <span class="arithmatex">\(\theta^*_M\)</span> determines the maximal f.o.v. angle at observation time <span class="arithmatex">\(t = t^*\)</span>.
+Thus, at any given time, the region in the sky containing non-zero BDM flux corresponds to the angular range
 \begin{equation}
-t^* = \frac{R_s}{c}\frac{\sin\theta^*_M}{\sin\psi_{\rm max}} + \frac{R_s}{v_\chi}\frac{\sin(\psi_{\rm max}-\theta_M^*)}{\sin\psi_{\rm max}}-t_\nu
-\end{equation}
-\]</div>
-<p>corresponds the maximum f.o.v. at <span class="arithmatex">\(t=t^*\)</span>.
-Thus we conclude that at any specific time, the f.o.v. that contains non-zero BDM flux distributes across
-$$
-\begin{equation}
-\theta \in [0,\theta^*_M).
-\end{equation}
-$$</p>
+\theta \in [0, \theta^*_M).
+\end{equation}</p>
 <h4 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h4>
 <ol>
 <li><p id="bib_Lin2023PRL">Y.-H. Lin <em>et al.</em>, <em>Phys. Rev. Lett.</em> <strong>130</strong>, 111002 (2023)</p></li>
@@ -589,7 +574,7 @@ $$</p>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../.." class="btn btn-neutral float-left" title="Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../tutorial/" class="btn btn-neutral float-right" title="Tutorial">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../emissivity/" class="btn btn-neutral float-right" title="Emissivity">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -615,7 +600,7 @@ $$</p>
       <span><a href="../.." style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../tutorial/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../emissivity/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

@@ -53,6 +53,8 @@
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../overview/">BDM Physics</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../emissivity/">Emissivity</a>
+                </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../tutorial/">Tutorial</a>
@@ -218,22 +220,20 @@ window.MathJax = {
 </script>
 
 <h1 id="demonstration">Demonstration<a class="headerlink" href="#demonstration" title="Permanent link">&para;</a></h1>
-<p>In this page, we show three demonstrations for how BDM evolving in time
-on the celestial sphere. Practically, we present the <span class="arithmatex">\(T_\chi\)</span>-integrated
-BDM flux by
+<p>In this page, we present three demonstrations showing how BDM evolves over time on the celestial sphere. 
+Specifically, we display the <strong><span class="arithmatex">\( T_\chi \)</span>-integrated BDM flux</strong> for <span class="arithmatex">\( m_\chi = 5 \, \text{keV} \)</span>, defined by 
 \begin{equation}
-\frac{d\Phi_\chi(t)}{d\Omega}=\int_{T_{\chi,{\rm min}}}^{T_{\chi,{\rm max}}}\frac{d\Phi_\chi(t)}{dT_\chi d\Omega}
-\end{equation}
-where <span class="arithmatex">\((T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,50)\)</span>, <span class="arithmatex">\((300,1000)\)</span> and
-<span class="arithmatex">\((1,1000)\)</span> keV.</p>
-<p>We assume the Milky Way (MW) core-collapse supernova (CCSN) rate approximates 1.63 per century
-and the simulation time is 100,000 years.
-In average, the expected CCSN number is around 1,630 in this period.
-Suppos the CCSN location follows the MW baryonic density distribution
-and the birth dates are unifomly distributed in 100,000 years.</p>
-<p>The animations are shown below and the time progresses in logarithmic scale.
-The dataset contains MW CCSNe locations and birth dates in the following animations
-can be <a href="../../dat/MW_sne.txt">downloaded here</a>.</p>
+\frac{d\Phi_\chi(t)}{d\Omega} = \int_{T_{\chi,\mathrm{min}}}^{T_{\chi,\mathrm{max}}} \frac{d\Phi_\chi(t)}{dT_\chi\, d\Omega}
+\end{equation} 
+with integration ranges <span class="arithmatex">\( (T_{\chi,\mathrm{min}}, T_{\chi,\mathrm{max}}) = (5, 50) \)</span>, <span class="arithmatex">\( (300, 1000) \)</span>, and <span class="arithmatex">\( (1, 1000) \)</span> keV.</p>
+<p>We assume the Milky Way (MW) core-collapse supernova (CCSN) rate is approximately 1.63 per century, 
+and the simulation spans a total duration of 100,000 years. 
+On average, this corresponds to about 1,630 CCSNe occurring during the simulation period. 
+The CCSN locations are sampled from the MW baryonic density distribution, 
+and their birth times are assumed to be uniformly distributed over the 100,000-year period.</p>
+<p>The animations below illustrate the time evolution in <strong>logarithmic time scale</strong>. 
+The dataset containing the simulated CCSN positions and birth dates used in these animations 
+can be <a href="../../dat/MW_sne.txt" target="_blank">downloaded here</a>.</p>
 <h2 id="animations">Animations<a class="headerlink" href="#animations" title="Permanent link">&para;</a></h2>
 <h3 id="t_chirm-mint_chirm-max550rm-kev"><span class="arithmatex">\((T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(5,50)~{\rm keV}\)</span><a class="headerlink" href="#t_chirm-mint_chirm-max550rm-kev" title="Permanent link">&para;</a></h3>
 <video controls width="100%">
