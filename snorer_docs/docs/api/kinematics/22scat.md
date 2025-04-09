@@ -132,7 +132,6 @@ $$
 $$
 
 with $\delta=-T_2 + (T_2 + 2m_2)x^2$ and $\kappa=\sqrt{(T_2+2m_2)(\alpha+ T_2 m_2^2 )}$.
-
 In most cases, elastic scattering does not change the mass of the particles, thus
 
 \begin{equation}

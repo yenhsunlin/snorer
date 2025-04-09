@@ -231,7 +231,7 @@ Below, we provide two approaches: one that is more familiar to particle physicis
 All terms can be expressed in vector notations generally, but we omitt this in the following discussion for simplicity.</p>
 <h2 id="particle-approach">Particle approach<a class="headerlink" href="#particle-approach" title="Permanent link">&para;</a></h2>
 <h3 id="specific-number-intensity">Specific number intensity<a class="headerlink" href="#specific-number-intensity" title="Permanent link">&para;</a></h3>
-<p>First, recall that the particle flux at position <span class="arithmatex">\( x \)</span> is defined as<br />
+<p>First, recall that the particle flux at any position <span class="arithmatex">\( x \)</span> is defined as<br />
 \begin{equation}
 \Phi = \int d^3p f(x, p)v(p) = \int dp d\Omega\, p^2 f(x, p)\, v(p)
 \end{equation}
@@ -242,7 +242,7 @@ Transforming to other phase space variables is straightforward via an appropriat
 \begin{equation}\label{eq:I}
 I(p) \equiv p^2 f(p)v(p) = \frac{d\Phi}{dp d\Omega}
 \end{equation} 
-in the phase space <span class="arithmatex">\( dp d\Omega \)</span>. This quantity has the dimension: per unit energy, per steradian, per volume.</p>
+in the phase space <span class="arithmatex">\( dp d\Omega \)</span>. This quantity has the dimension: per unit momentum (energy), per steradian, per unit area.</p>
 <h3 id="emissivity-on-the-snnu-shell">Emissivity on the SN<span class="arithmatex">\(\nu\)</span> shell<a class="headerlink" href="#emissivity-on-the-snnu-shell" title="Permanent link">&para;</a></h3>
 <p>Since the flux equals number density times velocity, we have  </p>
 <div class="arithmatex">\[\begin{equation}\label{eq:flux_I}
@@ -253,8 +253,7 @@ in the phase space <span class="arithmatex">\( dp d\Omega \)</span>. This quanti
 \frac{d\Phi}{dp d\Omega} = \int d\ell \, j_\chi
 \end{equation}
 where <span class="arithmatex">\(j_\chi\)</span> is the emissivity
-and we only look for the component such that <span class="arithmatex">\(v\)</span> is parallel to <span class="arithmatex">\(\ell\)</span>.
-Combining the two expressions above, we obtain  </p>
+and we only look for the component such that <span class="arithmatex">\(v\)</span> is parallel to <span class="arithmatex">\(\ell\)</span>. Combining the two expressions above, we obtain  </p>
 <p>\begin{equation}\label{eq:jx_def}
 \frac{dn}{dp d\Omega}\, v = \int d\ell \, j_\chi = v \int dt \, j_\chi
 \end{equation} 
@@ -278,7 +277,7 @@ One can further convert <span class="arithmatex">\( dE_\nu/dp_\chi \)</span> to 
 <p>In this section, we re-derive the same expression for <span class="arithmatex">\( j_\chi \)</span> using a heuristic method inspired by astrophysical domain. </p>
 <p>Suppose the number of BDM particles <span class="arithmatex">\( dN_\chi \)</span> passing through a surface element <span class="arithmatex">\( dA \)</span>, in a direction specified by an angle <span class="arithmatex">\( \psi \)</span>, is proportional to <span class="arithmatex">\( dt \)</span>, <span class="arithmatex">\( dp_\chi \)</span>, <span class="arithmatex">\( d\Omega \)</span>, and the projected surface area element <span class="arithmatex">\( \cos\psi\, dA \equiv dA_\perp \)</span>. 
 See <a href="#emissivity">Fig. 1</a> below. 
-The proportionality constant is referred to as the specific intensity <span class="arithmatex">\( I_\chi \)</span>.</p>
+The proportional factor is referred to as the specific intensity <span class="arithmatex">\( I_\chi \)</span>.</p>
 <figure id="emissivity">
 <center><img src="../../figs/emissivity.svg" alt="scheme" style="width: 45%;">
 <figcaption>Figure 1. Overall BDM emitted at boost point B.
@@ -298,7 +297,7 @@ The radiative transfer equation implies:</p>
 \frac{dI_\chi}{d\ell} = -\alpha_\chi I_\chi + j_\chi
 \end{equation}\]</div>
 <p>where <span class="arithmatex">\( \alpha_\chi \)</span> characterizes the absorption rate of BDM particles during propagation. However, we assume this effect is highly suppressed and thus negligible in our analysis. 
-Therefore, we obtain:
+Therefore, we obtain
 \begin{equation}
 I_\chi = \int d\ell\, j_\chi.
 \end{equation}

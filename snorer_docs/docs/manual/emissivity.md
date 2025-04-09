@@ -20,7 +20,7 @@ All terms can be expressed in vector notations generally, but we omitt this in t
 
 ### Specific number intensity
 
-First, recall that the particle flux at position \( x \) is defined as  
+First, recall that the particle flux at any position \( x \) is defined as  
 \begin{equation}
 \Phi = \int d^3p f(x, p)v(p) = \int dp d\Omega\, p^2 f(x, p)\, v(p)
 \end{equation}
@@ -32,7 +32,7 @@ We then define the specific number intensity \( I(p) \) as
 \begin{equation}\label{eq:I}
 I(p) \equiv p^2 f(p)v(p) = \frac{d\\Phi}{dp d\Omega}
 \end{equation} 
-in the phase space \( dp d\Omega \). This quantity has the dimension: per unit energy, per steradian, per volume.
+in the phase space \( dp d\Omega \). This quantity has the dimension: per unit momentum (energy), per steradian, per unit area.
 
 ### Emissivity on the SN$\nu$ shell
 
@@ -48,8 +48,7 @@ Alternatively, the flux is also defined as
 \frac{d\Phi}{dp d\Omega} = \int d\ell \, j_\chi
 \end{equation}
 where $j_\chi$ is the emissivity
-and we only look for the component such that $v$ is parallel to $\ell$.
-Combining the two expressions above, we obtain  
+and we only look for the component such that $v$ is parallel to $\ell$. Combining the two expressions above, we obtain  
 
 \begin{equation}\label{eq:jx_def}
 \frac{dn}{dp d\Omega}\, v = \int d\ell \, j_\chi = v \int dt \, j_\chi
@@ -87,7 +86,7 @@ In this section, we re-derive the same expression for \( j_\chi \) using a heuri
 
 Suppose the number of BDM particles \( dN_\chi \) passing through a surface element \( dA \), in a direction specified by an angle \( \psi \), is proportional to \( dt \), \( dp_\chi \), \( d\Omega \), and the projected surface area element \( \cos\psi\, dA \equiv dA_\perp \). 
 See [Fig. 1](#emissivity) below. 
-The proportionality constant is referred to as the specific intensity \( I_\chi \).
+The proportional factor is referred to as the specific intensity \( I_\chi \).
 
 <figure id="emissivity">
 <center><img src="../../figs/emissivity.svg" alt="scheme" style="width: 45%;">
@@ -114,7 +113,7 @@ The radiative transfer equation implies:
 \end{equation}
 
 where \( \alpha_\chi \) characterizes the absorption rate of BDM particles during propagation. However, we assume this effect is highly suppressed and thus negligible in our analysis. 
-Therefore, we obtain:
+Therefore, we obtain
 \begin{equation}
 I_\chi = \int d\ell\, j_\chi.
 \end{equation}
