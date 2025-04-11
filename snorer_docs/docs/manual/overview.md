@@ -39,8 +39,7 @@ Due to the spherically symmetric nature of the DM halo, there is no need to spec
 However, unless S lies precisely along the axis $\overline{\mathsf{GE}}$, the resulting BDM distribution will not be azimuthally symmetric in $\varphi$.
 The angle $\beta$ quantifies the angular displacement of the SN relative to the GC,
 $\psi$ the scattering angle and its corresponding angular direction viewed as $\theta$ on E.
-These quantities are further explained in the API documentation:
-[Positioning](../api/geometry/Positioning.md){:target="_blank"} and 
+These quantities are further explained in the API documentation: [Positioning](../api/geometry/Positioning.md){:target="_blank"} and 
 [Coordinate Transformations](../api/utils/coord_transf.md){:target="_blank"}.
 
 
