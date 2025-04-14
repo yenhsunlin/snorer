@@ -120,7 +120,7 @@ while the DM–*e* cross section $\sigma_{\chi e}$ is *normalized to* **1 cm<s
 >>> mx,Rstar,beta = 1e-2,8.5,0.3 # Collecting parameters
 >>> event = sn.event(mx,Rstar,beta,is_spike=True,neval=30000) # Evaluating BDM event per electron with sigma_xe = 1 cm^2
 >>> print(event)
-4.6009089186164447e-07
+1.4350397711858462e-06
 ```
 Given the previous setup, `event` is the event rate per electron assuming $\sigma_{\chi e} = 1$ cm<sup>2</sup>.
 Suppose the detector contains $N_e$ electrons, and the true cross sections are
