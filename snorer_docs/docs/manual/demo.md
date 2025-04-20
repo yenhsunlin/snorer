@@ -24,7 +24,7 @@ and their birth times are assumed to be uniformly distributed over the 100,000-y
 
 The animations below illustrate the time evolution in **logarithmic time scale**. 
 The dataset containing the simulated CCSN positions and birth dates used in these animations 
-can be [downloaded here](../../dat/MW_sne.txt){:target="_blank"}.
+can be [downloaded here](../dat/MW_sne.txt){:target="_blank"}.
 
 
 ## Animations
@@ -36,7 +36,7 @@ can be [downloaded here](../../dat/MW_sne.txt){:target="_blank"}.
   Your browser does not suppor MP4 playback.
 </video>
 
-[Download video](../../anis/5_50keV.mp4)
+[Download video](../anis/5_50keV.mp4)
 
 ### $(T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(300,1000)~{\rm keV}$
 
@@ -45,4 +45,13 @@ can be [downloaded here](../../dat/MW_sne.txt){:target="_blank"}.
   Your browser does not suppor MP4 playback.
 </video>
 
-[Download video](../../anis/300_1000keV.mp4)
+[Download video](../anis/300_1000keV.mp4)
+
+### $(T_{\chi,{\rm min}},T_{\chi,{\rm max}})=(1,1000)~{\rm keV}$
+
+<video controls width="100%">
+  <source src="../../anis/1_1000keV.mp4" type="video/mp4">
+  Your browser does not suppor MP4 playback.
+</video>
+
+[Download video](../anis/1_1000keV.mp4)
