@@ -43,11 +43,11 @@ Class for constructing dark matter halo with spike due to supermassive black hol
 > `tBH` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp;SMBH age, user's input
 
 
-> `alpha` : *obj* <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike profile, user's input and is a `Fraction` object
+> `alpha` : *obj* <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike profile
 
 > `rh` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp; SMBH influence radius $r_h$, kpc
 
-> `Rsp` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp; Spike radius $R_{\rm sp}$, kpc
+> `Rs` : *float* <br>&nbsp;&nbsp;&nbsp;&nbsp; Schwarzschild radius $R_{\rm s}$, kpc
 
 ### *`__call__`*  <span class="mono">(*r*,*mx*,*sigv*,*rhos*,*rs*,*n*)</span>
 
@@ -84,13 +84,12 @@ Initializing instance and check its attributes.
 >>> import snorer as sn
 >>> nx = sn.HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2') # initializing instance
 >>> nx # print instance information
-       SMBH mass: 1.000e+07 M_sun
-     Spike slope: 3/2
-   Initial slope: 1.000e+00
-    Spike radius: 9.504e-10 kpc
-Influence radius: 3.412e-03 kpc
+          SMBH mass: 1.000e+07 M_sun
+        Spike slope: 3/2
+Schwarzschild slope: 9.504e-10
+   Influence radius: 3.412e-03 kpc
 >>> nx.alpha # check alpha
-Fraction(3,2)
+'3/2'
 ```
 The influence radius $r_h$ is auto generated but can be replaced by user defined number. It can be reset to the default value by giving `None`.
 ```python
