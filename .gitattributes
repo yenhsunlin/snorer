@@ -2,3 +2,5 @@
 * text=auto
 
 snorer_docs/** linguist-vendored linguist-documentation
+
+dev/** linguist-vendored linguist-documentation
