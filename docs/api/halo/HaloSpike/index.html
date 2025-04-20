@@ -239,9 +239,9 @@ window.MathJax = {
 <blockquote>
 <p><code>mBH</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;SMBH mass, user's input</p>
 <p><code>tBH</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;SMBH age, user's input</p>
-<p><code>alpha</code> : <em>obj</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike profile, user's input and is a <code>Fraction</code> object</p>
+<p><code>alpha</code> : <em>obj</em> <br>&nbsp;&nbsp;&nbsp;&nbsp;Slope of the spike profile</p>
 <p><code>rh</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp; SMBH influence radius <span class="arithmatex">\(r_h\)</span>, kpc</p>
-<p><code>Rsp</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp; Spike radius <span class="arithmatex">\(R_{\rm sp}\)</span>, kpc</p>
+<p><code>Rs</code> : <em>float</em> <br>&nbsp;&nbsp;&nbsp;&nbsp; Schwarzschild radius <span class="arithmatex">\(R_{\rm s}\)</span>, kpc</p>
 </blockquote>
 <h3 id="__call__-rmxsigvrhosrsn"><em><code>__call__</code></em>  <span class="mono">(<em>r</em>,<em>mx</em>,<em>sigv</em>,<em>rhos</em>,<em>rs</em>,<em>n</em>)</span><a class="headerlink" href="#__call__-rmxsigvrhosrsn" title="Permanent link">&para;</a></h3>
 <p>After initializing <code>snorer.HaloSpike</code> instance, it is callable like normal function with the following required inputs. </p>
@@ -263,13 +263,12 @@ window.MathJax = {
 <pre><code class="language-python">&gt;&gt;&gt; import snorer as sn
 &gt;&gt;&gt; nx = sn.HaloSpike(mBH=1e7,tBH=1e10,alpha='3/2') # initializing instance
 &gt;&gt;&gt; nx # print instance information
-       SMBH mass: 1.000e+07 M_sun
-     Spike slope: 3/2
-   Initial slope: 1.000e+00
-    Spike radius: 9.504e-10 kpc
-Influence radius: 3.412e-03 kpc
+          SMBH mass: 1.000e+07 M_sun
+        Spike slope: 3/2
+Schwarzschild slope: 9.504e-10
+   Influence radius: 3.412e-03 kpc
 &gt;&gt;&gt; nx.alpha # check alpha
-Fraction(3,2)
+'3/2'
 </code></pre>
 <p>The influence radius <span class="arithmatex">\(r_h\)</span> is auto generated but can be replaced by user defined number. It can be reset to the default value by giving <code>None</code>.</p>
 <pre><code class="language-python">&gt;&gt;&gt; nx.rh # default value of rh
