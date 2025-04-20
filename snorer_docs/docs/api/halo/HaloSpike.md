@@ -75,6 +75,7 @@ After initializing `snorer.HaloSpike` instance, it is callable like normal funct
 > `out` : *scalar* <br>&nbsp;&nbsp;&nbsp;&nbsp;DM number density at $r$, cm<sup>−3</sup>
 
 
+
 **<div style="border-bottom: 1px solid lightgray; width: 100%;">Examples</div>**
 
 Initializing instance and check its attributes.
@@ -139,6 +140,12 @@ plt.show()
 <figure id="22scat">
 <center><img src="../../../figs/nx.svg" alt="nx" style="width: 50%;">
 </figure>
+
+**<div style="border-bottom: 1px solid lightgray; width: 100%;">Notes</div>**
+
+This class is based on the Supplementary Material of Ref. [[1](#bib_Lin2024PRL)].
+
 ### References
-1. P. Gondolo and J. Silk, *Phys. Rev. Lett.* **83**, 1719 (1999)
-2. J. Cline and M. Puel, *JCAP* **06**, 004 (2023)
+1. <p id="bib_Lin2024PRL">Y.-H. Lin and M.-R. Wu, *Phys. Rev. Lett.* **133**, 111004 (2024)</p>
+2. P. Gondolo and J. Silk, *Phys. Rev. Lett.* **83**, 1719 (1999)
+3. J. Cline and M. Puel, *JCAP* **06**, 004 (2023)
