@@ -16,7 +16,7 @@ window.MathJax = {
 # snorer.nx
 
 
-###  <span class="mono">snorer.nx(*r*,*mx*,*is_spike=False*,*\*\*kwargs**)</span>
+###  <span class="mono">snorer.nx(*r*,*mx*,*is_spike=False*,*\*\*kwargs*)</span>
 
 Dark matter number density of Milky Way of Large Magellanic Cloud at distance $r$ to the galactic center.  Spike feature is not included.
 

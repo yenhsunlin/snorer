@@ -15,7 +15,7 @@ window.MathJax = {
 # snorer.dsigma_xv
 
 
-###  <span class="mono">snorer.dsigma_xv(*Ev*,*mx*,*psi*,*sigxv0='1e-45'*)</span>
+###  <span class="mono">snorer.dsigma_xv(*Ev*,*mx*,*psi*,*sigxv0=1e-45*)</span>
 
 Differential DM-$\nu$ scattering cross section at angle $\psi$ in lab frame,
 $$
